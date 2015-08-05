@@ -32,9 +32,28 @@ public class Control {
 	}
 	
 	public void processKeysTitle() {
-		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
-			g.gameState = gameStates.Setup;
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
+			g.gameState = gameStates.Setup;			
 		}
+		if(Gdx.input.isKeyJustPressed(Keys.UP)){
+			g.menuChangeSound.play();
+			if(g.selectedMenuItem > 0)
+				g.selectedMenuItem--;	
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.DOWN)){
+		g.menuChangeSound.play();
+			if(g.selectedMenuItem < 4)
+			g.selectedMenuItem++;
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
+			if(g.selectedMenuItem == 4)
+				Gdx.app.exit();
+			if(g.selectedMenuItem == 0)
+				g.gameState = gameStates.Setup;
+			
+		}
+		
+		
 	}
 	
 	public void processKeysSetup() {

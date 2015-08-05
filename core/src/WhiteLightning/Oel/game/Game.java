@@ -1,6 +1,7 @@
 package WhiteLightning.Oel.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,19 +13,27 @@ public class Game {
 
 	public SpriteBatch batch;
 	public Texture img;
-	public Sprite s;
+//	public Sprite s;
+	public Sprite menuArrow;
 	public Texture titleScreen;
 	private int internalState = 0;
 	private World world;
 	Config c;
-
+	public Sound menuSound;
+	public Sound menuChangeSound;
+	
+	boolean playMusic=true;
+	
+	public int selectedMenuItem=0;
+	
+	
 	public OrthographicCamera camera;
 
 	public enum gameStates {
 		Test, Title, Setup, Game, End
 	};
 
-	public gameStates gameState = gameStates.Setup;
+	public gameStates gameState = gameStates.Title ;
 
 	BitmapFont font, redFont;
 
@@ -56,8 +65,13 @@ public class Game {
 	public void draw() {
 
 		switch (gameState) {
+		case Test:
+	//		drawTest();
+			break;
+		
 		case Title:
 			drawTitle();
+			
 			break;
 
 		case Setup:
@@ -70,9 +84,35 @@ public class Game {
 	}
 
 	private void drawTitle() {
+		int x=100;
+		int y=150;
+		int deltaX = 50;
+		int deltaY = 25;
+		
+		if(playMusic){
+			menuSound.play();
+			playMusic= !playMusic;
+		}
+		
 		batch.begin();
 		batch.draw(img, 200, 200);
 		batch.draw(titleScreen, 0, 0);
+		
+		font.draw(batch,"Start Game", x, y);
+		font.draw(batch,"Options", x, y-deltaY);
+		font.draw(batch,"Story", x, y-2*deltaY);
+		font.draw(batch,"Credits", x, y-3*deltaY);
+		font.draw(batch,"Exit", x, y-4*deltaY);
+		
+		batch.draw(menuArrow,x-30,y-16-selectedMenuItem*deltaY,20,20);
+
+		
+		if(selectedMenuItem == 0) redFont.draw(batch,"Start Game", x, y);
+		if(selectedMenuItem == 1) redFont.draw(batch,"Options", x, y-deltaY);
+		if(selectedMenuItem == 2) redFont.draw(batch,"Story", x, y-2*deltaY);
+		if(selectedMenuItem == 3) redFont.draw(batch,"Credits", x, y-3*deltaY);
+		if(selectedMenuItem == 4) redFont.draw(batch,"Exit", x, y-4*deltaY);
+		
 		batch.end();
 	}
 
