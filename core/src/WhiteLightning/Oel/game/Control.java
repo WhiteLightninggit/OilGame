@@ -37,6 +37,7 @@ public class Control {
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.UP)){
 			g.menuChangeSound.play();
+			
 			if(g.selectedMenuItem > 0)
 				g.selectedMenuItem--;	
 		}
@@ -48,6 +49,16 @@ public class Control {
 		if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
 			if(g.selectedMenuItem == 4)
 				Gdx.app.exit();
+			if(g.selectedMenuItem == 1){
+				g.flag1 = true;
+			}
+			if(g.selectedMenuItem == 2){
+				g.flag1 = true;
+			}
+			if(g.selectedMenuItem == 3){
+				g.flag1 = true;
+			}
+			
 			if(g.selectedMenuItem == 0)
 				g.gameState = gameStates.Setup;
 			

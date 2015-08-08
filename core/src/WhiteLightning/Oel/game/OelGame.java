@@ -1,9 +1,7 @@
 package WhiteLightning.Oel.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,11 +19,18 @@ public class OelGame extends ApplicationAdapter {
 		// g.setBatch(new SpriteBatch());
 		// g.batch = new SpriteBatch();
 		g.camera = new OrthographicCamera(800, 600);
-		g.img = new Texture("badlogic.jpg");
-		g.titleScreen = new Texture("Title.png");
-		g.menuArrow = new Sprite(new Texture("arrow.png"));
-		g.menuSound = Gdx.audio.newSound(Gdx.files.internal("Sound/funk_guitar.mp3"));
+		g.img = new Texture("Images/badlogic.jpg");
+	//	g.titleScreen = new Texture("Images/Title.png");
+		g.line = new Texture("Images/line.png");
+		g.titleScreen = new Texture("Images/chalkboard.jpg");
+		g.menuArrow = new Sprite(new Texture("Images/chalk.png"));
+		g.menuArrow.setFlip(true, false);
+		
+		g.menuSound = Gdx.audio.newMusic(Gdx.files.internal("Sound/menu.mp3"));
 		g.menuChangeSound = Gdx.audio.newSound(Gdx.files.internal("Sound/select.wav"));
+	
+
+	
 	}
 
 	@Override
