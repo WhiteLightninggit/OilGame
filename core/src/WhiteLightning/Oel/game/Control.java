@@ -8,6 +8,8 @@ import com.badlogic.gdx.Input.Keys;
 public class Control {
 
 	private Game g;
+	boolean flag1=false;
+	
 	
 	public Control(Game g){
 		this.g = g;
@@ -53,10 +55,13 @@ public class Control {
 				g.flag1 = true;
 			}
 			if(g.selectedMenuItem == 2){
-				g.flag1 = true;
+				g.flag1 = true;				
 			}
 			if(g.selectedMenuItem == 3){
 				g.flag1 = true;
+				flag1=!flag1;
+				System.out.println(flag1);
+				Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), flag1);
 			}
 			
 			if(g.selectedMenuItem == 0)
@@ -69,7 +74,20 @@ public class Control {
 	
 	public void processKeysSetup() {
 		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
-			g.nextInternalState();
+		//	g.nextInternalState();
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.UP)){
+			g.menuChangeSound.play();
+			
+			if(g.selectedField > 0)
+				g.selectedField--;	
+			g.moveUp = true;
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.DOWN)){
+		g.menuChangeSound.play();
+			if(g.selectedField < 11)
+			g.selectedField++;
+			g.moveUp = false;
 		}
 		
 	}

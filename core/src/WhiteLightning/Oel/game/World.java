@@ -50,7 +50,8 @@ public class World {
 		
 		fieldsList.get(5).setOwner(p);
 		fieldsList.get(1).setOwner(p);
-		
+		fieldsList.get(0).setOwner(p);
+		fieldsList.get(11).setOwner(p);
 	}
 
 	private void createOilFields(){
@@ -58,6 +59,9 @@ public class World {
 		for(byte i=0;i<oilFieldsNr;i++){			
 			fieldsList.add(new OilField(i));
 		}
+		
+		
+		
 	}
 	
 	private void createWagonFactories(){
