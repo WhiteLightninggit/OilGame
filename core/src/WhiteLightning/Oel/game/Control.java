@@ -89,6 +89,12 @@ public class Control {
 			g.selectedField++;
 			g.moveUp = false;
 		}
+		if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
+			g.menuChangeSound.play();
+			
+			System.out.println(g.world.fieldsList.get(g.selectedField).name);
+			g.world.fieldsList.get(g.selectedField).setOwner(g.world.playersList.get(0));
+		}
 		
 	}
 	

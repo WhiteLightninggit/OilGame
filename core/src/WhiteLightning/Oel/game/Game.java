@@ -25,7 +25,7 @@ public class Game {
 	public Texture titleScreen;
 	public Texture line;
 	private int internalState = 0;
-	private World world;
+	public World world;
 	Config c;
 	public Music menuSound;
 	public Sound menuChangeSound;
@@ -124,61 +124,6 @@ public class Game {
 
 	}
 
-	private void drawTitrle() {
-		int x=350;
-		int y=250;
-		int deltaX = 50;
-		int deltaY = 40;
-		int xOffset;
-		int yOffset;
-
-		//	menuSound.setLooping(true);
-		//	menuSound.play();
-		
-		batch.begin();
-	//	batch.draw(img, 200, 200);
-		batch.draw(titleScreen, 0, 0,800,600);
-		
-		cFontBlue.draw(batch,"Oel - P", 300, 450);
-		
-		cFont.draw(batch,"Start Game", x, y);
-		cFont.draw(batch,"Options", x, y-deltaY);
-		cFont.draw(batch,"Story", x, y-2*deltaY);
-		cFont.draw(batch,"Credits", x, y-3*deltaY);
-		cFont.draw(batch,"Exit", x, y-4*deltaY);		
-	//	 Color c = batch.getColor();
-      //   batch.setColor(c.r, c.g, c.b, 0.5f); 		
-		
-		if(selectedMenuItem == 0) cFontRed.draw(batch,"Start Game", x, y);
-		if(selectedMenuItem == 1) cFontRed.draw(batch,"Options", x, y-deltaY);
-		if(selectedMenuItem == 2) cFontRed.draw(batch,"Story", x, y-2*deltaY);
-		if(selectedMenuItem == 3) cFontRed.draw(batch,"Credits", x, y-3*deltaY);
-		if(selectedMenuItem == 4) cFontRed.draw(batch,"Exit", x, y-4*deltaY);
-		
-		
-		if(flag1){
-			z++;z++;
-			z++;
-			System.out.println("z: "+z);
-			
-			if (z>=150) {
-				z=1;
-				flag1=false;
-			}
-			
-			batch.draw(line,x-12,y-20-selectedMenuItem*deltaY,z,6);
-		}         		
-		
-		//batch.draw(menuArrow,x-30,y-16-selectedMenuItem*deltaY,20,20);
-		menuArrow.setBounds(x-35+z, y-15-selectedMenuItem*deltaY, 25, 25);
-		menuArrow.draw(batch);
-		
-	//	 c = batch.getColor();
-     //    batch.setColor(c.r, c.g, c.b, 0.5f); 	
-		batch.end();
-	}
-
-	
 	
 	
 	private void drawTitle2(ArrayList<String> menuList) {
@@ -264,19 +209,6 @@ public class Game {
 			idx++;
 			fieldLetter++;
 		}			
-	//	 Color c = batch.getColor();
-      //   batch.setColor(c.r, c.g, c.b, 0.5f); 	
-	/*	
-		if(menuList.get(selectedField).hasOwner) {
-			if(moveUp){
-				if(selectedField > 0)
-				selectedField--;
-			} else {
-				if(selectedField<11)
-			selectedField++;
-			}
-		}
-		*/
 		
 		cFontRed.setScale( scale,scale);
 		fieldLetter = (char) ('A' + selectedField);
@@ -298,66 +230,14 @@ public class Game {
 			batch.draw(line,x-12,y-20-selectedField*deltaY,z,6);
 		}         		
 		
-		//batch.draw(menuArrow,x-30,y-16-selectedMenuItem*deltaY,20,20);
 		menuArrow.setBounds(x-35+z, y-15-selectedField*deltaY, 25, 25);
 		menuArrow.draw(batch);
 		
-	//	 c = batch.getColor();
-     //    batch.setColor(c.r, c.g, c.b, 0.5f); 	
+
 		batch.end();
 	}
 
-	
-	
-	private void displayOilFields(int x, int captionHeight, int captionOffset) {
 
-		
-		drawFields(world.fieldsList, captionOffset);
-		
-		
-		batch.begin();
-
-		redFont.draw(batch, "Oil Fields to sale:", 20, Gdx.graphics.getHeight() - captionOffset);
-
-		char fieldLetter = 'A';
-		int y = 0;
-
-	//	redFont.draw(batch, "Field name", x, Gdx.graphics.getHeight() - captionOffset + 20);
-	//	redFont.draw(batch, "Price ($)", x + 130, Gdx.graphics.getHeight() - captionOffset + 20);
-	//	redFont.draw(batch, "Owner", x + 220, Gdx.graphics.getHeight() - captionOffset + 20);
-
-		/*
-		for (int i = 0; i < world.fieldsList.size(); i++) {
-			y = Gdx.graphics.getHeight() - (20 * i + captionOffset);
-
-			if (world.fieldsList.get(i).hasOwner) {
-				font.setColor(Color.GRAY);
-			} else {
-				font.setColor(Color.GREEN);
-			}
-
-			font.draw(batch, fieldLetter + ". " + world.fieldsList.get(i).name, x, y);
-			font.draw(batch, Integer.toString(world.fieldsList.get(i).price), x + 130, y);
-
-			if (world.fieldsList.get(i).hasOwner) {
-				font.draw(batch, world.fieldsList.get(i).owner.name, x + 220, y);
-			}
-*/
-		
-		
-		
-			/*
-			 * font.draw(batch,
-			 * Integer.toString(world.fieldsList.get(i).oilDeepth), x + 190, y);
-			 * font.draw(batch,
-			 * Integer.toString(world.fieldsList.get(i).oilLeft), x + 250, y);
-			 */
-			fieldLetter++;
-		//}
-		batch.end();
-	}
-	
-	
 	private void drawSetup() {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -367,7 +247,8 @@ public class Game {
 		int captionOffset = 100;
 
 		if (internalState == 0) {
-			displayOilFields(x, captionHeight, captionOffset);
+		//	displayOilFields(x, captionHeight, captionOffset);
+			drawFields(world.fieldsList, captionOffset);
 		}
 
 		if (internalState == 1) {
@@ -484,17 +365,8 @@ public class Game {
 
 		batch.end();
 	}
-
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
 	
 }
+
+//	 c = batch.getColor();
+//    batch.setColor(c.r, c.g, c.b, 0.5f); 	

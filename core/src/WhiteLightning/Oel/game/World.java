@@ -23,7 +23,7 @@ public class World {
 	ArrayList<Factory> wagonFactory;
 	ArrayList<Factory> drillFactory;
 	ArrayList<Factory> pumpsFactory;
-	ArrayList<Player> playersList;
+	ArrayList<Player> playersList = new ArrayList<Player>();
 	
 	public World(Config c) {
 
@@ -47,10 +47,15 @@ public class World {
 		Player p = new Player();
 		p.name = "James";
 		
+		Player p2 = new Player();
+		p2.name = "Bond";
+		
+		playersList.add(p);
+		playersList.add(p2);
 		
 		fieldsList.get(5).setOwner(p);
-		fieldsList.get(1).setOwner(p);
-		fieldsList.get(0).setOwner(p);
+		fieldsList.get(3).setOwner(p2);
+		fieldsList.get(0).setOwner(p2);
 		fieldsList.get(11).setOwner(p);
 	}
 
