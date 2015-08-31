@@ -17,7 +17,6 @@ public class Control {
 	
 	
 	public void processKeys(gameStates gs){
-		
 		processKeysDefault();
 		
 		switch (gs) {
@@ -25,7 +24,10 @@ public class Control {
 			processKeysTitle();
 			break;
 		case Setup:
-			processKeysSetup();
+			processKeysOilfields();
+			break;
+		case Game:
+			processKeysGame();
 			break;
 
 		default:
@@ -34,8 +36,10 @@ public class Control {
 	}
 	
 	public void processKeysTitle() {
+		
+		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-			g.gameState = gameStates.Setup;			
+			g.gameState = gameStates.Game;			
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.UP)){
 			g.menuChangeSound.play();
@@ -65,14 +69,17 @@ public class Control {
 			}
 			
 			if(g.selectedMenuItem == 0)
-				g.gameState = gameStates.Setup;
+				g.gameState = gameStates.Game;
+			
+			
+			
 			
 		}
 		
 		
 	}
 	
-	public void processKeysSetup() {
+	public void processKeysOilfields() {
 		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
 		//	g.nextInternalState();
 		}
@@ -89,6 +96,9 @@ public class Control {
 			g.selectedField++;
 			g.moveUp = false;
 		}
+		if(Gdx.input.isKeyJustPressed(Keys.Q)){
+		g.gameState = gameStates.Game;
+		}
 		if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
 			g.menuChangeSound.play();
 			
@@ -99,31 +109,29 @@ public class Control {
 	}
 	
 	public void processKeysGame() {
-		if(Gdx.input.isKeyPressed(Keys.W)){
-//			gameObject.y +=speed * Gdx.graphics.getDeltaTime();
-		}
-		if(Gdx.input.isKeyPressed(Keys.S)){
-//			gameObject.y -=speed * Gdx.graphics.getDeltaTime();
-		}
-		if(Gdx.input.isKeyPressed(Keys.A)){
-//			gameObject.x -=speed * Gdx.graphics.getDeltaTime();
-		}
-		if(Gdx.input.isKeyPressed(Keys.D)){
-//			gameObject.x +=speed * Gdx.graphics.getDeltaTime();
-		}
-
-		if(Gdx.input.isKeyPressed(Keys.M)){
-//				music.play();
-		}
-		
-		if(Gdx.input.isKeyPressed(Keys.N)){
-//			scream.play(0.2f);
-		}
-		
-		if(Gdx.input.isKeyPressed(Keys.V)){
+		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
+			//	g.nextInternalState();
+			}
+			if(Gdx.input.isKeyJustPressed(Keys.UP)){
+				g.menuChangeSound.play();				
+				if(g.selectedAction > 0)
+					g.selectedAction--;	
+				g.moveUp = true;
+			}
+			if(Gdx.input.isKeyJustPressed(Keys.DOWN)){
+			g.menuChangeSound.play();
+				if(g.selectedAction < g.actionsList.size())
+				g.selectedAction++;
+				g.moveUp = false;
+			}
+			if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
+				g.menuChangeSound.play();				
+				System.out.println(g.actionsList.get(g.selectedAction));	
+				
+				if(g.selectedAction == 3) g.gameState = gameStates.Setup;				
+			}
 			
-		}
-		
+			
 		
 	}
 	
@@ -154,7 +162,7 @@ public class Control {
 		if(g.gameState == gameStates.Title){
 			processKeysTitle();
 		} else if (g.gameState == gameStates.Setup){
-			processKeysSetup();
+			processKeysOilfields();
 		} else if (g.gameState == gameStates.Game){
 			processKeysGame();
 		} 
