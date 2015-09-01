@@ -13,7 +13,5 @@ public class GameObject extends Rectangle { //todo: remove extends rectangle
 
 	public Texture getTexture() {
 		return texture;
-	}
-
-	
+	}	
 }

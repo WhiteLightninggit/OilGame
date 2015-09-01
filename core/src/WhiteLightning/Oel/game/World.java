@@ -63,39 +63,29 @@ public class World {
 		fieldsList = new ArrayList<OilField>(oilFieldsNr);
 		for(byte i=0;i<oilFieldsNr;i++){			
 			fieldsList.add(new OilField(i));
-		}
-		
-		
-		
+		}		
 	}
 	
 	private void createWagonFactories(){
-		wagonFactory = new ArrayList<Factory>(wagonFactoriesNr);
-		
+		wagonFactory = new ArrayList<Factory>(wagonFactoriesNr);		
 		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Pesa", 30));
 		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Newag", 42));
 		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Bombardier", 33));
-		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Konstal", 39));
-		
+		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Konstal", 39));		
 	}
 
 	private void createDrillFactories(){
-		drillFactory = new ArrayList<Factory>(drillFactoriesNr);
-		
+		drillFactory = new ArrayList<Factory>(drillFactoriesNr);		
 		drillFactory.add(FactoriesFactory.getFactory(FactoryType.DRILLS, "TurboDrill", 30));
 		drillFactory.add(FactoriesFactory.getFactory(FactoryType.DRILLS, "ChineseDrills", 42));
 		drillFactory.add(FactoriesFactory.getFactory(FactoryType.DRILLS, "Piepeline", 33));
 	}
 	
 	private void createPumpFactories(){
-		pumpsFactory = new ArrayList<Factory>(pumpFactoriesNr);
-		
+		pumpsFactory = new ArrayList<Factory>(pumpFactoriesNr);		
 		pumpsFactory.add(FactoriesFactory.getFactory(FactoryType.PUMP, "PumperNickel", 30));
 		pumpsFactory.add(FactoriesFactory.getFactory(FactoryType.PUMP, "Pump&Load", 42));
-	}
-	
-	
-	
+	}	
 	
 	byte getCurrentPlayer() {
 		return currentPlayer;

@@ -28,8 +28,7 @@ public class FactoriesFactory {
 		f.availableItems = availableItems;
 		return f;		
 	}
-	
-	
+		
 	private static Factory createFactory(FactoryType type){
 		
 		Factory f = new Factory();

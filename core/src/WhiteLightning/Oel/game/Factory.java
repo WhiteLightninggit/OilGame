@@ -13,11 +13,4 @@ public class Factory {
 	byte maxOrderSize;
 	boolean hasOwner=false;
 	Player owner;
-	
-
-	
-
-
-	
-
 }

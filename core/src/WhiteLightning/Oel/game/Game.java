@@ -18,11 +18,10 @@ public class Game {
 
 	public SpriteBatch batch;
 	public Texture img;
-	// public Sprite s;
 	public Sprite menuArrow;
 	public Texture titleScreen;
 	public Texture line;
-	private int internalState = 0;
+	protected int internalState = 0;
 	public World world;
 	Config c;
 	public Music menuSound;
@@ -44,7 +43,7 @@ public class Game {
 	public OrthographicCamera camera;
 
 	public enum gameStates {
-		Test, Title,  Game, Setup, OilFields, End
+		Test, Title,  Game, Options, Setup, OilFields, Factory, Credits, Story, End
 	};
 
 	public gameStates gameState = gameStates.Title;
@@ -138,22 +137,54 @@ public class Game {
 	}
 
 	public void draw() {
-
+		int captionOffset = 100;
 		switch (gameState) {
 		case Test:
 			// drawTest();
 			break;
 		case Game:
-			selectedAction=drawTitle2(actionsList,selectedAction,300,500);
+			selectedAction=drawMenu(actionsList,selectedAction,300,500);
 			break;
 		case Title:
-			selectedMenuItem=drawTitle2(menuList,selectedMenuItem,350,250);			
+			selectedMenuItem=drawMenu(menuList,selectedMenuItem,350,250);		
+			drawGameTitle();
 			break;
-
+		case Options:
+			drawOptions();
+			break;
+		case Story:
+			drawStory();
+			break;
+		case Credits:
+			drawCredits();
+			break;
+		case Factory:
+			switch (internalState) {
+			case 0:
+				drawFactory(world.drillFactory,captionOffset,300,Gdx.graphics.getHeight() - captionOffset);
+			//	displayDrillsFactory(20, 100, captionOffset);
+				break;
+			case 1:
+				drawFactory(world.pumpsFactory,captionOffset,300,Gdx.graphics.getHeight() - captionOffset);
+			//	displayPumpsFactory(20, 100, captionOffset);
+				break;
+			case 2:
+				drawFactory(world.wagonFactory,captionOffset,300,Gdx.graphics.getHeight() - captionOffset);
+		//		displayWagonFactory(20, 100, captionOffset);
+				break;
+			default:
+				break;
+			}
+		
+			break;			
 		case Setup:
-			drawSetup();
+		//	drawSetup();
 			break;
 		case OilFields:
+		//	int x = 300;
+		//	int captionHeight = 20;
+
+			drawFields(world.fieldsList, captionOffset,300,Gdx.graphics.getHeight() - captionOffset);
 			break;
 		default:
 			break;
@@ -161,26 +192,55 @@ public class Game {
 
 	}
 
-	private int drawTitle2(ArrayList<String> menuList, int selectedItem, int x, int y) {
-	//	int x = 350;
-	//	int y = 250;
+	private void drawGameTitle(){
+		batch.begin();
+		cFontBlue.draw(batch, "Oel - P", 300, 450);
+		batch.end();
+	}
+	
+	private int drawOptions() {
+		batch.begin();
+		batch.draw(titleScreen, 0, 0, 800, 600);
+		cFontGray.draw(batch, "This is option screen.", 300, 450);
+		batch.end();
+		return 0;
+	}
+	
+	private int drawStory() {
+		batch.begin();
+		batch.draw(titleScreen, 0, 0, 800, 600);
+		cFontGray.draw(batch, "This is STORY screen.", 300, 450);
+		batch.end();
+		return 0;
+	}
+	
+	private int drawCredits() {
+		batch.begin();
+		batch.draw(titleScreen, 0, 0, 800, 600);
+		cFontRed.draw(batch, "Long long time ago in galaxy far away", 300, 450);
+		batch.end();
+		return 0;
+	}
+
+	
+	private int drawMenu(ArrayList<String> menuList, int selectedItem, int x, int y) {
 		int deltaX = 50;
 		int deltaY = 40;
-		int xOffset;
-		int yOffset;
+		//int xOffset;
+		//int yOffset;
 		// menuSound.setLooping(true);
 		// menuSound.play();
 		batch.begin();
 		// batch.draw(img, 200, 200);
 		batch.draw(titleScreen, 0, 0, 800, 600);
-	//	cFontBlue.draw(batch, "Oel - P", 300, 450);
+		cFont.setScale(1f, 1f);
+		cFontRed.setScale(1f,1f);
 		int idx = 0;
 		for (String string : menuList) {
 			cFont.draw(batch, string, x, y - idx * deltaY);
 			idx++;
 		}
-		// Color c = batch.getColor();
-		// batch.setColor(c.r, c.g, c.b, 0.5f);
+
 		cFontRed.draw(batch, menuList.get(selectedItem), x, y - deltaY * selectedItem);
 
 		if (flag1) {
@@ -194,31 +254,21 @@ public class Game {
 			batch.draw(line, x - 12, y - 20 - selectedItem * deltaY, z, 6);
 		}
 
-		// batch.draw(menuArrow,x-30,y-16-selectedMenuItem*deltaY,20,20);
 		menuArrow.setBounds(x - 35 + z, y - 15 - selectedItem * deltaY, 25, 25);
 		menuArrow.draw(batch);
 
-		// c = batch.getColor();
-		// batch.setColor(c.r, c.g, c.b, 0.5f);
 		batch.end();
 		return selectedItem;
 	}
 
-	private void drawFields(ArrayList<OilField> menuList, int captionOffset) {
-		int x = 300;
-		int y = Gdx.graphics.getHeight() - captionOffset;
-		int deltaX = 50;
+	private void drawFields(ArrayList<OilField> menuList, int captionOffset, int x, int y) {
+
+	//	int deltaX = 50;
 		int deltaY = 25;
-		int xOffset;
-		int yOffset;
 		float scale = .8f;
 
-		// menuSound.setLooping(true);
-		// menuSound.play();
 		batch.begin();
-		// batch.draw(img, 200, 200);
 		batch.draw(titleScreen, 0, 0, 800, 600);
-		// cFontBlue.draw(batch,"Oel - P", 300, 450);
 		int idx = 0;
 		char fieldLetter = 'A';
 
@@ -265,11 +315,71 @@ public class Game {
 
 		menuArrow.setBounds(x - 35 + z, y - 15 - selectedField * deltaY, 25, 25);
 		menuArrow.draw(batch);
-
 		batch.end();
 	}
 
-	private void drawSetup() {
+	
+	private void drawFactory(ArrayList<Factory> menuList, int captionOffset, int x, int y) {
+
+		//	int deltaX = 50;
+			int deltaY = 25;
+			float scale = .8f;
+
+			batch.begin();
+			batch.draw(titleScreen, 0, 0, 800, 600);
+			int idx = 0;
+			char fieldLetter = 'A';
+
+			cFontBlue.setScale(.4f, .4f);
+	//		cFontBlue.draw(batch, "Oil Field", x, y + deltaY + 10);
+	//		cFontBlue.draw(batch, "Price ($)", x + 215, y + deltaY + 10);
+	//		cFontBlue.draw(batch, "Owner", x + 315, y + deltaY + 10);
+
+			for (Factory factory : menuList) {
+				if (factory.hasOwner) {
+					cFontGray.setScale(scale, scale);
+					cFontGray.draw(batch, fieldLetter + " " + factory.name, x, y - idx * deltaY);
+					cFontGray.draw(batch, factory.owner.name, x + 330, y - idx * deltaY);
+
+				} else {
+					cFont.setScale(scale, scale);
+					cFont.draw(batch, fieldLetter + " " + factory.name, x, y - idx * deltaY);
+					cFont.draw(batch, String.valueOf(factory.itemPrice), x + 230, y - idx * deltaY);
+				}
+				idx++;
+				fieldLetter++;
+			}
+
+			cFontRed.setScale(scale, scale);
+			fieldLetter = (char) ('A' + selectedField);
+			cFontRed.draw(batch, fieldLetter + " " + menuList.get(selectedField).name, x, y - deltaY * selectedField);
+			if (menuList.get(selectedField).hasOwner) {
+				cFontRed.draw(batch, menuList.get(selectedField).owner.name, x + 330, y - deltaY * selectedField);
+			} else {
+
+				cFontRed.draw(batch, String.valueOf(menuList.get(selectedField).itemPrice), x + 230,
+						y - deltaY * selectedField);
+			}
+			if (flag1) {
+				z = z + 3;
+				System.out.println("z: " + z);
+				if (z >= 150) {
+					z = 1;
+					flag1 = false;
+				}
+
+				batch.draw(line, x - 12, y - 20 - selectedField * deltaY, z, 6);
+			}
+
+			menuArrow.setBounds(x - 35 + z, y - 15 - selectedField * deltaY, 25, 25);
+			menuArrow.draw(batch);
+
+			batch.end();
+		}
+	
+	
+	
+	private void drawnnSetup() {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
@@ -278,8 +388,7 @@ public class Game {
 		int captionOffset = 100;
 
 		if (internalState == 0) {
-			// displayOilFields(x, captionHeight, captionOffset);
-			drawFields(world.fieldsList, captionOffset);
+			drawFields(world.fieldsList, captionOffset,300,Gdx.graphics.getHeight() - captionOffset);
 		}
 
 		if (internalState == 1) {
