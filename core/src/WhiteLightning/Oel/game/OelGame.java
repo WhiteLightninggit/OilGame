@@ -24,6 +24,7 @@ public class OelGame extends ApplicationAdapter {
 		g.menuArrow.setFlip(true, false);		
 		g.menuSound = Gdx.audio.newMusic(Gdx.files.internal("Sound/menu.mp3"));
 		g.menuChangeSound = Gdx.audio.newSound(Gdx.files.internal("Sound/select.wav"));	
+		g.denySound = Gdx.audio.newSound(Gdx.files.internal("Sound/deny.mp3"));	
 	}
 
 	@Override

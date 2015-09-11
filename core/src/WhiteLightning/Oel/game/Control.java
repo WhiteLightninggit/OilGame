@@ -123,10 +123,18 @@ public class Control {
 		g.gameState = gameStates.Game;
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
-			g.menuChangeSound.play();
+			
 	//		g.flag1 = true;
 			System.out.println(g.world.fieldsList.get(g.selectedField).name);
-			g.world.fieldsList.get(g.selectedField).setOwner(g.world.playersList.get(0));
+			
+			
+			if(g.world.fieldsList.get(g.selectedField).price < g.world.getCurrentPlayer().cash){
+				g.world.fieldsList.get(g.selectedField).setOwner(g.world.getCurrentPlayer());
+				g.world.getCurrentPlayer().cash = g.world.getCurrentPlayer().cash - g.world.fieldsList.get(g.selectedField).price;
+				g.menuChangeSound.play();
+			} else {
+				g.denySound.play();
+			}
 		}
 		
 	}
@@ -181,12 +189,20 @@ public class Control {
 			}
 			if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
 				g.menuChangeSound.play();				
-				System.out.println(g.actionsList.get(g.selectedAction));	
+				System.out.println(g.actionsList.get(g.selectedAction)+" "+g.selectedAction);	
 				
 				if(g.selectedAction == 0) g.gameState = gameStates.Factory;
 				if(g.selectedAction == 1) g.gameState = gameStates.Factory;	
 				if(g.selectedAction == 2) g.gameState = gameStates.Factory;	
 				if(g.selectedAction == 3) g.gameState = gameStates.OilFields;	
+				if(g.selectedAction == 8) {
+					g.world.setNextPlayer();
+					System.out.println("Game state: "+g.gameState+" "+g.world.lastYear);
+					if(g.world.isGameEnd()) {
+						System.out.println("Game state: "+g.gameState);
+						g.gameState = gameStates.End;			
+					}
+				}	
 				g.internalState = g.selectedAction;
 				g.selectedField=0;
 			}			
