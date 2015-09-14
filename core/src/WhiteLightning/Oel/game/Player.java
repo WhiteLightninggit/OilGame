@@ -7,4 +7,10 @@ public class Player {
 	public Player(Config c) {
 		cash = c.starting_cash;
 	}
+
+	int pay(int amount){		
+		cash=cash-amount;
+		return cash;
+	}
+
 }

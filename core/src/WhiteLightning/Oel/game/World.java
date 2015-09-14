@@ -7,13 +7,9 @@ import WhiteLightning.Oel.game.Factory.FactoryType;
 
 public class World {
 
-	byte players;
-	private byte currentPlayerIdx;
-	float oilPricesTrend[];
-	private int currentYear;
-	int lastYear;
-	private int endOfGame=-1; 
-	
+	State s =State.getInstance();
+	byte players;	
+	float oilPricesTrend[];	
 	private final byte oilFieldsNr=12; 
 	private final byte wagonFactoriesNr=4; 
 	private final byte drillFactoriesNr=3; 
@@ -36,8 +32,8 @@ public class World {
 			oilPricesTrend[i] = rand.nextFloat() * c.max_oil_price-c.min_oil_price + c.min_oil_price;
 		}
 
-		this.currentYear = c.starting_year;
-		this.lastYear = c.starting_year + c.gameLength;
+		s.currentYear = c.starting_year;
+		s.lastYear = c.starting_year + c.gameLength;
 		
 		createOilFields();
 		createWagonFactories();
@@ -95,53 +91,8 @@ public class World {
 		pumpsFactory.add(FactoriesFactory.getFactory(FactoryType.PUMP, "Pump&Load", 42));
 	}	
 	
-	byte getCurrentPlayerNr() {
-		return currentPlayerIdx;
-	}
-	
-	Player getCurrentPlayer(){		
-		return playersList.get(currentPlayerIdx);
-	}
-
-	Player setAndGetNextPlayer(){
-		setNextPlayer();
-		return getCurrentPlayer();
-	}
-	
-	byte setNextPlayer() {
-		if (++currentPlayerIdx < players) {			
-			return currentPlayerIdx;
-		} else {
-			currentYear++;
-			if(currentYear == lastYear){
-				endOfGame = 1;
-				System.out.println("End of game");
-			}
-			currentPlayerIdx=0;
-			return 0;
-		}
-	}
-	
 	float getCurrentOilPrice(){
-		return oilPricesTrend[currentYear];
-	}
-	
-	int getCurrentYear(){
-		return currentYear;
-	}
-	
-	int getNextYear(){
-		if(++currentYear<lastYear){
-			return currentYear++;
-		} else return endOfGame;
-	}
-	
-	boolean isGameEnd(){
-		if (endOfGame > 0){
-			return true;
-		}
-		
-		return false;
+		return oilPricesTrend[s.currentYear];
 	}
 
 }

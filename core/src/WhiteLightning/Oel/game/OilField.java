@@ -2,14 +2,14 @@ package WhiteLightning.Oel.game;
 
 import java.util.Random;
 
-public class OilField {
+public class OilField implements RealEstateI{
 	
 	String names[] = {"Wild Hogs","Deep Dive","Drillodrom","Oily Sands", "Drill&Pump", 
 			"Oiltarium","Shake It","Oily Ground","Shalow Holes","Black Creek","Desert Storm",
 			"Morning Glory"};
 	
 	String name;
-	int price;
+	private int price;
 	int oilLeft;
 	int oilDeepth;
 	int oilPumped;
@@ -33,9 +33,29 @@ public class OilField {
 		price = minFieldPrice+r.nextInt(fieldPriceModifier)+(int)(oilLeft*r.nextFloat()/10);		
 	}	
 	
-	public void setOwner(Player p){
+	@Override
+	public boolean setOwner(Player p){
+		if(this.hasOwner){
+			return false;
+		}
 		this.hasOwner = true;
 		this.owner = p;
-	}	
+		return true;
+	}
+
+	@Override
+	public int getPrice() {		
+		return this.price;
+	}
+
+	@Override
+	public void setPrice(int price) {
+		this.price = price;		
+	}
+	
+	@Override
+	public boolean hasOwner() {
+		return this.hasOwner;
+	}
 
 }

@@ -37,16 +37,19 @@ public class FactoriesFactory {
 			f.type = type;
 			f.itemPrice = wagonPrice;
 			f.maxOrderSize = maxWagonsOrderSize;
+			f.setPrice(111111);
 			break;
 		case PUMP:
 			f.type = type;
 			f.itemPrice = pumpPrice;
 			f.maxOrderSize = maxPumpsOrderSize;
+			f.setPrice(221212);
 			break;
 		case DRILLS:
 			f.type = type;
 			f.itemPrice = drillPrice;
 			f.maxOrderSize = maxDrillsOrderSize;
+			f.setPrice(249999);
 			break;
 
 		default:
