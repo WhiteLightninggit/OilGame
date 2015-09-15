@@ -1,5 +1,8 @@
 package WhiteLightning.Oel.game;
 
+import WhiteLightning.Oel.game.Factory.FactoryType;
+import WhiteLightning.Oel.game.Game.gameStates;
+
 public class State {
 
 	public int internalState = 0;
@@ -11,6 +14,8 @@ public class State {
 	public int currentYear;
 	int lastYear;
 	public int endOfGame=-1; 
+	public gameStates gameState = gameStates.Title;
+	public FactoryType currFactoryType=FactoryType.PUMP;
 	
 	public String inst;
 	

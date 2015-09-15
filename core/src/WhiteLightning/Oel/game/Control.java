@@ -13,18 +13,16 @@ public class Control {
 	private Game g;
 	private State s = State.getInstance();
 	private Logic l;
-	boolean flag1=false;	
 	
 	public Control(Game g){
 		this.g = g;	
-		l = g.l;
-		
+		l = g.l;		
 	}	
 	
 	public void processKeys(gameStates gs){
 		processKeysDefault();
 		
-		switch (gs) {
+		switch (s.gameState) {
 		case Title:
 			processKeysTitle();
 			break;
@@ -32,15 +30,15 @@ public class Control {
 			processKeysOilfields();
 			break;
 		case Factory:			
-			switch (s.internalState) {
-			case 0:
-				processKeysFactory(g.world.drillFactory, FactoryType.DRILLS);
+			switch (s.currFactoryType) {
+			case DRILLS:				
+				processKeysFactory(g.world.drillFactory);
 				break;
-			case 1:
-				processKeysFactory(g.world.pumpsFactory, FactoryType.PUMP);
+			case PUMP:
+				processKeysFactory(g.world.pumpsFactory);
 				break;
-			case 2:
-				processKeysFactory(g.world.wagonFactory, FactoryType.WAGONS);
+			case WAGONS:
+				processKeysFactory(g.world.wagonFactory);
 				break;
 			default:
 				break;
@@ -56,6 +54,9 @@ public class Control {
 		case Credits:
 			processKeysStory();
 			break;
+		case Setup:
+			processKeysSetup();
+			break;
 		case Game:
 			processKeysGame();
 			break;
@@ -66,10 +67,9 @@ public class Control {
 	}
 	
 	public void processKeysTitle() {
-		
-		
+				
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-			g.gameState = gameStates.Game;			
+			s.gameState = gameStates.Game;			
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.UP)){
 			g.menuChangeSound.play();
@@ -87,22 +87,20 @@ public class Control {
 				Gdx.app.exit();
 			if(s.selectedMenuItem == 1){
 				s.flag1 = true;
-				g.gameState=gameStates.Options;
+				s.gameState=gameStates.Options;
 			}
 			if(s.selectedMenuItem == 2){
 				s.flag1 = true;		
-				g.gameState=gameStates.Story;
+				s.gameState=gameStates.Story;
 			}
 			if(s.selectedMenuItem == 3){
 				s.flag1 = true;
-				flag1=!flag1;
-				System.out.println(flag1);
-				g.gameState=gameStates.Credits;
-			//	Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), flag1);
+				s.flag1=!s.flag1;
+				s.gameState=gameStates.Credits;
 			}
 			
 			if(s.selectedMenuItem == 0)
-				g.gameState = gameStates.Game;		
+				s.gameState = gameStates.Game;		
 		}		
 	}
 	
@@ -125,7 +123,7 @@ public class Control {
 			s.moveUp = false;
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.Q)){
-		g.gameState = gameStates.Game;
+		s.gameState = gameStates.Game;
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
 			System.out.println(g.world.fieldsList.get(s.selectedField).name);			
@@ -136,7 +134,7 @@ public class Control {
 	}
 	
 	
-	public void processKeysFactory(ArrayList<Factory> factories, FactoryType type) {
+	public void processKeysFactory(ArrayList<Factory> factories) {
 		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
 		//	g.nextInternalState();
 		}
@@ -154,13 +152,16 @@ public class Control {
 			s.moveUp = false;
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.Q)){
-		g.gameState = gameStates.Game;
+		s.gameState = gameStates.Game;
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
 		
-			if(!l.buyFactory(type)){			
-				g.menuChangeSound.play();
-			}
+			if(!l.buyFactory(s.currFactoryType)){			
+				g.denySound.play();	
+				if(l.getCurrentFactory().hasOwner()){
+					s.gameState = gameStates.Setup;
+				}
+			} 
 			System.out.println(factories.get(s.selectedField).name);
 		}		
 	}	
@@ -185,34 +186,50 @@ public class Control {
 				g.menuChangeSound.play();				
 				System.out.println(g.actionsList.get(s.selectedAction)+" "+s.selectedAction);	
 				
-				if(s.selectedAction == 0) g.gameState = gameStates.Factory;
-				if(s.selectedAction == 1) g.gameState = gameStates.Factory;	
-				if(s.selectedAction == 2) g.gameState = gameStates.Factory;	
-				if(s.selectedAction == 3) g.gameState = gameStates.OilFields;	
+				if(s.selectedAction == 0) {
+					s.gameState = gameStates.Factory;
+					s.currFactoryType = FactoryType.PUMP;
+				}
+				if(s.selectedAction == 1){
+					s.gameState = gameStates.Factory;
+					s.currFactoryType = FactoryType.DRILLS;
+				}
+				if(s.selectedAction == 2){
+					s.gameState = gameStates.Factory;
+					s.currFactoryType = FactoryType.WAGONS;
+				}
+				if(s.selectedAction == 3) s.gameState = gameStates.OilFields;	
 				if(s.selectedAction == 8) {
 					l.setNextPlayer();
-					System.out.println("Game state: "+g.gameState+" "+s.lastYear);
+					System.out.println("Game state: "+s.gameState+" "+s.lastYear);
 					if(l.isGameEnd()) {
-						System.out.println("Game state: "+g.gameState);
-						g.gameState = gameStates.End;			
+						System.out.println("Game state: "+s.gameState);
+						s.gameState = gameStates.End;			
 					}
 				}	
-				s.internalState = s.selectedAction;
+		//		s.internalState = s.selectedAction;
 				s.selectedField=0;
 			}			
 		
 	}
 	
+	public void processKeysSetup() {
+		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
+			s.gameState = gameStates.Game;
+			s.flag1=false;
+			}
+	}
+	
 	public void processKeysOption() {
 		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
-			g.gameState = gameStates.Title;
+			s.gameState = gameStates.Title;
 			s.flag1=false;
 			}
 	}
 	
 	public void processKeysStory() {
 		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
-			g.gameState = gameStates.Title;
+			s.gameState = gameStates.Title;
 			s.flag1=false;
 			}
 	}
@@ -234,23 +251,6 @@ public class Control {
 		if(Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT)){
 			g.camera.zoom -= 0.02;
 		}
-	}
-	
-	
-	
-	
-	public void processKeys() {
-
-		if(g.gameState == gameStates.Title){
-			processKeysTitle();
-		} else if (g.gameState == gameStates.Setup){
-			processKeysOilfields();
-		} else if (g.gameState == gameStates.Game){
-			processKeysGame();
-		} 
-		
-		//Escape from app, camera etc...
-		processKeysDefault();
 	}
 	
 }

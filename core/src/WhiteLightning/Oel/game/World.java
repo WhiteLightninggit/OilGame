@@ -56,11 +56,12 @@ public class World {
 		playersList.add(p2);
 		playersList.add(p3);
 		playersList.add(p4);
-		
+	/*	
 		fieldsList.get(5).setOwner(p);
 		fieldsList.get(3).setOwner(p2);
 		fieldsList.get(0).setOwner(p2);
 		fieldsList.get(11).setOwner(p);
+		*/
 	}
 
 	private void createOilFields(){

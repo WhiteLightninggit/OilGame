@@ -59,6 +59,21 @@ public class Logic {
 	Player getCurrentPlayer(){		
 		return w.playersList.get(s.currentPlayerIdx);
 	}
+	
+	Factory getCurrentFactory(){		
+		switch (s.currFactoryType) {
+		case PUMP:
+			return w.pumpsFactory.get(s.selectedField);
+		case WAGONS:
+			return w.wagonFactory.get(s.selectedField);
+		case DRILLS:
+			return w.drillFactory.get(s.selectedField);
+			
+		default:
+			return null;
+			
+		}
+	}
 
 	Player setAndGetNextPlayer(){
 		setNextPlayer();

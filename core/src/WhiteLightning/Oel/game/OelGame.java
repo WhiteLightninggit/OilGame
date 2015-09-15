@@ -24,7 +24,18 @@ public class OelGame extends ApplicationAdapter {
 		g.menuArrow.setFlip(true, false);		
 		g.menuSound = Gdx.audio.newMusic(Gdx.files.internal("Sound/menu.mp3"));
 		g.menuChangeSound = Gdx.audio.newSound(Gdx.files.internal("Sound/select.wav"));	
-		g.denySound = Gdx.audio.newSound(Gdx.files.internal("Sound/deny.mp3"));	
+		g.denySound = Gdx.audio.newSound(Gdx.files.internal("Sound/deny.mp3"));
+		g.denySound.setVolume(0, 0.3f);
+		g.pumpImg = new Texture("Images/pump.jpg");
+		g.oilFieldImg = new Texture("Images/oilfield.jpg");
+		g.wagonImg = new Texture("Images/wagon.jpg");
+		g.drillImg = new Texture("Images/drill.jpg");
+		g.trainImg = new Texture("Images/train.jpg");
+		g.pumpsImg = new Texture("Images/oilPump.png");
+		g.drillsImg = new Texture("Images/oilDrills.jpg");
+		g.skipImg = new Texture("Images/skip.jpg");
+		g.nextImg = new Texture("Images/next.png");
+		g.sabotImg = new Texture("Images/sabotage.jpg");
 	}
 
 	@Override
@@ -37,7 +48,7 @@ public class OelGame extends ApplicationAdapter {
 
 	public void update() {
 		updateCamera();
-		c.processKeys(g.gameState);
+		c.processKeys(g.s.gameState);
 		g.update();
 	}
 
