@@ -13,9 +13,18 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.sun.javafx.scene.control.skin.LabelSkin;
 
 public class Game {
 
+	public boolean textEnterFlag = false;
+	
 	public State s = State.getInstance();
 	public SpriteBatch batch;
 	public Texture img;
@@ -149,7 +158,7 @@ public class Game {
 
 			break;
 		case Setup:
-			drawConfig();
+			drawSetup();
 			break;
 		case OilFields:
 			// int x = 300;
@@ -161,7 +170,37 @@ public class Game {
 		}
 	}
 
-	private void drawConfig() {
+	private void drawSetup() {
+
+
+		
+		int x = 20;
+		int y = 500;
+		batch.begin();
+
+		font.setScale(.9f, .9f);
+		batch.draw(titleScreen, 0, 0, 800, 600);
+		font.draw(batch, "Factory: " + l.getCurrentFactory().name, x, y);
+		if (l.getCurrentFactory().hasOwner()) {
+			font.draw(batch, "Owner: " + l.getCurrentFactory().owner.name, x, y - 30);
+		} else {
+			font.draw(batch, "Owner: " + "FREE", x, y - 30);
+		}
+
+		font.draw(batch, "ItemPrice: " + l.getCurrentFactory().itemPrice, x, y - 60);
+		batch.end();
+		
+
+		
+	//	TextInput listener = new TextInput();
+	//	Gdx.input.getTextInput(listener, "Ala", "ma", "kota");
+		
+		
+		
+	}
+
+	
+	private void drawHUD() {
 
 		int x = 20;
 		int y = 500;
@@ -179,6 +218,8 @@ public class Game {
 		batch.end();
 	}
 
+	
+	
 	private void drawGameTitle() {
 		batch.begin();
 		cFontBlue.setScale(1f, 1f);
@@ -199,6 +240,26 @@ public class Game {
 		batch.draw(titleScreen, 0, 0, 800, 600);
 		cFontGray.draw(batch, "This is the END or STORY screen.", 300, 450);
 		batch.end();
+		
+		ShapeRenderer shapeRenderer = new ShapeRenderer();
+		
+		 shapeRenderer.begin(ShapeType.Filled);
+		 
+		 
+		 shapeRenderer.setColor(0, 0, 1, 1);
+		 shapeRenderer.rect(100, 100, 600, 10);
+		 shapeRenderer.rect(100, 100, 10, 200);
+		 shapeRenderer.setColor(0, 1, 0, 1);
+		 
+		 int width=25;
+		 
+		 for(int i=0; i<world.oilPricesTrend.length;i++){
+			 shapeRenderer.rect(110+i*width, 110, 20,world.oilPricesTrend[i]*20);
+		 }
+		 
+		 
+		 shapeRenderer.end();
+		
 		return 0;
 	}
 

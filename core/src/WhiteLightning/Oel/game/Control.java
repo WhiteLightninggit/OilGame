@@ -5,7 +5,10 @@ import WhiteLightning.Oel.game.Game.gameStates;
 
 import java.util.ArrayList;
 
+import javax.swing.text.html.StyleSheet;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 
 public class Control {
@@ -13,6 +16,8 @@ public class Control {
 	private Game g;
 	private State s = State.getInstance();
 	private Logic l;
+	private StringBuffer sb = new StringBuffer();
+	
 	
 	public Control(Game g){
 		this.g = g;	
@@ -20,8 +25,10 @@ public class Control {
 	}	
 	
 	public void processKeys(gameStates gs){
-		processKeysDefault();
 		
+		
+		processKeysDefault();
+	
 		switch (s.gameState) {
 		case Title:
 			processKeysTitle();
@@ -100,7 +107,7 @@ public class Control {
 			}
 			
 			if(s.selectedMenuItem == 0)
-				s.gameState = gameStates.Game;		
+				s.gameState = gameStates.Setup;		
 		}		
 	}
 	
@@ -214,10 +221,31 @@ public class Control {
 	}
 	
 	public void processKeysSetup() {
-		if(Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
-			s.gameState = gameStates.Game;
+
+		
+		if(g.textEnterFlag && Gdx.input.isKeyJustPressed(Keys.ANY_KEY)){
+			sb.append(pressedKey());
+			System.out.println(pressedKey());
+		}
+		
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_0)){
+			g.textEnterFlag = !g.textEnterFlag;
+			
+			if(g.textEnterFlag){
+				sb = new StringBuffer();
+				System.out.println("Enter text");
+			} else {
+				System.out.println("Entered text: "+sb);
+			}
+			}
+			
+		if(Gdx.input.isKeyJustPressed(Keys.W)){
+			s.gameState = gameStates.Title;
 			s.flag1=false;
 			}
+		
+		
+		
 	}
 	
 	public void processKeysOption() {
@@ -252,5 +280,22 @@ public class Control {
 			g.camera.zoom -= 0.02;
 		}
 	}
+	
+	
+	
+	
+	private String pressedKey(){
+		for(int i=0;i<255;i++){
+			if(Gdx.input.isKeyPressed(i)){
+				
+				return Keys.toString(i);
+			}
+		}
+return "";
+	}
+	
+	
+	
+	
 	
 }
