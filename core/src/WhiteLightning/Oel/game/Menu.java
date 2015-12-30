@@ -1,16 +1,20 @@
 package WhiteLightning.Oel.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 public class Menu implements IMenu{
 
-	public ArrayList<String> menuList;
+	public HashMap<Integer,String> menuData;
 
 	int currentIdx = -1;
 	int tmpIdx = -1;
 	
-	public Menu(ArrayList<String> ll) {
-		this.menuList = new ArrayList<>(ll);
+	public Menu(HashMap<Integer,String> ll) {
+		this.menuData= new HashMap<>(ll);		
 		this.currentIdx = 0;
 		this.tmpIdx = 0;
 	}
@@ -18,7 +22,7 @@ public class Menu implements IMenu{
 	
 	@Override
 	public void setNextItem() {
-		if (currentIdx < (menuList.size()-1))
+		if (currentIdx < (menuData.size()-1))
 			currentIdx++;		
 	}
 
@@ -31,39 +35,42 @@ public class Menu implements IMenu{
 	@Override
 	public Object selectNextItem() {
 		this.setNextItem();
-		return menuList.get(currentIdx);
+		return menuData.get(currentIdx);
 	}
 
 	@Override
 	public Object selectPreviousItem() {
 		this.setPreviousItem();
-		return menuList.get(currentIdx);
+		return menuData.get(currentIdx);
 	}
 
 	@Override
 	public int ItemsNr() {
-		return menuList.size();
+		return menuData.size();
 	}
 
 
 	@Override
 	public Object selectCurrentItem() {
-		return menuList.get(currentIdx);
+		return menuData.get(currentIdx);
 	}
 
 
-	public Object getCurrentItem() {
-		return menuList.get(tmpIdx);
+	public Object getCurrentItem2() {
+		
+		System.out.println("a: "+tmpIdx+" b "+currentIdx);
+		
+		return menuData.get(tmpIdx);
 	}
 	
 	public String getCurrentItemAsString() {
-		return (String) menuList.get(tmpIdx);
+		return (String) menuData.get(tmpIdx);
 	}
 	
 
 	@Override
 	public int getNextCurrentIdx() {
-		if (currentIdx < (menuList.size()-1))
+		if (currentIdx < (menuData.size()-1))
 			currentIdx++;
 		return currentIdx;
 	}
@@ -84,10 +91,12 @@ public class Menu implements IMenu{
 		return currentIdx;
 	}
 
+	
+	
 
 	@Override
 	public boolean hasNext() {
-		if (currentIdx<(menuList.size()-1)){			
+		if (currentIdx<(menuData.size()-1)){			
 			return true;
 		} else {
 			return false;
@@ -96,7 +105,7 @@ public class Menu implements IMenu{
 	
 
 	public void setNextTmpIdx() {
-		if (tmpIdx < (menuList.size()))
+		if (tmpIdx < (menuData.size()))
 			tmpIdx++;		
 	}
 
@@ -107,7 +116,7 @@ public class Menu implements IMenu{
 	}
 	
 	public boolean hasNextIdx() {
-		if (tmpIdx<(menuList.size())){			
+		if (tmpIdx<(menuData.size())){			
 			return true;
 		} else {
 			return false;

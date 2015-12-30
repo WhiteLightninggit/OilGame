@@ -10,10 +10,10 @@ import WhiteLightning.Oel.game.Game.gameStates;
 public class State {
 
 	public int internalState = 0;
-	public boolean flag1 = false;
+	public boolean animFlag = false;
 	public boolean playMusic = true;
 	public boolean moveUp = false;
-	public int menuAnimFlag = 0;
+	public int menuAnimX = 0;
 	public byte currentPlayerIdx=0;
 	public int currentYear;
 	int lastYear;

@@ -22,13 +22,13 @@ public class Control {
 		l = g.l;
 	}
 
-	public void processKeys(gameStates gs) {
+	public void processKeys(gameStates gs, Menu menu) {
 
 		processKeysDefault();
 
 		switch (s.gameState) {
 		case Title:
-			processKeysTitle();
+			processKeysTitle(menu);
 			break;
 		case OilFields:
 			processKeysOilfields();
@@ -70,7 +70,7 @@ public class Control {
 		}
 	}
 
-	public void processKeysTitle() {
+	public void processKeysTitle(Menu menu) {
 
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			s.gameState = gameStates.Game;
@@ -78,34 +78,35 @@ public class Control {
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			g.menuChangeSound.play();
 
-			if (s.selectedMenuItem > 0)
-				s.selectedMenuItem--;
+		
+				menu.setPreviousItem();
+
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 			g.menuChangeSound.play();
-			if (s.selectedMenuItem < 4)
-				s.selectedMenuItem++;
+			menu.setNextItem();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			if (s.selectedMenuItem == 4)
+			
+			System.out.println(menu.selectCurrentItem());
+			
+			if (menu.getCurrentIdx() == 4)
 				Gdx.app.exit();
-			if (s.selectedMenuItem == 1) {
-				s.flag1 = true;
+
+	
+			if (menu.getCurrentIdx() == 1) {
 				s.gameState = gameStates.Options;
 			}
-			if (s.selectedMenuItem == 2) {
-				s.flag1 = true;
-				s.gameState = gameStates.Story;
+			if (menu.getCurrentIdx() == 2) {
 				s.gameState = gameStates.Setup;
 			}
-			if (s.selectedMenuItem == 3) {
-				s.flag1 = true;
-				s.flag1 = !s.flag1;
+			if (menu.getCurrentIdx() == 3) {
 				s.gameState = gameStates.Credits;
 			}
 
-			if (s.selectedMenuItem == 0)
+			if (menu.getCurrentIdx() == 0)
 				s.gameState = gameStates.Game;
+	
 		}
 	}
 
@@ -130,6 +131,8 @@ public class Control {
 			s.gameState = gameStates.Game;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			s.animFlag = true;
+			s.menuAnimX = 0;
 			System.out.println(g.world.fieldsList.get(s.selectedField).name);
 			if (!l.buyField()) {
 				g.denySound.play();
@@ -270,7 +273,7 @@ public class Control {
 
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			s.gameState = gameStates.Title;
-			s.flag1 = false;
+			s.animFlag = false;
 		}
 
 	}
@@ -278,14 +281,14 @@ public class Control {
 	public void processKeysOption() {
 		if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
 			s.gameState = gameStates.Title;
-			s.flag1 = false;
+			s.animFlag = false;
 		}
 	}
 
 	public void processKeysStory() {
 		if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
 			s.gameState = gameStates.Title;
-			s.flag1 = false;
+			s.animFlag = false;
 		}
 	}
 

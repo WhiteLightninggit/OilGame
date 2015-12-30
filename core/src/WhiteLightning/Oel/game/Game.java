@@ -52,9 +52,9 @@ public class Game {
 	public Music menuSound;
 	public Sound menuChangeSound;
 	public Sound denySound;
-	ArrayList<String> menuList = new ArrayList<>();
+	//ArrayList<String> menuList = new ArrayList<>();
 	ArrayList<String> actionsList = new ArrayList<>();
-	public Menu mainMenu;
+
 
 	public OrthographicCamera camera;
 
@@ -102,13 +102,7 @@ public class Game {
 		cFontBlue.setColor(Color.BLUE);
 		cFontGray.setColor(Color.GRAY);
 
-		menuList.add("Start Game");
-		menuList.add("Options");
-		menuList.add("Story");
-		menuList.add("Credits");
-		menuList.add("Exit");
 
-		mainMenu = new Menu(menuList);
 		
 		actionsList.add("Drill Factories");
 		actionsList.add("Pumps Factories");
@@ -124,12 +118,11 @@ public class Game {
 
 	}
 
-	public void update() {
-	}
+	public void update() {}
 
-	public void draw() {
+	public void draw(Menu menu, gameStates gs) {
 		int captionOffset = 100;
-		switch (s.gameState) {
+		switch (gs) {
 		case Test:
 			// drawTest();
 			break;
@@ -137,8 +130,9 @@ public class Game {
 			s.selectedAction = drawMenu(actionsList, s.selectedAction, 300, 500);
 			break;
 		case Title:
-			s.selectedMenuItem = drawMenuNew(mainMenu, s.selectedMenuItem, 350, 250);
-			drawGameTitle();
+			//s.selectedMenuItem
+			drawMenuNew(menu, menu.getCurrentIdx(), 350, 250);
+			drawGameTitle(); // s.selectedMenuItem
 			break;
 		case Options:
 			drawOptions();
@@ -208,7 +202,7 @@ public class Game {
 				menu.setNextTmpIdx();	
 		}
 		
-		menuArrow.setBounds(x - 35 + s.menuAnimFlag, y - 15 - selectedItem * deltaY, 25, 25);
+		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - selectedItem * deltaY, 25, 25);
 		menuArrow.draw(batch);
 
 		displayStatus(20, 100);
@@ -350,7 +344,7 @@ public class Game {
 		int deltaY = 40;
 		x = x + 150;
 
-		System.out.println("we are here");
+		//System.out.println("we are here");
 		
 		batch.begin();
 		batch.draw(titleScreen, 0, 0, 800, 600);
@@ -384,7 +378,7 @@ public class Game {
 			idx++;
 		}
 
-		menuArrow.setBounds(x - 35 + s.menuAnimFlag, y - 15 - selectedItem * deltaY, 25, 25);
+		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - selectedItem * deltaY, 25, 25);
 		menuArrow.draw(batch);
 
 		displayStatus(20, 100);
@@ -433,18 +427,21 @@ public class Game {
 			cFontRed.draw(batch, String.valueOf(menuList.get(s.selectedField).getPrice()), x + 230,
 					y - deltaY * s.selectedField);
 		}
-		if (s.flag1) {
-			s.menuAnimFlag = s.menuAnimFlag + 3;
-			System.out.println("z: " + s.menuAnimFlag);
-			if (s.menuAnimFlag >= 150) {
-				s.menuAnimFlag = 1;
-				s.flag1 = false;
+		
+		
+		
+		if (s.animFlag) {
+			s.menuAnimX = s.menuAnimX + 3;
+			System.out.println("z: " + s.menuAnimX);
+			if (s.menuAnimX >= 150) {
+				s.menuAnimX = 1;
+				s.animFlag = false;
 			}
 
-			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.menuAnimFlag, 6);
+			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.menuAnimX, 6);
 		}
 
-		menuArrow.setBounds(x - 35 + s.menuAnimFlag, y - 15 - s.selectedField * deltaY, 25, 25);
+		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - s.selectedField * deltaY, 25, 25);
 		menuArrow.draw(batch);
 
 		displayStatus(20, 100);
@@ -500,18 +497,18 @@ public class Game {
 			cFontRed.draw(batch, String.valueOf(menuList.get(s.selectedField).getPrice()), x + 230,
 					y - deltaY * s.selectedField);
 		}
-		if (s.flag1) {
-			s.menuAnimFlag = s.menuAnimFlag + 3;
-			System.out.println("z: " + s.menuAnimFlag);
-			if (s.menuAnimFlag >= 150) {
-				s.menuAnimFlag = 1;
-				s.flag1 = false;
+		if (s.animFlag) {
+			s.menuAnimX = s.menuAnimX + 3;
+			System.out.println("z: " + s.menuAnimX);
+			if (s.menuAnimX >= 150) {
+				s.menuAnimX = 1;
+				s.animFlag = false;
 			}
 
-			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.menuAnimFlag, 6);
+			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.menuAnimX, 6);
 		}
 
-		menuArrow.setBounds(x - 35 + s.menuAnimFlag, y - 15 - s.selectedField * deltaY, 25, 25);
+		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - s.selectedField * deltaY, 25, 25);
 		menuArrow.draw(batch);
 		displayStatus(20, 100);
 		batch.end();
