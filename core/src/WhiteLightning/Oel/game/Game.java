@@ -15,15 +15,19 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.sun.javafx.scene.control.skin.LabelSkin;
+
 
 public class Game {
 
 	public boolean textEnterFlag = false;
+	
+	Skin localSkin = new Skin();
 	
 	public State s = State.getInstance();
 	public SpriteBatch batch;
@@ -50,6 +54,7 @@ public class Game {
 	public Sound denySound;
 	ArrayList<String> menuList = new ArrayList<>();
 	ArrayList<String> actionsList = new ArrayList<>();
+	public Menu mainMenu;
 
 	public OrthographicCamera camera;
 
@@ -73,9 +78,10 @@ public class Game {
 		c = new Config();
 		this.world = new World(c);
 		l = new Logic(this);
-		// FreeTypeFontGenerator generator = new
-		// FreeTypeFontGenerator(Gdx.files.internal("Fonts/cfont.ttf"));
+	//	FreeTypeFontGenerator generator = new
+	//	FreeTypeFontGenerator(Gdx.files.internal("Fonts/cfont.ttf"));
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Texas.ttf"));
+	//	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/a1.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 30;
 		parameter.characters = " -abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:";
@@ -102,6 +108,8 @@ public class Game {
 		menuList.add("Credits");
 		menuList.add("Exit");
 
+		mainMenu = new Menu(menuList);
+		
 		actionsList.add("Drill Factories");
 		actionsList.add("Pumps Factories");
 		actionsList.add("Wagons factories");
@@ -129,7 +137,7 @@ public class Game {
 			s.selectedAction = drawMenu(actionsList, s.selectedAction, 300, 500);
 			break;
 		case Title:
-			s.selectedMenuItem = drawMenu(menuList, s.selectedMenuItem, 350, 250);
+			s.selectedMenuItem = drawMenuNew(mainMenu, s.selectedMenuItem, 350, 250);
 			drawGameTitle();
 			break;
 		case Options:
@@ -170,33 +178,56 @@ public class Game {
 		}
 	}
 
-	private void drawSetup() {
+	
+	
+	private int drawMenuNew(Menu menu, int selectedItem, int x, int y) {
+		int deltaY = 40;
+		x = x + 150;
 
-
+	//	System.out.println("we are here "+menu.getCurrentIdx());
 		
-		int x = 20;
-		int y = 500;
 		batch.begin();
-
-		font.setScale(.9f, .9f);
 		batch.draw(titleScreen, 0, 0, 800, 600);
-		font.draw(batch, "Factory: " + l.getCurrentFactory().name, x, y);
-		if (l.getCurrentFactory().hasOwner()) {
-			font.draw(batch, "Owner: " + l.getCurrentFactory().owner.name, x, y - 30);
-		} else {
-			font.draw(batch, "Owner: " + "FREE", x, y - 30);
+		drawImg();
+
+		cFont.setScale(1f, 1f);
+		cFontRed.setScale(1f, 1f);
+		cFontGray.setScale(1f, 1f);
+
+		char itemLetter = 'A';
+		menu.currentIdx = selectedItem;  //hack
+		menu.resetTmpIdx();
+		
+		while(menu.hasNextIdx()){						
+				if (menu.isCurrent()) {
+					cFontRed.draw(batch, itemLetter + " " + menu.getCurrentItemAsString(), x, y - deltaY * selectedItem);
+				} else {
+					cFont.draw(batch, itemLetter + " " + menu.getCurrentItemAsString(), x, y - menu.tmpIdx * deltaY);					
+				}
+				itemLetter++;			
+				menu.setNextTmpIdx();	
 		}
+		
+		menuArrow.setBounds(x - 35 + s.menuAnimFlag, y - 15 - selectedItem * deltaY, 25, 25);
+		menuArrow.draw(batch);
 
-		font.draw(batch, "ItemPrice: " + l.getCurrentFactory().itemPrice, x, y - 60);
+		displayStatus(20, 100);
+
 		batch.end();
-		
+		return selectedItem;
+	}
 
-		
-	//	TextInput listener = new TextInput();
-	//	Gdx.input.getTextInput(listener, "Ala", "ma", "kota");
-		
-		
-		
+	
+	
+	private void drawSetup() {
+		drawHUD();
+		batch.begin();
+		font.setScale(.9f, .9f);
+		font.draw(batch, "Input: " + s.sb,500,200);
+		s.text.setBounds(200, 200, 100, 40);
+		s.text.draw(batch, 1);
+		s.text.getOnscreenKeyboard();
+		batch.end();
 	}
 
 	
@@ -314,10 +345,13 @@ public class Game {
 		}
 	}
 
+
 	private int drawMenu(ArrayList<String> menuList, int selectedItem, int x, int y) {
 		int deltaY = 40;
 		x = x + 150;
 
+		System.out.println("we are here");
+		
 		batch.begin();
 		batch.draw(titleScreen, 0, 0, 800, 600);
 		drawImg();
@@ -350,7 +384,7 @@ public class Game {
 			idx++;
 		}
 
-		menuArrow.setBounds(x - 35 + s.z, y - 15 - selectedItem * deltaY, 25, 25);
+		menuArrow.setBounds(x - 35 + s.menuAnimFlag, y - 15 - selectedItem * deltaY, 25, 25);
 		menuArrow.draw(batch);
 
 		displayStatus(20, 100);
@@ -400,17 +434,17 @@ public class Game {
 					y - deltaY * s.selectedField);
 		}
 		if (s.flag1) {
-			s.z = s.z + 3;
-			System.out.println("z: " + s.z);
-			if (s.z >= 150) {
-				s.z = 1;
+			s.menuAnimFlag = s.menuAnimFlag + 3;
+			System.out.println("z: " + s.menuAnimFlag);
+			if (s.menuAnimFlag >= 150) {
+				s.menuAnimFlag = 1;
 				s.flag1 = false;
 			}
 
-			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.z, 6);
+			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.menuAnimFlag, 6);
 		}
 
-		menuArrow.setBounds(x - 35 + s.z, y - 15 - s.selectedField * deltaY, 25, 25);
+		menuArrow.setBounds(x - 35 + s.menuAnimFlag, y - 15 - s.selectedField * deltaY, 25, 25);
 		menuArrow.draw(batch);
 
 		displayStatus(20, 100);
@@ -467,17 +501,17 @@ public class Game {
 					y - deltaY * s.selectedField);
 		}
 		if (s.flag1) {
-			s.z = s.z + 3;
-			System.out.println("z: " + s.z);
-			if (s.z >= 150) {
-				s.z = 1;
+			s.menuAnimFlag = s.menuAnimFlag + 3;
+			System.out.println("z: " + s.menuAnimFlag);
+			if (s.menuAnimFlag >= 150) {
+				s.menuAnimFlag = 1;
 				s.flag1 = false;
 			}
 
-			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.z, 6);
+			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.menuAnimFlag, 6);
 		}
 
-		menuArrow.setBounds(x - 35 + s.z, y - 15 - s.selectedField * deltaY, 25, 25);
+		menuArrow.setBounds(x - 35 + s.menuAnimFlag, y - 15 - s.selectedField * deltaY, 25, 25);
 		menuArrow.draw(batch);
 		displayStatus(20, 100);
 		batch.end();
