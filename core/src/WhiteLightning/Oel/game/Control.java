@@ -22,7 +22,7 @@ public class Control {
 		l = g.l;
 	}
 
-	public void processKeys(gameStates gs, Menu menu) {
+	public void processKeys(gameStates gs, Menu menu, Menu actionMenu) {
 
 		processKeysDefault();
 
@@ -62,7 +62,7 @@ public class Control {
 			processKeysSetup();
 			break;
 		case Game:
-			processKeysGame();
+			processKeysGame(actionMenu);
 			break;
 
 		default:
@@ -131,8 +131,6 @@ public class Control {
 			s.gameState = gameStates.Game;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			s.animFlag = true;
-			s.menuAnimX = 0;
 			System.out.println(g.world.fieldsList.get(s.selectedField).name);
 			if (!l.buyField()) {
 				g.denySound.play();
@@ -172,41 +170,41 @@ public class Control {
 		}
 	}
 
-	public void processKeysGame() {
+	public void processKeysGame(Menu menu) {
 		if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
 			// g.nextInternalState();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			g.menuChangeSound.play();
-			if (s.selectedAction > 0)
-				s.selectedAction--;
-			s.moveUp = true;
+			menu.selectPreviousItem();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 			g.menuChangeSound.play();
-			if (s.selectedAction < g.actionsList.size() - 1)
+			menu.selectNextItem();
+/*			if (s.selectedAction < g.actionsList.size() - 1)
 				s.selectedAction++;
-			s.moveUp = false;
+*/			s.moveUp = false;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			g.menuChangeSound.play();
-			System.out.println(g.actionsList.get(s.selectedAction) + " " + s.selectedAction);
 
-			if (s.selectedAction == 0) {
+			System.out.println("menu: idx "+menu.getCurrentIdx()+" action "+menu.selectCurrentItem().toString() );
+			
+			if (menu.getCurrentIdx() == 0) {
 				s.gameState = gameStates.Factory;
 				s.currFactoryType = FactoryType.PUMP;
 			}
-			if (s.selectedAction == 1) {
+			if (menu.getCurrentIdx() == 1) {
 				s.gameState = gameStates.Factory;
 				s.currFactoryType = FactoryType.DRILLS;
 			}
-			if (s.selectedAction == 2) {
+			if (menu.getCurrentIdx() == 2) {
 				s.gameState = gameStates.Factory;
 				s.currFactoryType = FactoryType.WAGONS;
 			}
-			if (s.selectedAction == 3)
+			if (menu.getCurrentIdx() == 3)
 				s.gameState = gameStates.OilFields;
-			if (s.selectedAction == 8) {
+			if (menu.getCurrentIdx() == 8) {
 				l.setNextPlayer();
 				System.out.println("Game state: " + s.gameState + " " + s.lastYear);
 				if (l.isGameEnd()) {

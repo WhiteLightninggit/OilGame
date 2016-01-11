@@ -10,13 +10,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import WhiteLightning.Oel.game.Game.gameStates;
+
 public class OelGame extends ApplicationAdapter {
 
 	Game g;
 	Control c;
 	public Menu mainMenu;
+	public Menu actionMenu;
 	ArrayList<String> menuList = new ArrayList<>();
-	HashMap<Integer, String> menuMap = new HashMap<>();
+	ArrayList<String> actionsList = new ArrayList<>();
+	HashMap<Integer, String> menuMap = new HashMap<>();	
+	HashMap<Integer, String> actionsMap = new HashMap<>();	
 	
 	@Override
 	public void create() {
@@ -59,6 +64,19 @@ public class OelGame extends ApplicationAdapter {
 		
 		mainMenu = new Menu(menuMap);
 		
+		actionsMap.put(0,"Drill Factories");
+		actionsMap.put(1,"Pumps Factories");
+		actionsMap.put(2,"Wagons factories");
+		actionsMap.put(3,"Oil Fields");
+		actionsMap.put(4,"Buy Drills");
+		actionsMap.put(5,"Buy Pumps");
+		actionsMap.put(6,"Buy Wagons");
+		actionsMap.put(7,"=OTHER POSSIBILITIES");
+		actionsMap.put(8,"Next player");
+		actionsMap.put(9,"Sabotage");
+		actionsMap.put(10,"Skip turn");
+		
+		actionMenu = new Menu(actionsMap);
 		
 	}
 
@@ -67,12 +85,16 @@ public class OelGame extends ApplicationAdapter {
 		update();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		g.draw(mainMenu, g.s.gameState);
+		
+		if(g.s.gameState == gameStates.Game){
+			g.draw(actionMenu, g.s.gameState);
+		} else 
+			g.draw(mainMenu, g.s.gameState);
 	}
 
 	public void update() {
 		updateCamera();
-		c.processKeys(g.s.gameState, mainMenu);
+		c.processKeys(g.s.gameState, mainMenu, actionMenu);
 		g.update();
 	}
 
