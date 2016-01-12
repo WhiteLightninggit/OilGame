@@ -24,7 +24,7 @@ public class World {
 	public World(Config c) {
 
 		Random rand = new Random();
-		players = c.players;
+		players = s.players;
 
 		oilPricesTrend = new float[c.gameLength];
 

@@ -15,12 +15,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 
 public class Game {
@@ -45,6 +40,13 @@ public class Game {
 	public Texture nextImg;
 	public Texture sabotImg;
 	
+	public ArrayList<Texture> nrImages;
+	public Texture nr1Img;
+	public Texture nr2Img;
+	public Texture nr3Img;
+	public Texture nr4Img;
+	public Texture selectedNrImg;
+	
 	public Texture line;
 	public World world;
 	Config c;
@@ -55,6 +57,7 @@ public class Game {
 	//ArrayList<String> menuList = new ArrayList<>();
 //	ArrayList<String> actionsList = new ArrayList<>();
 
+	
 
 	public OrthographicCamera camera;
 
@@ -156,8 +159,6 @@ public class Game {
 			break;
 		}
 	}
-
-	
 	
 	private int drawMenuNew(Menu menu, int x, int y) {
 		int deltaY = 40;
@@ -199,12 +200,22 @@ public class Game {
 		batch.end();
 		return menu.getCurrentIdx();
 	}
-
-	
 	
 	private void drawSetup() {
-		drawHUD();
+	//	drawHUD();
+		int x=200;
+		int offsetX=50;
+		
 		batch.begin();
+		
+		batch.draw(titleScreen, 0, 0, 800, 600);
+		
+		for (int i=0; i<nrImages.size()-1;i++) {
+			batch.draw(nrImages.get(i), x+i*50, 300, offsetX, 50);
+		}
+		
+		batch.draw(nrImages.get(nrImages.size()-1), x+(s.players-1)*offsetX, 300, offsetX, 50);
+		
 		font.setScale(.9f, .9f);
 		font.draw(batch, "Input: " + s.sb,500,200);
 		s.text.setBounds(200, 200, 100, 40);
@@ -212,7 +223,6 @@ public class Game {
 		s.text.getOnscreenKeyboard();
 		batch.end();
 	}
-
 	
 	private void drawHUD() {
 
@@ -231,8 +241,6 @@ public class Game {
 		font.draw(batch, "ItemPrice: " + l.getCurrentFactory().itemPrice, x, y - 60);
 		batch.end();
 	}
-
-	
 	
 	private void drawGameTitle() {
 		batch.begin();

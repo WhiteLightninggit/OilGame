@@ -5,10 +5,7 @@ import WhiteLightning.Oel.game.Game.gameStates;
 
 import java.util.ArrayList;
 
-import javax.swing.text.html.StyleSheet;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 
 public class Control {
@@ -89,10 +86,11 @@ public class Control {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			
 			System.out.println(menu.selectCurrentItem());
-			
-			if (menu.getCurrentIdx() == 4)
-				Gdx.app.exit();
 
+			if (menu.getCurrentIdx() == 0){
+				s.gameState = gameStates.Setup;
+				s.currentPlayerIdx = 0;
+			}
 	
 			if (menu.getCurrentIdx() == 1) {
 				s.gameState = gameStates.Options;
@@ -103,9 +101,10 @@ public class Control {
 			if (menu.getCurrentIdx() == 3) {
 				s.gameState = gameStates.Credits;
 			}
+			if (menu.getCurrentIdx() == 4)
+				Gdx.app.exit();
 
-			if (menu.getCurrentIdx() == 0)
-				s.gameState = gameStates.Game;
+
 	
 		}
 	}
@@ -212,7 +211,6 @@ public class Control {
 					s.gameState = gameStates.End;
 				}
 			}
-			// s.internalState = s.selectedAction;
 			s.selectedField = 0;
 		}
 
@@ -269,7 +267,20 @@ public class Control {
 			}
 		}
 
+		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+			g.menuChangeSound.play();
+			if(s.players>1)
+				s.players--;
+			
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+			g.menuChangeSound.play();
+			if(s.players<g.c.playersMax)
+				s.players++;
+		}
+		
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			g.menuChangeSound.play();
 			s.gameState = gameStates.Title;
 			s.animFlag = false;
 		}

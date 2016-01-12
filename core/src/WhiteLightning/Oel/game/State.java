@@ -14,6 +14,7 @@ public class State {
 	public boolean playMusic = true;
 	public boolean moveUp = false;
 	public int menuAnimX = 0;
+	public byte players = 2;
 	public byte currentPlayerIdx=0;
 	public int currentYear;
 	int lastYear;

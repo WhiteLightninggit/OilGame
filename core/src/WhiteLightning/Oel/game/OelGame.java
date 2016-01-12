@@ -48,6 +48,14 @@ public class OelGame extends ApplicationAdapter {
 		g.nextImg = new Texture("Images/next.png");
 		g.sabotImg = new Texture("Images/sabotage.jpg");
 		
+
+		
+		g.nrImages = new ArrayList<>();
+		g.nrImages.add(new Texture("Images/1.png"));
+		g.nrImages.add(new Texture("Images/2.png"));
+		g.nrImages.add(new Texture("Images/3.png"));
+		g.nrImages.add(new Texture("Images/4.png"));
+		g.nrImages.add(new Texture("Images/selectedNr.png"));
 		
 		menuList.add("Start Game");
 		menuList.add("Options");
