@@ -103,7 +103,7 @@ public class OelGame extends ApplicationAdapter {
 	public void update() {
 		updateCamera();
 		c.processKeys(g.s.gameState, mainMenu, actionMenu);
-		g.update();
+		//g.update();
 	}
 
 	private void updateCamera() {

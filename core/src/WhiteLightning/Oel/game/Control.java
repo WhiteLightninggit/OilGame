@@ -88,7 +88,7 @@ public class Control {
 			System.out.println(menu.selectCurrentItem());
 
 			if (menu.getCurrentIdx() == 0){
-				s.gameState = gameStates.Setup;
+				s.gameState = gameStates.Game;
 				s.currentPlayerIdx = 0;
 			}
 	
