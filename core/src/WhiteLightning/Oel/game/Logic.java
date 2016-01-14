@@ -4,6 +4,7 @@ import WhiteLightning.Oel.game.Objects.Factory;
 import WhiteLightning.Oel.game.Objects.OilField;
 import WhiteLightning.Oel.game.Objects.Player;
 import WhiteLightning.Oel.game.Objects.RealEstateI;
+import WhiteLightning.Oel.game.Screens.IGameScreen;
 import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
 public class Logic {
@@ -16,6 +17,12 @@ public class Logic {
 		this.w = g.world;
 		this.players = w.players;
 	}
+	
+	public Logic(World w){
+		this.w = w;
+		this.players = w.players;
+	}
+	
 	
 	public boolean buyField(){
 		System.out.println("Current player: "+s.currentPlayerIdx);
@@ -60,7 +67,7 @@ public class Logic {
 		return s.currentPlayerIdx;
 	}
 	
-	Player getCurrentPlayer(){		
+	public Player getCurrentPlayer(){		
 		return w.playersList.get(s.currentPlayerIdx);
 	}
 	
@@ -101,7 +108,7 @@ public class Logic {
 		}
 	}
 	
-	int getCurrentYear(){
+	public int getCurrentYear(){
 		return s.currentYear;
 	}
 	

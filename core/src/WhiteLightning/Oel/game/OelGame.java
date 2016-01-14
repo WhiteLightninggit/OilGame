@@ -9,14 +9,32 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import WhiteLightning.Oel.game.Control.Control;
-import WhiteLightning.Oel.game.Game.gameStates;
+import WhiteLightning.Oel.game.Screens.IGameScreen;
+import WhiteLightning.Oel.game.Screens.TitleScreen;
+
 
 public class OelGame extends ApplicationAdapter {
 
+	private gameStates lastState=gameStates.Title;
+	private HashMap<gameStates, IGameScreen> gameScreens;
+	private long elapsedTime = TimeUtils.nanoTime();
+	
+	public World world;
+	public Config config;
+	public Logic l;
+	
+	public SpriteBatch spriteBatch;
+	
+	public OrthographicCamera camera;
+	
+	TitleScreen ts;
+	
 	Game g;
-	Control c;
+	Control control;
 	public Menu mainMenu;
 	public Menu actionMenu;
 	ArrayList<String> menuList = new ArrayList<>();
@@ -27,8 +45,11 @@ public class OelGame extends ApplicationAdapter {
 	@Override
 	public void create() {
 		g = new Game();
-		c = new Control(g);
-		g.camera = new OrthographicCamera(800, 600);
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+		//camera.setToOrtho(true);		
+		control = new Control(g,camera);
+		
 		g.img = new Texture("Images/badlogic.jpg");
 		g.line = new Texture("Images/lineBlue.png");
 		g.titleScreen = new Texture("Images/chart6.png");
@@ -87,6 +108,19 @@ public class OelGame extends ApplicationAdapter {
 		
 		actionMenu = new Menu(actionsMap);
 		
+		config = new Config();
+		this.world = new World(config);
+		l = new Logic(this.world);
+		
+		
+		ts=new TitleScreen(l,mainMenu);
+		
+
+
+		
+	
+		spriteBatch = new SpriteBatch();
+		System.out.println("initialised");
 	}
 
 	@Override
@@ -94,23 +128,26 @@ public class OelGame extends ApplicationAdapter {
 		update();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+		/*
 		if(g.s.gameState == gameStates.Game){
 			g.draw(actionMenu, g.s.gameState);
 		} else 
 			g.draw(mainMenu, g.s.gameState);
+			*/
+		ts.Draw(spriteBatch);
+		
 	}
 
 	public void update() {
 		updateCamera();
-		c.processKeys(g.s.gameState, mainMenu, actionMenu);
+		control.processKeys(g.s.gameState, mainMenu, actionMenu);
 		//g.update();
 	}
 
 	private void updateCamera() {
-		g.camera.update();
-		g.batch.setProjectionMatrix(g.camera.combined);
-		g.camera.position.set(Gdx.graphics.getWidth() / 2,
+		camera.update();
+		spriteBatch.setProjectionMatrix(camera.combined);
+		camera.position.set(Gdx.graphics.getWidth() / 2,
 		Gdx.graphics.getHeight() / 2, 0);
 	}
 

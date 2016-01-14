@@ -12,7 +12,7 @@ public class World {
 
 	State s =State.getInstance();
 	byte players;	
-	float oilPricesTrend[];	
+	public float oilPricesTrend[];	
 	private final byte oilFieldsNr=12; 
 	private final byte wagonFactoriesNr=4; 
 	private final byte drillFactoriesNr=3; 

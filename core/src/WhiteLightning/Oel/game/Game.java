@@ -61,9 +61,7 @@ public class Game {
 
 	public OrthographicCamera camera;
 
-	public enum gameStates {
-		Test, Title, Game, Options, Setup, OilFields, Factory, Credits, Story, End
-	};
+
 
 	BitmapFont font, redFont, cFont, cFontRed, cFontGreen, cFontYellow, cFontBlue, cFontGray;
 

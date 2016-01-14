@@ -4,7 +4,7 @@ import WhiteLightning.Oel.game.Game;
 import WhiteLightning.Oel.game.Logic;
 import WhiteLightning.Oel.game.Menu;
 import WhiteLightning.Oel.game.State;
-import WhiteLightning.Oel.game.Game.gameStates;
+import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Objects.Factory;
 import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
@@ -12,14 +12,16 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class Control {
 
 	private Game g;
 	private State s = State.getInstance();
 	private Logic l;
+	private OrthographicCamera camera;
 
-	public Control(Game g) {
+	public Control(Game g, OrthographicCamera camera) {
 		this.g = g;
 		l = g.l;
 	}
@@ -309,7 +311,7 @@ public class Control {
 	public void processKeysDefault() {
 		if (!g.textEnterFlag) {
 			if (Gdx.input.isKeyPressed(Keys.X)) {
-				g.camera.rotate(0.8f);
+				camera.rotate(0.8f);
 			}
 
 			if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
@@ -317,11 +319,11 @@ public class Control {
 			}
 
 			if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-				g.camera.zoom += 0.02;
+				camera.zoom += 0.02;
 			}
 
 			if (Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT)) {
-				g.camera.zoom -= 0.02;
+				camera.zoom -= 0.02;
 			}
 		}
 	}

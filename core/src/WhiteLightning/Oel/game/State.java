@@ -3,8 +3,6 @@ package WhiteLightning.Oel.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-
-import WhiteLightning.Oel.game.Game.gameStates;
 import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
 public class State {
