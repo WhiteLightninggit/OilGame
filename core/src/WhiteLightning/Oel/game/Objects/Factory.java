@@ -1,4 +1,4 @@
-package WhiteLightning.Oel.game;
+package WhiteLightning.Oel.game.Objects;
 
 public class Factory implements RealEstateI{
 
@@ -6,14 +6,14 @@ public class Factory implements RealEstateI{
 		WAGONS, PUMP, DRILLS
 	}
 
-	FactoryType type;
+	public FactoryType type;
 	private int price;
-	int itemPrice;
-	int availableItems;
-	String name;
-	byte maxOrderSize;
+	public int itemPrice;
+	public int availableItems;
+	public String name;
+	public byte maxOrderSize;
 	private boolean hasOwner=false;
-	Player owner;
+	public Player owner;
 	
 	@Override
 	public boolean setOwner(Player p){

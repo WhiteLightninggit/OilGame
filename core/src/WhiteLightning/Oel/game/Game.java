@@ -17,6 +17,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import WhiteLightning.Oel.game.Objects.Factory;
+import WhiteLightning.Oel.game.Objects.OilField;
+
 
 public class Game {
 
@@ -49,14 +52,11 @@ public class Game {
 	
 	public Texture line;
 	public World world;
-	Config c;
-	Logic l;
+	public Config c;
+	public Logic l;
 	public Music menuSound;
 	public Sound menuChangeSound;
 	public Sound denySound;
-	//ArrayList<String> menuList = new ArrayList<>();
-//	ArrayList<String> actionsList = new ArrayList<>();
-
 	
 
 	public OrthographicCamera camera;

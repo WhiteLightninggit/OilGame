@@ -1,6 +1,7 @@
 package WhiteLightning.Oel.game;
 
-import WhiteLightning.Oel.game.Factory.FactoryType;
+import WhiteLightning.Oel.game.Objects.Factory;
+import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
 public class FactoriesFactory {
 

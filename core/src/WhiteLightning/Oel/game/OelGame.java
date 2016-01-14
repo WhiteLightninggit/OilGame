@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import WhiteLightning.Oel.game.Control.Control;
 import WhiteLightning.Oel.game.Game.gameStates;
 
 public class OelGame extends ApplicationAdapter {

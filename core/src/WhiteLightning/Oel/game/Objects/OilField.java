@@ -1,4 +1,4 @@
-package WhiteLightning.Oel.game;
+package WhiteLightning.Oel.game.Objects;
 
 import java.util.Random;
 
@@ -8,15 +8,15 @@ public class OilField implements RealEstateI{
 			"Oiltarium","Shake It","Oily Ground","Shalow Holes","Black Creek","Desert Storm",
 			"Morning Glory"};
 	
-	String name;
+	public String name;
 	private int price;
 	int oilLeft;
 	int oilDeepth;
 	int oilPumped;
 	int wagons;
 	int drills;
-	boolean hasOwner = false;
-	Player owner;	
+	public boolean hasOwner = false;
+	public Player owner;	
 	
 	final private int MINIMAL_OIL_QUANTITY= 64000; 
 	final private int MAX_OIL_QUANTITY_RANDOM = 128000; 

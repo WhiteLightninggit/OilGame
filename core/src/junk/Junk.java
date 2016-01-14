@@ -1,4 +1,4 @@
-package WhiteLightning.Oel.game;
+package junk;
 
 /*
  * Like good practice says we shouldn't have such code in project...

@@ -1,4 +1,4 @@
-package WhiteLightning.Oel.game;
+package WhiteLightning.Oel.game.Objects;
 
 public interface RealEstateI {
 

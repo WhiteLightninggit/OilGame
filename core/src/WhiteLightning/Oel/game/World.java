@@ -3,7 +3,10 @@ package WhiteLightning.Oel.game;
 import java.util.ArrayList;
 import java.util.Random;
 
-import WhiteLightning.Oel.game.Factory.FactoryType;
+import WhiteLightning.Oel.game.Objects.Factory;
+import WhiteLightning.Oel.game.Objects.OilField;
+import WhiteLightning.Oel.game.Objects.Player;
+import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
 public class World {
 
@@ -15,11 +18,11 @@ public class World {
 	private final byte drillFactoriesNr=3; 
 	private final byte pumpFactoriesNr=2; 
 	
-	ArrayList<OilField> fieldsList;
-	ArrayList<Factory> wagonFactory;
-	ArrayList<Factory> drillFactory;
-	ArrayList<Factory> pumpsFactory;
-	ArrayList<Player> playersList = new ArrayList<Player>();
+	public ArrayList<OilField> fieldsList;
+	public ArrayList<Factory> wagonFactory;
+	public ArrayList<Factory> drillFactory;
+	public ArrayList<Factory> pumpsFactory;
+	public ArrayList<Player> playersList = new ArrayList<Player>();
 	
 	public World(Config c) {
 

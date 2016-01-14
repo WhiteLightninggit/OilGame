@@ -1,6 +1,10 @@
 package WhiteLightning.Oel.game;
 
-import WhiteLightning.Oel.game.Factory.FactoryType;
+import WhiteLightning.Oel.game.Objects.Factory;
+import WhiteLightning.Oel.game.Objects.OilField;
+import WhiteLightning.Oel.game.Objects.Player;
+import WhiteLightning.Oel.game.Objects.RealEstateI;
+import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
 public class Logic {
 
@@ -60,7 +64,7 @@ public class Logic {
 		return w.playersList.get(s.currentPlayerIdx);
 	}
 	
-	Factory getCurrentFactory(){		
+	public Factory getCurrentFactory(){		
 		switch (s.currFactoryType) {
 		case PUMP:
 			return w.pumpsFactory.get(s.selectedField);
@@ -80,7 +84,7 @@ public class Logic {
 		return getCurrentPlayer();
 	}
 	
-	byte setNextPlayer() {
+	public byte setNextPlayer() {
 		
 		System.out.println("Set next player: "+s.currentPlayerIdx);
 		
@@ -107,7 +111,7 @@ public class Logic {
 		} else return s.endOfGame;
 	}
 	
-	boolean isGameEnd(){
+	public boolean isGameEnd(){
 		if (s.endOfGame > 0){
 			return true;
 		}		

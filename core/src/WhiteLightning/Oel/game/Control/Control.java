@@ -1,7 +1,12 @@
-package WhiteLightning.Oel.game;
+package WhiteLightning.Oel.game.Control;
 
-import WhiteLightning.Oel.game.Factory.FactoryType;
+import WhiteLightning.Oel.game.Game;
+import WhiteLightning.Oel.game.Logic;
+import WhiteLightning.Oel.game.Menu;
+import WhiteLightning.Oel.game.State;
 import WhiteLightning.Oel.game.Game.gameStates;
+import WhiteLightning.Oel.game.Objects.Factory;
+import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
 import java.util.ArrayList;
 
