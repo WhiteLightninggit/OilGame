@@ -28,7 +28,7 @@ public class Control {
 
 	public void processKeys(gameStates gs, Menu menu, Menu actionMenu) {
 
-		processKeysDefault();
+	//	processKeysDefault();
 
 		switch (s.gameState) {
 		case Title:
@@ -308,25 +308,7 @@ public class Control {
 		}
 	}
 
-	public void processKeysDefault() {
-		if (!g.textEnterFlag) {
-			if (Gdx.input.isKeyPressed(Keys.X)) {
-				camera.rotate(0.8f);
-			}
 
-			if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-				Gdx.app.exit();
-			}
-
-			if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-				camera.zoom += 0.02;
-			}
-
-			if (Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT)) {
-				camera.zoom -= 0.02;
-			}
-		}
-	}
 
 	private String pressedKey() {
 		for (int i = 29; i < 128; i++) {

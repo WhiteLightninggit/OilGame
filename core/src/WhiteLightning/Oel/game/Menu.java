@@ -14,15 +14,12 @@ public class Menu implements IMenu{
 		this.currentIdx = 0;
 	}
 	
-	public void rememberIdx(){
+	public void iterateMode(){
 		this.rememberedIdx = currentIdx;
-	}
-	
-	public void reset(){
 		this.currentIdx = 0;
 	}
 	
-	public void restore(){
+	public void standardMode(){
 		this.currentIdx = rememberedIdx;
 	}
 	

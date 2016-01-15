@@ -170,8 +170,7 @@ public class Game {
 		cFontGray.setScale(1f, 1f);
 
 		char itemLetter = 'A';
-		menu.rememberIdx();
-		menu.reset();
+		menu.iterateMode();
 		
 		while(menu.hasNext()){						
 				if (menu.isCurrent()) {
@@ -190,7 +189,7 @@ public class Game {
 			cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * deltaY);					
 		}
 		
-		menu.restore();
+		menu.standardMode();
 		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - menu.getCurrentIdx() * deltaY, 25, 25);
 		menuArrow.draw(batch);
 

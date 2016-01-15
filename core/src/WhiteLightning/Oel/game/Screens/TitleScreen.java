@@ -1,6 +1,7 @@
 package WhiteLightning.Oel.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -8,36 +9,66 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.utils.TimeUtils;
+
 import WhiteLightning.Oel.game.Logic;
 import WhiteLightning.Oel.game.Menu;
 import WhiteLightning.Oel.game.State;
 import WhiteLightning.Oel.game.gameStates;
+import WhiteLightning.Oel.game.Control.SFX;
+import WhiteLightning.Oel.game.Control.Sounds;
 
 public class TitleScreen implements IGameScreen{
 
-	public State s = State.getInstance();
-	public Sprite menuArrow;
-	public Texture titleScreen;
+	private State s = State.getInstance();
+	private Sprite menuArrow;
+	private Texture titleScreen;
 	private Logic logic;
+	private long gameTime;
+	private gameStates nextState = gameStates.Title;
 	
-	public Menu myMenu;
+	private Menu myMenu;
 
-	BitmapFont font;
-	BitmapFont redFont;
-	BitmapFont cFont;
-	BitmapFont cFontRed;
-	BitmapFont cFontGreen;
-	BitmapFont cFontYellow;
-	BitmapFont cFontBlue;
-	BitmapFont cFontGray;
-
-	public TitleScreen(Logic logic, Menu menu) {
+	private BitmapFont font;
+	private BitmapFont redFont;
+	private BitmapFont cFont;
+	private BitmapFont cFontRed;
+	private BitmapFont cFontGreen;
+	private BitmapFont cFontYellow;
+	private BitmapFont cFontBlue;
+	private BitmapFont cFontGray;
+	private SFX sfx;
+	
+	private int menuItemHeight = 40;
+	private int screenWidth = 800;
+	private int screenHeight = 600;
+	private float fontScaleX = 1f;
+	private float fontScaleY = 1f;
+	private int statusX = 20;
+	private int statusY = 100;
+	private int titleX = 300;
+	private int titleY = 450;
+	private int cursorWidth = 25;
+	private int cursorHeight = 25;
+	private int cursorXOffset = 37;
+	private int cursorYOffset = 22;
+	private String title = "OEL - P";
+	private int menuX = 500;
+	private int menuY = 250;
+	
+	
+	public TitleScreen(Logic logic, SFX sfx, Menu menu) {
 		this.logic=logic;		
 		this.myMenu = menu;
-
+		this.sfx = sfx;
+		Load();
+	}
+	
+	@Override
+	public void Load() {		
+		this.gameTime = TimeUtils.nanoTime();
 		titleScreen = new Texture("Images/chart6.png");
 		menuArrow = new Sprite(new Texture("Images/marker2.png"));
-		
 		font = new BitmapFont();
 		font.setColor(Color.GREEN);
 		redFont = new BitmapFont();
@@ -54,103 +85,107 @@ public class TitleScreen implements IGameScreen{
 		cFontYellow = generator.generateFont(parameter);
 		cFontBlue = generator.generateFont(parameter);
 		generator.dispose();
-
 		cFont.setColor(Color.BLACK);
 		cFontRed.setColor(Color.RED);
 		cFontGreen.setColor(Color.GREEN);
 		cFontYellow.setColor(Color.YELLOW);
 		cFontBlue.setColor(Color.BLUE);
-		cFontGray.setColor(Color.GRAY);
+		cFontGray.setColor(Color.GRAY);			
 	}
 	
-	private int drawMenuNew(Menu menu, int x, int y,SpriteBatch batch) {
-		int deltaY = 40;
-
+	private int drawMenuNew(Menu menu, int x, int y,SpriteBatch batch) {		
 		batch.begin();
-		batch.draw(titleScreen, 0, 0, 800, 600);
-		cFont.setScale(1f, 1f);
-		cFontRed.setScale(1f, 1f);
-		cFontGray.setScale(1f, 1f);
-
-		char itemLetter = 'A';
-		menu.rememberIdx();
-		menu.reset();
+		batch.draw(titleScreen, 0, 0, screenWidth, screenHeight);
+		cFont.setScale(fontScaleX, fontScaleY);
+		cFontRed.setScale(fontScaleX, fontScaleY);
+		cFontGray.setScale(fontScaleX, fontScaleY);
 		
+		char itemLetter = 'A'; //First menu object index letter
+		menu.iterateMode();		
 		while(menu.hasNext()){						
 				if (menu.isCurrent()) {
-					cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - deltaY * menu.getCurrentIdx());
+					cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menuItemHeight * menu.getCurrentIdx());
 				} else {
-					cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * deltaY);					
+					cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * menuItemHeight);					
 				}
 				itemLetter++;			
 				menu.selectNextItem();
-		}
-		
+		}		
 		//Displaying last item from menu
 		if (menu.isCurrent()) {
-			cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - deltaY * menu.getCurrentIdx());
+			cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menuItemHeight * menu.getCurrentIdx());
 		} else {
-			cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * deltaY);					
+			cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * menuItemHeight);					
 		}
 		
-		menu.restore();
-		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - menu.getCurrentIdx() * deltaY, 25, 25);
+		menu.standardMode();		
+		menuArrow.setBounds(x - cursorXOffset + s.menuAnimX, y - cursorYOffset - menu.getCurrentIdx() * menuItemHeight, cursorWidth, cursorHeight);
 		menuArrow.draw(batch);
-
-		displayStatus(batch, 20, 100);	
+		displayStatus(batch, statusX, statusY);	
 		batch.end();
 		return menu.getCurrentIdx();
 	}
 	
-	
-	private void drawFactoryHUD(SpriteBatch batch) {
-		int x = 20;
-		int y = 500;
-		batch.begin();
-		font.setScale(.9f, .9f);
-		font.draw(batch, "Factory: " + logic.getCurrentFactory().name, x, y);
-		if (logic.getCurrentFactory().hasOwner()) {
-			font.draw(batch, "Owner: " + logic.getCurrentFactory().owner.name, x, y - 30);
-		} else {
-			font.draw(batch, "Owner: " + "FREE", x, y - 30);
-		}
-		font.draw(batch, "ItemPrice: " + logic.getCurrentFactory().itemPrice, x, y - 60);
-		batch.end();
-	}
-	
 	private void drawGameTitle(SpriteBatch batch) {
 		batch.begin();
-		cFontBlue.setScale(1f, 1f);
-		cFontBlue.draw(batch, "Oel - P", 300, 450);
+		cFontBlue.setScale(fontScaleX, fontScaleY);
+		cFontBlue.draw(batch, title, titleX, titleY);
 		batch.end();
 	}	
 	
 	private void displayStatus(SpriteBatch batch, int x, int y) {
-		font.setScale(.9f, .9f);
+		font.setScale(0.9f*fontScaleX, 0.9f*fontScaleY);
 		font.draw(batch, "Player: " + logic.getCurrentPlayer().name + " $" + logic.getCurrentPlayer().cash, x, y);
 		font.draw(batch, "Year: " + logic.getCurrentYear(), x, y - 30);
 		font.draw(batch, "State: " + s.gameState.toString(), x, y - 60);
 	}
 
-	
-	@Override
-	public void Load() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public void Draw(SpriteBatch spriteBatch) {
 			System.out.println("ts draw");
-			drawMenuNew(myMenu, 500, 250,spriteBatch);
+			drawMenuNew(myMenu, menuX, menuY,spriteBatch);
 			drawGameTitle(spriteBatch); 
-		//	drawFactoryHUD(spriteBatch);
 	}
 
 	@Override
 	public gameStates Update(long gameTime) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		System.out.println("Update");
+		this.gameTime = gameTime;
+		processKeysTitle(myMenu);		
+		return nextState;
+	}	
+	
+	private void processKeysTitle(Menu menu) {
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			nextState = gameStates.Game;
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+			sfx.PlaySound(Sounds.MenuChange);
+		    menu.setPreviousItem();
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+			sfx.PlaySound(Sounds.MenuChange);
+			menu.setNextItem();
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {			
+			System.out.println(menu.selectCurrentItem() + " time: "+gameTime);  //remove xxx
 
+			if (menu.getCurrentIdx() == 0){
+				nextState = gameStates.Setup;
+				s.currentPlayerIdx = 0;
+			}
+	
+			if (menu.getCurrentIdx() == 1) {
+				nextState = gameStates.Options;
+			}
+			if (menu.getCurrentIdx() == 2) {
+				nextState = gameStates.Setup;
+			}
+			if (menu.getCurrentIdx() == 3) {
+				nextState = gameStates.Credits;
+			}
+			if (menu.getCurrentIdx() == 4)
+				nextState = gameStates.End;
+		}
+	}
 }

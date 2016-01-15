@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,8 +13,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Control;
 import WhiteLightning.Oel.game.Screens.IGameScreen;
+import WhiteLightning.Oel.game.Screens.SetupScreen;
 import WhiteLightning.Oel.game.Screens.TitleScreen;
 
 
@@ -26,6 +29,7 @@ public class OelGame extends ApplicationAdapter {
 	public World world;
 	public Config config;
 	public Logic l;
+	public SFX sfx;
 	
 	public SpriteBatch spriteBatch;
 	
@@ -70,8 +74,6 @@ public class OelGame extends ApplicationAdapter {
 		g.nextImg = new Texture("Images/next.png");
 		g.sabotImg = new Texture("Images/sabotage.jpg");
 		
-
-		
 		g.nrImages = new ArrayList<>();
 		g.nrImages.add(new Texture("Images/1.png"));
 		g.nrImages.add(new Texture("Images/2.png"));
@@ -84,7 +86,6 @@ public class OelGame extends ApplicationAdapter {
 		menuList.add("Story");
 		menuList.add("Credits");
 		menuList.add("Exit");
-
 		
 		menuMap.put(0,"Start Game");
 		menuMap.put(1,"Options");
@@ -108,17 +109,16 @@ public class OelGame extends ApplicationAdapter {
 		
 		actionMenu = new Menu(actionsMap);
 		
+		sfx = new SFX();
+		
 		config = new Config();
 		this.world = new World(config);
 		l = new Logic(this.world);
 		
+		gameScreens = new HashMap<>();
+		gameScreens.put(gameStates.Title,new TitleScreen(l,sfx, mainMenu) );
+		gameScreens.put(gameStates.Setup,new SetupScreen(l,sfx, config, mainMenu) );
 		
-		ts=new TitleScreen(l,mainMenu);
-		
-
-
-		
-	
 		spriteBatch = new SpriteBatch();
 		System.out.println("initialised");
 	}
@@ -127,28 +127,46 @@ public class OelGame extends ApplicationAdapter {
 	public void render() {
 		update();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		/*
-		if(g.s.gameState == gameStates.Game){
-			g.draw(actionMenu, g.s.gameState);
-		} else 
-			g.draw(mainMenu, g.s.gameState);
-			*/
-		ts.Draw(spriteBatch);
-		
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);				
+		 gameScreens.get(lastState).Draw(spriteBatch);
 	}
 
 	public void update() {
 		updateCamera();
-		control.processKeys(g.s.gameState, mainMenu, actionMenu);
-		//g.update();
+		 lastState=gameScreens.get(lastState).Update(elapsedTime);
+		 
+			if (lastState == gameStates.End)
+	        {
+				Gdx.app.exit();
+	        }
+		processKeysDefault();
 	}
 
 	private void updateCamera() {
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.combined);
-		camera.position.set(Gdx.graphics.getWidth() / 2,
-		Gdx.graphics.getHeight() / 2, 0);
+		camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
 	}
 
+	
+	private void processKeysDefault() {
+		if (!g.textEnterFlag) {
+			if (Gdx.input.isKeyPressed(Keys.X)) {
+				camera.rotate(0.8f);
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+				Gdx.app.exit();
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
+				camera.zoom += 0.02;
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT)) {
+				camera.zoom -= 0.02;
+			}
+		}
+	}
+	
 }
