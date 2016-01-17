@@ -292,6 +292,8 @@ public class Game {
 
 	private void drawImg() {
 
+		System.out.println(s.selectedAction);
+		
 		if (s.gameState == gameStates.Game) {
 
 			int x = 100;

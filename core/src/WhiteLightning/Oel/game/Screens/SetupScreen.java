@@ -21,29 +21,18 @@ import WhiteLightning.Oel.game.Control.Sounds;
 public class SetupScreen implements IGameScreen{
 
 	private State s = State.getInstance();
-	private Sprite menuArrow;
 	private Texture titleScreen;
-	private Logic logic;
 	private Config conf;
-	private long gameTime;
-	private gameStates nextState = gameStates.Title;	
-	private Menu myMenu;
+	private gameStates nextState = gameStates.Trend;	
 	public SFX sfx;
 
 	private ArrayList<Texture> nrImages;
-	private Texture nr1Img;
-	private Texture nr2Img;
-	private Texture nr3Img;
-	private Texture nr4Img;
-	private Texture selectedNrImg;
-	
+
 
 	private BitmapFont font;
 	
 	
-	public SetupScreen(Logic logic, SFX sfx, Config config, Menu menu) {
-		this.logic=logic;		
-		this.myMenu = menu;
+	public SetupScreen(SFX sfx, Config config) {
 		this.sfx = sfx;
 		this.conf = config;
 		Load();
@@ -85,12 +74,15 @@ public class SetupScreen implements IGameScreen{
 				s.players++;
 		}
 		
-		
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			sfx.PlaySound(Sounds.MenuChange);
+			return nextState;
+		}
+				
 		return gameStates.Setup;
 	}
 	
 	private void drawSetup(SpriteBatch batch) {
-		//	drawHUD();
 			int x=200;
 			int offsetX=50;			
 			batch.begin();			

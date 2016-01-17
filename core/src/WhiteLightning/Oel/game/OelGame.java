@@ -15,9 +15,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Control;
+import WhiteLightning.Oel.game.Screens.ActionScreen;
 import WhiteLightning.Oel.game.Screens.IGameScreen;
 import WhiteLightning.Oel.game.Screens.SetupScreen;
 import WhiteLightning.Oel.game.Screens.TitleScreen;
+import WhiteLightning.Oel.game.Screens.TrendScreen;
 
 
 public class OelGame extends ApplicationAdapter {
@@ -117,8 +119,9 @@ public class OelGame extends ApplicationAdapter {
 		
 		gameScreens = new HashMap<>();
 		gameScreens.put(gameStates.Title,new TitleScreen(l,sfx, mainMenu) );
-		gameScreens.put(gameStates.Setup,new SetupScreen(l,sfx, config, mainMenu) );
-		
+		gameScreens.put(gameStates.Setup,new SetupScreen(sfx, config) );
+		gameScreens.put(gameStates.Game,new ActionScreen(l,sfx, config, actionMenu) );
+		gameScreens.put(gameStates.Trend,new TrendScreen(sfx, config, world) );
 		spriteBatch = new SpriteBatch();
 		System.out.println("initialised");
 	}
@@ -134,6 +137,8 @@ public class OelGame extends ApplicationAdapter {
 	public void update() {
 		updateCamera();
 		 lastState=gameScreens.get(lastState).Update(elapsedTime);
+		 
+		// System.out.println("state: "+lastState);
 		 
 			if (lastState == gameStates.End)
 	        {
