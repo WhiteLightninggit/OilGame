@@ -121,7 +121,6 @@ public class TitleScreen implements IGameScreen{
 		menu.standardMode();		
 		menuArrow.setBounds(x - cursorXOffset + s.menuAnimX, y - cursorYOffset - menu.getCurrentIdx() * menuItemHeight, cursorWidth, cursorHeight);
 		menuArrow.draw(batch);
-		displayStatus(batch, statusX, statusY);	
 		batch.end();
 		return menu.getCurrentIdx();
 	}
@@ -132,13 +131,6 @@ public class TitleScreen implements IGameScreen{
 		cFontBlue.draw(batch, title, titleX, titleY);
 		batch.end();
 	}	
-	
-	private void displayStatus(SpriteBatch batch, int x, int y) {
-		font.setScale(0.9f*fontScaleX, 0.9f*fontScaleY);
-		font.draw(batch, "Player: " + logic.getCurrentPlayer().name + " $" + logic.getCurrentPlayer().cash, x, y);
-		font.draw(batch, "Year: " + logic.getCurrentYear(), x, y - 30);
-		font.draw(batch, "State: " + s.gameState.toString(), x, y - 60);
-	}
 
 	@Override
 	public void Draw(SpriteBatch spriteBatch) {

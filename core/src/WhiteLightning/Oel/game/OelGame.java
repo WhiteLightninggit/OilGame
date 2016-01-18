@@ -119,7 +119,7 @@ public class OelGame extends ApplicationAdapter {
 		
 		gameScreens = new HashMap<>();
 		gameScreens.put(gameStates.Title,new TitleScreen(l,sfx, mainMenu) );
-		gameScreens.put(gameStates.Setup,new SetupScreen(sfx, config) );
+		gameScreens.put(gameStates.Setup,new SetupScreen(sfx, config, world) );
 		gameScreens.put(gameStates.Game,new ActionScreen(l,sfx, config, actionMenu) );
 		gameScreens.put(gameStates.Trend,new TrendScreen(sfx, config, world) );
 		spriteBatch = new SpriteBatch();

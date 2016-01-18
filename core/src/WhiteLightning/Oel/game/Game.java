@@ -78,7 +78,7 @@ public class Game {
 		redFont.setColor(Color.RED);
 		c = new Config();
 		this.world = new World(c);
-		l = new Logic(this);
+		l = new Logic(world);
 	//	FreeTypeFontGenerator generator = new
 	//	FreeTypeFontGenerator(Gdx.files.internal("Fonts/cfont.ttf"));
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Texas.ttf"));

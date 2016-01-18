@@ -1,6 +1,7 @@
 package WhiteLightning.Oel.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import WhiteLightning.Oel.game.Objects.Factory;
@@ -22,7 +23,7 @@ public class World {
 	public ArrayList<Factory> wagonFactory;
 	public ArrayList<Factory> drillFactory;
 	public ArrayList<Factory> pumpsFactory;
-	public ArrayList<Player> playersList = new ArrayList<Player>();
+	public HashMap<Integer, Player> playersMap;
 	
 	public World(Config c) {
 
@@ -42,31 +43,28 @@ public class World {
 		createWagonFactories();
 		createDrillFactories();
 		createPumpFactories();	
-		
-		Player p = new Player(c);
-		p.name = "James";
-		
-		Player p2 = new Player(c);
-		p2.name = "Bond";
-		
-		Player p3 = new Player(c);
-		p3.name = "Last";
-		
-		Player p4 = new Player(c);
-		p4.name = "Mohixan";
-		
-		playersList.add(p);
-		playersList.add(p2);
-		playersList.add(p3);
-		playersList.add(p4);
-	/*	
-		fieldsList.get(5).setOwner(p);
-		fieldsList.get(3).setOwner(p2);
-		fieldsList.get(0).setOwner(p2);
-		fieldsList.get(11).setOwner(p);
-		*/
+		playersMap = new HashMap<>();
+
 	}
 
+	public boolean addPlayer(Config config, String playerName, Integer playerNr){
+	
+		
+		if(s.players<=config.playersMax){
+			Player p = new Player(config);
+			p.name = playerName;
+			this.playersMap.put(playerNr, p);
+			System.out.println("player "+playerName+" "+playerNr+" was added.");
+			return true;
+		}
+		return false;		
+	}
+	
+	public Player getPlayer(Integer playerNr){
+		return (Player) playersMap.get(playerNr);		
+	}
+	
+	
 	private void createOilFields(){
 		fieldsList = new ArrayList<OilField>(oilFieldsNr);
 		for(byte i=0;i<oilFieldsNr;i++){			

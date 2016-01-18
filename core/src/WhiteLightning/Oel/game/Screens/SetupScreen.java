@@ -14,6 +14,7 @@ import WhiteLightning.Oel.game.Config;
 import WhiteLightning.Oel.game.Logic;
 import WhiteLightning.Oel.game.Menu;
 import WhiteLightning.Oel.game.State;
+import WhiteLightning.Oel.game.World;
 import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
@@ -24,17 +25,20 @@ public class SetupScreen implements IGameScreen{
 	private Texture titleScreen;
 	private Config conf;
 	private gameStates nextState = gameStates.Trend;	
+	private World world;
 	public SFX sfx;
 
+	
 	private ArrayList<Texture> nrImages;
 
 
 	private BitmapFont font;
 	
 	
-	public SetupScreen(SFX sfx, Config config) {
+	public SetupScreen(SFX sfx, Config config, World world) {
 		this.sfx = sfx;
 		this.conf = config;
+		this.world = world;
 		Load();
 	}
 	
@@ -76,6 +80,13 @@ public class SetupScreen implements IGameScreen{
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			sfx.PlaySound(Sounds.MenuChange);
+			for(int i=0;i<s.players;i++){
+				world.addPlayer(conf, "Player "+(i+1),i);
+				System.out.println("player added"+i);
+			}
+			
+			
+			
 			return nextState;
 		}
 				
@@ -83,21 +94,32 @@ public class SetupScreen implements IGameScreen{
 	}
 	
 	private void drawSetup(SpriteBatch batch) {
-			int x=200;
-			int offsetX=50;			
+			int x=250;
+			int y = 500;
+			int offsetX=125;			
 			batch.begin();			
 			batch.draw(titleScreen, 0, 0, 800, 600);
 			
+			font.draw(batch, "Players Number:",100,500);
+			
 			for (int i=0; i<nrImages.size()-1;i++) {
-				batch.draw(nrImages.get(i), x+i*50, 300, offsetX, 50);
+				batch.draw(nrImages.get(i), x+i*offsetX, y-25, 50, 50);
+				
+				if(i<s.players)
+					font.draw(batch, "Player "+(i+1),x+i*offsetX,y-75);
+				
 			}
 			
-			batch.draw(nrImages.get(nrImages.size()-1), x+(s.players-1)*offsetX, 300, offsetX, 50);
+			batch.draw(nrImages.get(nrImages.size()-1), x+(s.players-1)*offsetX, y-25, 50, 50);
 			font.setScale(.9f, .9f);
-			font.draw(batch, "Input: " + s.sb,500,200);
+			
+		
+			
+			/*
 			s.text.setBounds(200, 200, 100, 40);
 			s.text.draw(batch, 1);
 			s.text.getOnscreenKeyboard();
+		*/
 			batch.end();
 		}
 

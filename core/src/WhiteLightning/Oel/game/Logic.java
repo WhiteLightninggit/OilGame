@@ -9,18 +9,14 @@ import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
 public class Logic {
 
-	World w;
+	public World w;
 	State s = State.getInstance();
-	byte players;	
+//	byte players;	
 	
-	public Logic(Game g){
-		this.w = g.world;
-		this.players = w.players;
-	}
 	
 	public Logic(World w){
 		this.w = w;
-		this.players = w.players;
+	//this.players = w.players;
 	}
 	
 	
@@ -68,7 +64,9 @@ public class Logic {
 	}
 	
 	public Player getCurrentPlayer(){		
-		return w.playersList.get(s.currentPlayerIdx);
+		System.out.println("get curr player "+s.currentPlayerIdx);
+		System.out.println("length "+w.playersMap.size());
+		return (Player) w.getPlayer((int) s.currentPlayerIdx);
 	}
 	
 	public Factory getCurrentFactory(){		
@@ -95,7 +93,7 @@ public class Logic {
 		
 		System.out.println("Set next player: "+s.currentPlayerIdx);
 		
-		if (++s.currentPlayerIdx < players) {			
+		if (++s.currentPlayerIdx < s.players) {			
 			return s.currentPlayerIdx;
 		} else {
 			s.currentYear++;

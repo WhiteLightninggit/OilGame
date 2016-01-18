@@ -68,7 +68,7 @@ public class TrendScreen implements IGameScreen{
 	private int drawTrend(SpriteBatch batch) {
 		batch.begin();
 		batch.draw(titleScreen, 0, 0, 800, 600);
-		cFontGray.draw(batch, "This is the END or STORY screen.", 300, 450);
+		cFontGray.draw(batch, "This is the forecast of Oil Prices.", 100, 450);		
 		batch.end();
 		
 		ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -82,7 +82,7 @@ public class TrendScreen implements IGameScreen{
 		 int width=25;
 		 
 		 for(int i=0; i<world.oilPricesTrend.length;i++){
-			 shapeRenderer.rect(110+i*width, 110, 20,world.oilPricesTrend[i]*20);
+			 shapeRenderer.rect(115+i*width, 110, 20,world.oilPricesTrend[i]*20);
 		 }		 
 		 
 		 shapeRenderer.end();

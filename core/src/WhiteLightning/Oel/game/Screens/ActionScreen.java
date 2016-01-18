@@ -1,6 +1,6 @@
 package WhiteLightning.Oel.game.Screens;
 
-import java.util.ArrayList;
+import java.util.function.LongUnaryOperator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -21,6 +21,7 @@ import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
 import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
+import WhiteLightning.Oel.game.Objects.Player;
 
 public class ActionScreen implements IGameScreen{
 
@@ -170,7 +171,7 @@ public class ActionScreen implements IGameScreen{
 		
 		processKeysGame(myMenu);
 		
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			sfx.PlaySound(Sounds.MenuChange);
 			return gameStates.End;
 		}
@@ -179,8 +180,12 @@ public class ActionScreen implements IGameScreen{
 	}
 
 	private void displayStatus(SpriteBatch batch, int x, int y) {
+		
 		font.setScale(0.9f*fontScaleX, 0.9f*fontScaleY);
-		font.draw(batch, "Player: " + logic.getCurrentPlayer().name + " $" + logic.getCurrentPlayer().cash, x, y);
+	//	font.draw(batch, "Player: " + logic.getCurrentPlayer().name + " $" + logic.getCurrentPlayer().cash, x, y);
+	//	logic.w = 
+		Player p = logic.getCurrentPlayer();
+		font.draw(batch, "Player: " + logic.getCurrentPlayer().name, x, y);
 		font.draw(batch, "Year: " + logic.getCurrentYear(), x, y - 30);
 		font.draw(batch, "State: " + s.gameState.toString(), x, y - 60);
 	}
@@ -268,6 +273,7 @@ batch.begin();
 			if (menu.getCurrentIdx() == 8) {
 				logic.setNextPlayer();
 				System.out.println("Game state: " + s.gameState + " " + s.lastYear);
+			
 				if (logic.isGameEnd()) {
 					System.out.println("Game state: " + s.gameState);
 					s.gameState = gameStates.End;
