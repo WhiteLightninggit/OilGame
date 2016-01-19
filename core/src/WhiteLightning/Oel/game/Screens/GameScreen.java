@@ -1,7 +1,5 @@
 package WhiteLightning.Oel.game.Screens;
 
-import java.util.function.LongUnaryOperator;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -22,9 +20,12 @@ import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
 import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 import WhiteLightning.Oel.game.Objects.Player;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class ActionScreen implements IGameScreen{
+public class GameScreen implements IGameScreen{
 
+	final Logger log = LogManager.getLogger(GameScreen.class);
 	private State s = State.getInstance();
 	private Sprite menuArrow;
 	private Texture titleScreen;
@@ -75,7 +76,8 @@ public class ActionScreen implements IGameScreen{
 	private int menuY = 250;
 	
 	
-	public ActionScreen(Logic logic, SFX sfx, Config config, Menu menu) {
+	public GameScreen(Logic logic, SFX sfx, Config config, Menu menu) {
+		log.info("GameScreen");
 		this.logic=logic;		
 		this.myMenu = menu;
 		this.sfx = sfx;
@@ -120,6 +122,7 @@ public class ActionScreen implements IGameScreen{
 	
 	@Override
 	public void Load() {
+		log.trace("Load()");
 		this.gameTime = TimeUtils.nanoTime();
 		titleScreen = new Texture("Images/chart6.png");
 		menuArrow = new Sprite(new Texture("Images/marker2.png"));
@@ -192,6 +195,7 @@ public class ActionScreen implements IGameScreen{
 	
 	private void drawImg(SpriteBatch batch) {
 
+
 batch.begin();
 
 			int x = 100;
@@ -253,8 +257,6 @@ batch.begin();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			sfx.PlaySound(Sounds.MenuChange);
-
-			System.out.println("menu: idx "+menu.getCurrentIdx()+" action "+menu.selectCurrentItem().toString() );
 			
 			if (menu.getCurrentIdx() == 0) {
 				s.gameState = gameStates.Factory;

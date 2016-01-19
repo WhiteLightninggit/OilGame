@@ -23,7 +23,6 @@ public class TitleScreen implements IGameScreen{
 	private State s = State.getInstance();
 	private Sprite menuArrow;
 	private Texture titleScreen;
-	private Logic logic;
 	private long gameTime;
 	private gameStates nextState = gameStates.Title;
 	
@@ -44,8 +43,6 @@ public class TitleScreen implements IGameScreen{
 	private int screenHeight = 600;
 	private float fontScaleX = 1f;
 	private float fontScaleY = 1f;
-	private int statusX = 20;
-	private int statusY = 100;
 	private int titleX = 300;
 	private int titleY = 450;
 	private int cursorWidth = 25;
@@ -58,7 +55,6 @@ public class TitleScreen implements IGameScreen{
 	
 	
 	public TitleScreen(Logic logic, SFX sfx, Menu menu) {
-		this.logic=logic;		
 		this.myMenu = menu;
 		this.sfx = sfx;
 		Load();
@@ -134,14 +130,12 @@ public class TitleScreen implements IGameScreen{
 
 	@Override
 	public void Draw(SpriteBatch spriteBatch) {
-			System.out.println("ts draw");
 			drawMenuNew(myMenu, menuX, menuY,spriteBatch);
 			drawGameTitle(spriteBatch); 
 	}
 
 	@Override
 	public gameStates Update(long gameTime) {
-		System.out.println("Update");
 		this.gameTime = gameTime;
 		processKeysTitle(myMenu);		
 		return nextState;

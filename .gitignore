@@ -4,7 +4,7 @@
 *.war
 *.ear
 hs_err_pid*
-
+all.log
 ## GWT
 war/
 html/war/gwt_bree/

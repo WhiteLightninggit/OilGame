@@ -1,9 +1,13 @@
+
 buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
+    
+        dependencies {
+
     }
+
 }
 
 allprojects {
@@ -25,6 +29,8 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
+    
 }
 
 project(":desktop") {
@@ -32,10 +38,14 @@ project(":desktop") {
 
 
     dependencies {
+
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    compile fileTree(dir: 'libs', include: '*.jar')  
+    	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
+      	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
     }
 }
 
@@ -44,8 +54,14 @@ project(":core") {
 
 
     dependencies {
+
+
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+
+		//compile fileTree(dir: 'libs', include: '*.jar')  
+        compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
+      	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
     }
 }
 
