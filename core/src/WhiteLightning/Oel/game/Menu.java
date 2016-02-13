@@ -6,7 +6,7 @@ public class Menu implements IMenu{
 
 	public HashMap<Integer,String> menuData;
 
-	int currentIdx = -1;
+	public int currentIdx = -1;
 	private int rememberedIdx = -1;
 	
 	public Menu(HashMap<Integer,String> ll) {

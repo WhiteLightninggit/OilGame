@@ -18,8 +18,10 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Control;
+import WhiteLightning.Oel.game.Screens.FactoryScreen;
 import WhiteLightning.Oel.game.Screens.GameScreen;
 import WhiteLightning.Oel.game.Screens.IGameScreen;
+import WhiteLightning.Oel.game.Screens.OilFieldsScreen;
 import WhiteLightning.Oel.game.Screens.SetupScreen;
 import WhiteLightning.Oel.game.Screens.TitleScreen;
 import WhiteLightning.Oel.game.Screens.TrendScreen;
@@ -35,7 +37,7 @@ public class OelGame extends ApplicationAdapter {
 	
 	public World world;
 	public Config config;
-	public Logic l;
+	public Logic logic;
 	public SFX sfx;
 	
 	public SpriteBatch spriteBatch;
@@ -121,13 +123,15 @@ public class OelGame extends ApplicationAdapter {
 		
 		config = new Config();
 		this.world = new World(config);
-		l = new Logic(this.world);
+		logic = new Logic(this.world);
 		
 		gameScreens = new HashMap<>();
-		gameScreens.put(gameStates.Title,new TitleScreen(l,sfx, mainMenu) );
+		gameScreens.put(gameStates.Title,new TitleScreen(logic,sfx, mainMenu) );
 		gameScreens.put(gameStates.Setup,new SetupScreen(sfx, config, world) );
-		gameScreens.put(gameStates.Game,new GameScreen(l,sfx, config, actionMenu) );
+		gameScreens.put(gameStates.Game,new GameScreen(logic,sfx, config, actionMenu) );
 		gameScreens.put(gameStates.Trend,new TrendScreen(sfx, config, world) );
+		gameScreens.put(gameStates.OilFields,new OilFieldsScreen(sfx, world, logic) );
+		gameScreens.put(gameStates.Factory,new FactoryScreen(sfx, world, logic) );
 		spriteBatch = new SpriteBatch();
 		log.info("Initialised");
 	}

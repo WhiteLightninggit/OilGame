@@ -92,8 +92,7 @@ public class Control {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 			
-			System.out.println(menu.selectCurrentItem());
-
+		
 			if (menu.getCurrentIdx() == 0){
 				s.gameState = gameStates.Game;
 				s.currentPlayerIdx = 0;
@@ -137,7 +136,7 @@ public class Control {
 			s.gameState = gameStates.Game;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			System.out.println(g.world.fieldsList.get(s.selectedField).name);
+		
 			if (!l.buyField()) {
 				g.denySound.play();
 			}

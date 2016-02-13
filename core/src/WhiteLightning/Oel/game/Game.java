@@ -292,7 +292,6 @@ public class Game {
 
 	private void drawImg() {
 
-		System.out.println(s.selectedAction);
 		
 		if (s.gameState == gameStates.Game) {
 
@@ -379,16 +378,6 @@ public class Game {
 		
 		
 		
-		if (s.animFlag) {
-			s.menuAnimX = s.menuAnimX + 3;
-			System.out.println("z: " + s.menuAnimX);
-			if (s.menuAnimX >= 150) {
-				s.menuAnimX = 1;
-				s.animFlag = false;
-			}
-
-			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.menuAnimX, 6);
-		}
 
 		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - s.selectedField * deltaY, 25, 25);
 		menuArrow.draw(batch);
@@ -446,16 +435,7 @@ public class Game {
 			cFontRed.draw(batch, String.valueOf(menuList.get(s.selectedField).getPrice()), x + 230,
 					y - deltaY * s.selectedField);
 		}
-		if (s.animFlag) {
-			s.menuAnimX = s.menuAnimX + 3;
-			System.out.println("z: " + s.menuAnimX);
-			if (s.menuAnimX >= 150) {
-				s.menuAnimX = 1;
-				s.animFlag = false;
-			}
 
-			batch.draw(line, x - 12, y - 20 - s.selectedField * deltaY, s.menuAnimX, 6);
-		}
 
 		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - s.selectedField * deltaY, 25, 25);
 		menuArrow.draw(batch);

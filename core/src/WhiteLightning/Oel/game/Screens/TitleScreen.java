@@ -1,6 +1,7 @@
 package WhiteLightning.Oel.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -142,6 +143,37 @@ public class TitleScreen implements IGameScreen{
 	}	
 	
 	private void processKeysTitle(Menu menu) {
+	
+		System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
+		int mx = Gdx.input.getX();
+		int my = Gdx.input.getY();
+		
+		if(mx>500 && mx < 700){
+			if(my >350 && my<370 && menu.currentIdx !=0) {
+				sfx.PlaySound(Sounds.MenuChange);
+				menu.currentIdx = 0;
+			}
+			if(my >385 && my<415 && menu.currentIdx !=1) {
+				sfx.PlaySound(Sounds.MenuChange);
+				menu.currentIdx = 1;
+			}
+			if(my >429 && my<450 && menu.currentIdx !=2) {
+				sfx.PlaySound(Sounds.MenuChange);
+				menu.currentIdx = 2;
+			}
+			if(my >470 && my<490&& menu.currentIdx !=3) {
+				sfx.PlaySound(Sounds.MenuChange);
+				menu.currentIdx = 3;
+			}
+			if(my >510 && my<533 && menu.currentIdx !=4) {
+				sfx.PlaySound(Sounds.MenuChange);
+				menu.currentIdx = 4;
+			}
+		
+		
+			
+		}
+		
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			nextState = gameStates.Game;
 		}
@@ -153,7 +185,7 @@ public class TitleScreen implements IGameScreen{
 			sfx.PlaySound(Sounds.MenuChange);
 			menu.setNextItem();
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {			
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) || Gdx.input.isButtonPressed(Input.Buttons.LEFT) ) {			
 			System.out.println(menu.selectCurrentItem() + " time: "+gameTime);  //remove xxx
 
 			if (menu.getCurrentIdx() == 0){

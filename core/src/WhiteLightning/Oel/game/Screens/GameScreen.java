@@ -172,14 +172,14 @@ public class GameScreen implements IGameScreen{
 	@Override
 	public gameStates Update(long gameTime) {
 		
-		processKeysGame(myMenu);
+		
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			sfx.PlaySound(Sounds.MenuChange);
 			return gameStates.End;
 		}
 		
-		return gameStates.Game;
+		return processKeysGame(myMenu);
 	}
 
 	private void displayStatus(SpriteBatch batch, int x, int y) {
@@ -187,7 +187,7 @@ public class GameScreen implements IGameScreen{
 		font.setScale(0.9f*fontScaleX, 0.9f*fontScaleY);
 	//	font.draw(batch, "Player: " + logic.getCurrentPlayer().name + " $" + logic.getCurrentPlayer().cash, x, y);
 	//	logic.w = 
-		Player p = logic.getCurrentPlayer();
+	//	Player p = logic.getCurrentPlayer();
 		font.draw(batch, "Player: " + logic.getCurrentPlayer().name, x, y);
 		font.draw(batch, "Year: " + logic.getCurrentYear(), x, y - 30);
 		font.draw(batch, "State: " + s.gameState.toString(), x, y - 60);
@@ -238,7 +238,7 @@ batch.begin();
 	
 	
 	
-	public void processKeysGame(Menu menu) {
+	public gameStates processKeysGame(Menu menu) {
 		if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
 			// g.nextInternalState();
 		}
@@ -259,19 +259,27 @@ batch.begin();
 			sfx.PlaySound(Sounds.MenuChange);
 			
 			if (menu.getCurrentIdx() == 0) {
-				s.gameState = gameStates.Factory;
-				s.currFactoryType = FactoryType.PUMP;
-			}
-			if (menu.getCurrentIdx() == 1) {
+				s.selectedField=0;
 				s.gameState = gameStates.Factory;
 				s.currFactoryType = FactoryType.DRILLS;
+				return gameStates.Factory;
+			}
+			if (menu.getCurrentIdx() == 1) {
+				s.selectedField=0;
+				s.gameState = gameStates.Factory;
+				s.currFactoryType = FactoryType.PUMP;
+				return gameStates.Factory;
 			}
 			if (menu.getCurrentIdx() == 2) {
+				s.selectedField=0;
 				s.gameState = gameStates.Factory;
 				s.currFactoryType = FactoryType.WAGONS;
+				return gameStates.Factory;
 			}
-			if (menu.getCurrentIdx() == 3)
+			if (menu.getCurrentIdx() == 3){
 				s.gameState = gameStates.OilFields;
+				return gameStates.OilFields;
+			}
 			if (menu.getCurrentIdx() == 8) {
 				logic.setNextPlayer();
 				System.out.println("Game state: " + s.gameState + " " + s.lastYear);
@@ -284,6 +292,9 @@ batch.begin();
 			s.selectedField = 0;
 		}
 
+		
+		return gameStates.Game;
+		
 	}
 	
 	

@@ -9,6 +9,7 @@ import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
 public class Logic {
 
+	private boolean actionPerformed = false;
 	public World w;
 	State s = State.getInstance();
 //	byte players;	
@@ -21,21 +22,20 @@ public class Logic {
 	
 	
 	public boolean buyField(){
-		System.out.println("Current player: "+s.currentPlayerIdx);
 		return buyField(getCurrentPlayer(), w.fieldsList.get(s.selectedField));
 	}
 	
 	private boolean buyField(Player p, OilField field ){
-		if(p.cash > field.getPrice() && !field.hasOwner){
+		if(p.cash > field.getPrice() && !field.hasOwner && !actionPerformed){
 			field.setOwner(p);
 			p.pay(field.getPrice());
+			actionPerformed = true;
 			return true;
 		} 		
 		return false;
 	}
 	
 	public boolean buyFactory(FactoryType type){
-		System.out.println("Current player: "+s.currentPlayerIdx);
 		
 		switch (type) {
 		case DRILLS:
@@ -50,9 +50,10 @@ public class Logic {
 	}
 	
 	private boolean buyRealEstate(Player p, RealEstateI estate ){
-		if(p.cash > estate.getPrice() && !estate.hasOwner()){
+		if(p.cash > estate.getPrice() && !estate.hasOwner() && !actionPerformed){
 			estate.setOwner(p);
 			p.pay(estate.getPrice());
+			actionPerformed = true;
 			return true;
 		} 		
 		return false;
@@ -64,8 +65,6 @@ public class Logic {
 	}
 	
 	public Player getCurrentPlayer(){		
-		System.out.println("get curr player "+s.currentPlayerIdx);
-		System.out.println("length "+w.playersMap.size());
 		return (Player) w.getPlayer((int) s.currentPlayerIdx);
 	}
 	
@@ -91,9 +90,8 @@ public class Logic {
 	
 	public byte setNextPlayer() {
 		
-		System.out.println("Set next player: "+s.currentPlayerIdx);
-		
-		if (++s.currentPlayerIdx < s.players) {			
+		actionPerformed = false;
+		if (++s.currentPlayerIdx < s.players) {				
 			return s.currentPlayerIdx;
 		} else {
 			s.currentYear++;
