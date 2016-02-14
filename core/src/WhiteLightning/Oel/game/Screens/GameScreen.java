@@ -1,6 +1,7 @@
 package WhiteLightning.Oel.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -239,9 +240,21 @@ batch.begin();
 	
 	
 	public gameStates processKeysGame(Menu menu) {
-		if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
-			// g.nextInternalState();
+
+		//System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
+		int mx = Gdx.input.getX();
+		int my = Gdx.input.getY();
+		int menuUpperY = 100;
+		
+		
+		if(mx>500 && mx < 700 && my > 100 && my<525){
+			if((my-menuUpperY)/40 != menu.currentIdx){
+					sfx.PlaySound(Sounds.MenuChange);
+					menu.currentIdx = (my-menuUpperY)/40;
+					System.out.println("change: "+((my-menuUpperY) / 40));
+			}		
 		}
+		
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			sfx.PlaySound(Sounds.MenuChange);
 			menu.selectPreviousItem();
@@ -255,7 +268,7 @@ batch.begin();
 				s.selectedAction++;
 */			s.moveUp = false;
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isButtonPressed(Buttons.LEFT) && Gdx.input.justTouched())) {
 			sfx.PlaySound(Sounds.MenuChange);
 			
 			if (menu.getCurrentIdx() == 0) {

@@ -3,6 +3,7 @@ package WhiteLightning.Oel.game.Screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,6 +34,7 @@ public class OilFieldsScreen implements IGameScreen{
 	private World world;
 	private SFX sfx;
 	private Logic logic;
+	private int deltaY = 35;
 	
 	public OilFieldsScreen(SFX sfx, World world, Logic logic) {
 		this.world = world;
@@ -76,7 +78,6 @@ public class OilFieldsScreen implements IGameScreen{
 	}
 
 	private void drawFields(SpriteBatch batch, ArrayList<OilField> menuList, int captionOffset, int x, int y) {
-		int deltaY = 35;
 		float scale = .8f;
 		int priceColumnOffset = 215;
 		int ownerColumnOffset = 315;
@@ -126,6 +127,20 @@ public class OilFieldsScreen implements IGameScreen{
 	
 	public gameStates processKeysOilfields() {
 
+		System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
+		int mx = Gdx.input.getX();
+		int my = Gdx.input.getY();
+		int menuUpperY = 100;
+		
+		
+		if(mx>298 && mx < 590 && my > 100 && my<500){
+			if((my-menuUpperY)/deltaY != s.selectedField){
+					sfx.PlaySound(Sounds.MenuChange);
+					s.selectedField = (my-menuUpperY)/deltaY;
+					System.out.println("change: "+((my-menuUpperY) / deltaY));
+			}		
+		}
+		
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			sfx.PlaySound(Sounds.MenuChange);
 
@@ -140,14 +155,13 @@ public class OilFieldsScreen implements IGameScreen{
 			s.moveUp = false;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
-			return gameStates.Game;
-			
+			return gameStates.Game;			
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isButtonPressed(Buttons.LEFT) && Gdx.input.justTouched())) {
 			System.out.println(world.fieldsList.get(s.selectedField).name);
 			if (!logic.buyField()) {
-				sfx.PlaySound(Sounds.DenySound);
-				
+				sfx.PlaySound(Sounds.DenySound);				
 			}
 		}
 		return gameStates.OilFields;

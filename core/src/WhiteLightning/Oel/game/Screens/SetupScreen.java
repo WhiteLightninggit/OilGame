@@ -3,6 +3,7 @@ package WhiteLightning.Oel.game.Screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,10 +28,11 @@ public class SetupScreen implements IGameScreen{
 	private gameStates nextState = gameStates.Trend;	
 	private World world;
 	public SFX sfx;
-
-	
+	private int x = 250;
+	private int y = 500;
+	private int offsetX=125;
 	private ArrayList<Texture> nrImages;
-
+	private int mostLeftMenuX;
 
 	private BitmapFont font;
 	
@@ -39,6 +41,7 @@ public class SetupScreen implements IGameScreen{
 		this.sfx = sfx;
 		this.conf = config;
 		this.world = world;
+		this.mostLeftMenuX = x+offsetX*conf.playersMax;
 		Load();
 	}
 	
@@ -64,7 +67,17 @@ public class SetupScreen implements IGameScreen{
 
 	@Override
 	public gameStates Update(long gameTime) {
-		// TODO Auto-generated method stub
+		//System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
+		int mx = Gdx.input.getX();
+		int my = Gdx.input.getY();
+					
+		if(mx>x && mx < mostLeftMenuX && my > 0 && my<525){
+			if(((mx-x)/offsetX+1) != s.players){
+					sfx.PlaySound(Sounds.MenuChange);
+					s.players = (byte)((mx-x)/offsetX+1);
+					System.out.println("change: "+((mx-x)/offsetX));
+			}		
+		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
 			sfx.PlaySound(Sounds.MenuChange);
@@ -78,7 +91,7 @@ public class SetupScreen implements IGameScreen{
 				s.players++;
 		}
 		
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isButtonPressed(Buttons.LEFT) && Gdx.input.justTouched())) {
 			sfx.PlaySound(Sounds.MenuChange);
 			for(int i=0;i<s.players;i++){
 				world.addPlayer(conf, "Player "+(i+1),i);
@@ -93,28 +106,18 @@ public class SetupScreen implements IGameScreen{
 		return gameStates.Setup;
 	}
 	
-	private void drawSetup(SpriteBatch batch) {
-			int x=250;
-			int y = 500;
-			int offsetX=125;			
+	private void drawSetup(SpriteBatch batch) {						
 			batch.begin();			
-			batch.draw(titleScreen, 0, 0, 800, 600);
-			
+			batch.draw(titleScreen, 0, 0, 800, 600);			
 			font.draw(batch, "Players Number:",100,500);
 			
 			for (int i=0; i<nrImages.size()-1;i++) {
-				batch.draw(nrImages.get(i), x+i*offsetX, y-25, 50, 50);
-				
+				batch.draw(nrImages.get(i), x+i*offsetX, y-25, 50, 50);				
 				if(i<s.players)
-					font.draw(batch, "Player "+(i+1),x+i*offsetX,y-75);
-				
-			}
-			
+					font.draw(batch, "Player "+(i+1),x+i*offsetX,y-75);				
+			}			
 			batch.draw(nrImages.get(nrImages.size()-1), x+(s.players-1)*offsetX, y-25, 50, 50);
-			font.setScale(.9f, .9f);
-			
-		
-			
+			font.setScale(.9f, .9f);			
 			/*
 			s.text.setBounds(200, 200, 100, 40);
 			s.text.draw(batch, 1);

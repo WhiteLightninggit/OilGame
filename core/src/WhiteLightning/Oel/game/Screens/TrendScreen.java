@@ -1,6 +1,7 @@
 package WhiteLightning.Oel.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -57,7 +58,7 @@ public class TrendScreen implements IGameScreen{
 	@Override
 	public gameStates Update(long gameTime) {
 		
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isButtonPressed(Buttons.LEFT) && Gdx.input.justTouched())) {
 			sfx.PlaySound(Sounds.MenuChange);
 			return nextState;
 		}

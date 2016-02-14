@@ -103,7 +103,7 @@ public class TitleScreen implements IGameScreen{
 				if (menu.isCurrent()) {
 					cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menuItemHeight * menu.getCurrentIdx());
 				} else {
-					cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * menuItemHeight);					
+					cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menuItemHeight * menu.getCurrentIdx());					
 				}
 				itemLetter++;			
 				menu.selectNextItem();
@@ -144,36 +144,18 @@ public class TitleScreen implements IGameScreen{
 	
 	private void processKeysTitle(Menu menu) {
 	
-		System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
+	//	System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
 		int mx = Gdx.input.getX();
 		int my = Gdx.input.getY();
 		
-		if(mx>500 && mx < 700){
-			if(my >350 && my<370 && menu.currentIdx !=0) {
-				sfx.PlaySound(Sounds.MenuChange);
-				menu.currentIdx = 0;
-			}
-			if(my >385 && my<415 && menu.currentIdx !=1) {
-				sfx.PlaySound(Sounds.MenuChange);
-				menu.currentIdx = 1;
-			}
-			if(my >429 && my<450 && menu.currentIdx !=2) {
-				sfx.PlaySound(Sounds.MenuChange);
-				menu.currentIdx = 2;
-			}
-			if(my >470 && my<490&& menu.currentIdx !=3) {
-				sfx.PlaySound(Sounds.MenuChange);
-				menu.currentIdx = 3;
-			}
-			if(my >510 && my<533 && menu.currentIdx !=4) {
-				sfx.PlaySound(Sounds.MenuChange);
-				menu.currentIdx = 4;
-			}
-		
-		
-			
+		if(mx>500 && mx < 700 && my > 350 && my < 540 ){
+			if((my-350)/40 != menu.currentIdx){
+					sfx.PlaySound(Sounds.MenuChange);
+					menu.currentIdx = (my-350)/40;
+					System.out.println("change: "+((my-350) / 40));
+			}		
 		}
-		
+
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			nextState = gameStates.Game;
 		}
