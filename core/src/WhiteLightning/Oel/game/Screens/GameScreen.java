@@ -254,6 +254,7 @@ batch.begin();
 					System.out.println("change: "+((my-menuUpperY) / 40));
 			}		
 		}
+
 		
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			sfx.PlaySound(Sounds.MenuChange);
@@ -292,6 +293,10 @@ batch.begin();
 			if (menu.getCurrentIdx() == 3){
 				s.gameState = gameStates.OilFields;
 				return gameStates.OilFields;
+			}
+			if (menu.getCurrentIdx() == 4){
+				s.gameState = gameStates.BuyDrills;
+				return gameStates.BuyDrills;
 			}
 			if (menu.getCurrentIdx() == 8) {
 				logic.setNextPlayer();

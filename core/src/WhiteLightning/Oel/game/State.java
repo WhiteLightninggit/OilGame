@@ -1,12 +1,17 @@
 package WhiteLightning.Oel.game;
 
+import java.io.Serializable;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+
+
 import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 
-public class State {
+public class State implements Serializable  {
 
+	private static final long serialVersionUID = 5740086425894390405L;
 	public int internalState = 0;
 	public boolean animFlag = false;
 	public boolean playMusic = true;
@@ -38,4 +43,6 @@ public class State {
     public static State getInstance() {
         return Loader.INSTANCE;
     }
+
+
 }

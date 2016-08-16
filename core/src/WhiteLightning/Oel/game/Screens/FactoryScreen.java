@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,6 +39,9 @@ public class FactoryScreen implements IGameScreen{
 	private Logic logic;
 	final Logger log = LogManager.getLogger(GameScreen.class);
 	private int factoriesNr;
+	private int deltaY = 25;
+	private int menuLeftX = 450;
+	private int menuUpperY = Gdx.graphics.getHeight() - 200;
 	
 	public FactoryScreen(SFX sfx, World world, Logic logic) {
 		this.world = world;
@@ -74,16 +78,16 @@ public class FactoryScreen implements IGameScreen{
 	//	drawFactory(batch, menuList, captionOffset, x, y);
 		switch (s.currFactoryType) {
 		case DRILLS:
-			drawFactory(spriteBatch,world.drillFactory, 300, Gdx.graphics.getHeight() - 200);
+			drawFactory(spriteBatch,world.drillFactory, menuLeftX, menuUpperY);
 			factoriesNr = world.drillFactory.size();
 			break;
 		case PUMP:
-			drawFactory(spriteBatch,world.pumpsFactory, 300, Gdx.graphics.getHeight() - 200);
+			drawFactory(spriteBatch,world.pumpsFactory, menuLeftX, menuUpperY);
 			factoriesNr = world.pumpsFactory.size();
 			break;
 		case WAGONS:
-			drawFactory(spriteBatch,world.wagonFactory, 300, Gdx.graphics.getHeight() - 200);
-			factoriesNr = world.pumpsFactory.size();
+			drawFactory(spriteBatch,world.wagonFactory, menuLeftX, menuUpperY);
+			factoriesNr = world.wagonFactory.size();
 			break;
 		default:
 			break;
@@ -98,8 +102,6 @@ public class FactoryScreen implements IGameScreen{
 
 	private void drawFactory(SpriteBatch batch, ArrayList<Factory> menuList, int x, int y) {
 		log.trace("Draw Factory");
-		x = x + 150;
-		int deltaY = 25;
 		float scale = .8f;
 
 		batch.begin();
@@ -109,6 +111,8 @@ public class FactoryScreen implements IGameScreen{
 
 		cFontBlue.setScale(.4f, .4f);
 
+
+		
 		for (Factory factory : menuList) {
 			if (factory.hasOwner()) {
 				cFontGray.setScale(scale, scale);
@@ -143,6 +147,22 @@ public class FactoryScreen implements IGameScreen{
 	
 	public gameStates processKeysFactoryScreen() {
 
+		System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
+		int mx = Gdx.input.getX();
+		int my = Gdx.input.getY();
+	//	int menuUpperY = 100;
+		
+		System.out.println("MY: "+menuUpperY);
+		
+		
+		if(mx>menuLeftX && mx < 590 && my > 200 && my<(200+deltaY*factoriesNr)){
+			if((my-200)/deltaY != s.selectedField){
+					sfx.PlaySound(Sounds.MenuChange);
+					s.selectedField = (my-200)/deltaY;
+					System.out.println("change: "+((my-200) / deltaY));
+			}		
+		}
+		
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			sfx.PlaySound(Sounds.MenuChange);
 
@@ -152,7 +172,7 @@ public class FactoryScreen implements IGameScreen{
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 			sfx.PlaySound(Sounds.MenuChange);
-			if (s.selectedField < factoriesNr)
+			if (s.selectedField < factoriesNr-1)
 				s.selectedField++;
 			s.moveUp = false;
 		}
@@ -160,7 +180,7 @@ public class FactoryScreen implements IGameScreen{
 			return gameStates.Game;
 			
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isButtonPressed(Buttons.LEFT) && Gdx.input.justTouched())) {
 			if (!logic.buyFactory(s.currFactoryType)) {
 				sfx.PlaySound(Sounds.DenySound);
 			}

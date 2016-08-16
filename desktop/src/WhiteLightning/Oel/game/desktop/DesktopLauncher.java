@@ -12,7 +12,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {		
 		final Logger log = LogManager.getLogger(DesktopLauncher.class);
 		
-		log.info("Program started");				
+		log.info("Program started. Java: "+System.getProperty("java.version"));				
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 800;		
 		config.height = 600;

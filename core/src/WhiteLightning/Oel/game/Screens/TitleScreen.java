@@ -1,5 +1,8 @@
 package WhiteLightning.Oel.game.Screens;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -62,7 +65,12 @@ public class TitleScreen implements IGameScreen{
 	}
 	
 	@Override
-	public void Load() {		
+	public void Load() {	
+		
+		List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);		
+		numbers.forEach( value -> value+=2);
+		
+		
 		this.gameTime = TimeUtils.nanoTime();
 		titleScreen = new Texture("Images/chart6.png");
 		menuArrow = new Sprite(new Texture("Images/marker2.png"));

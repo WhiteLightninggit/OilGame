@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Control;
+import WhiteLightning.Oel.game.Screens.BuyDrillsScreen;
 import WhiteLightning.Oel.game.Screens.FactoryScreen;
 import WhiteLightning.Oel.game.Screens.GameScreen;
 import WhiteLightning.Oel.game.Screens.IGameScreen;
@@ -57,6 +58,10 @@ public class OelGame extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
+	
+		
+		
+		
 		log.info("Create Oel Game");
 		g = new Game();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -132,6 +137,7 @@ public class OelGame extends ApplicationAdapter {
 		gameScreens.put(gameStates.Trend,new TrendScreen(sfx, config, world) );
 		gameScreens.put(gameStates.OilFields,new OilFieldsScreen(sfx, world, logic) );
 		gameScreens.put(gameStates.Factory,new FactoryScreen(sfx, world, logic) );
+		gameScreens.put(gameStates.BuyDrills,new BuyDrillsScreen(sfx, world, logic) );
 		spriteBatch = new SpriteBatch();
 		log.info("Initialised");
 	}
