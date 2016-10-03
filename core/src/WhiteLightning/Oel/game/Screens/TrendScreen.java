@@ -18,16 +18,17 @@ import WhiteLightning.Oel.game.World;
 import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
+import WhiteLightning.Oel.game.Objects.FontsPack;
 
 public class TrendScreen implements IGameScreen{
 
 	private State s = State.getInstance();
-	private Texture titleScreen;
+	public TexturesPack album = new TexturesPack();
 	private Config conf;
 	private World world;
 	private gameStates nextState = gameStates.Game;	
 	public SFX sfx;
-	private BitmapFont cFontGray;
+	private FontsPack fonts = new FontsPack();
 
 	
 	public TrendScreen( SFX sfx, Config config,World world) {
@@ -39,15 +40,6 @@ public class TrendScreen implements IGameScreen{
 	
 	@Override
 	public void Load() {
-		titleScreen = new Texture("Images/chart6.png");
-		cFontGray = new BitmapFont();
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Texas.ttf"));
-			FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-			parameter.size = 30;
-			parameter.characters = " -abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:";
-			cFontGray = generator.generateFont(parameter);
-			generator.dispose();		
-			cFontGray.setColor(Color.GRAY);		
 	}
 
 	@Override
@@ -68,8 +60,8 @@ public class TrendScreen implements IGameScreen{
 	
 	private int drawTrend(SpriteBatch batch) {
 		batch.begin();
-		batch.draw(titleScreen, 0, 0, 800, 600);
-		cFontGray.draw(batch, "This is the forecast of Oil Prices.", 100, 450);		
+		batch.draw(album.titleScreen, 0, 0, 800, 600);
+		fonts.cFontGray.draw(batch, "This is the forecast of Oil Prices.", 100, 450);		
 		batch.end();
 		
 		ShapeRenderer shapeRenderer = new ShapeRenderer();

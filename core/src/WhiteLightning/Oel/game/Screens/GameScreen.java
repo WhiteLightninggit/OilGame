@@ -16,10 +16,12 @@ import WhiteLightning.Oel.game.Config;
 import WhiteLightning.Oel.game.Logic;
 import WhiteLightning.Oel.game.Menu;
 import WhiteLightning.Oel.game.State;
+import WhiteLightning.Oel.game.World;
 import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
 import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
+import WhiteLightning.Oel.game.Objects.FontsPack;
 import WhiteLightning.Oel.game.Objects.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,41 +31,22 @@ public class GameScreen implements IGameScreen{
 	final Logger log = LogManager.getLogger(GameScreen.class);
 	private State s = State.getInstance();
 	private Sprite menuArrow;
-	private Texture titleScreen;
 	private Logic logic;
 	private long gameTime;
 	private gameStates nextState = gameStates.Title;
 	private Config conf;
+	private FontsPack fonts = new FontsPack();
+	public TexturesPack album = new TexturesPack();
 	
 	private Menu myMenu;
 
-	private BitmapFont font;
-	private BitmapFont redFont;
-	private BitmapFont cFont;
-	private BitmapFont cFontRed;
-	private BitmapFont cFontGreen;
-	private BitmapFont cFontYellow;
-	private BitmapFont cFontBlue;
-	private BitmapFont cFontGray;
+
 	private SFX sfx;
 	
-	public Texture img;
-	public Texture oilFieldImg;
-	public Texture pumpImg;
-	public Texture wagonImg;
-	public Texture drillImg;
-	public Texture trainImg;
-	public Texture pumpsImg;
-	public Texture drillsImg;
-	public Texture skipImg;
-	public Texture nextImg;
-	public Texture sabotImg;
 	
 	private int menuItemHeight = 40;
 	private int screenWidth = 800;
 	private int screenHeight = 600;
-	private float fontScaleX = 1f;
-	private float fontScaleY = 1f;
 	private int statusX = 20;
 	private int statusY = 100;
 	private int titleX = 300;
@@ -76,40 +59,45 @@ public class GameScreen implements IGameScreen{
 	private int menuX = 500;
 	private int menuY = 250;
 	
+	private World world;
 	
-	public GameScreen(Logic logic, SFX sfx, Config config, Menu menu) {
+	public GameScreen(World world, Logic logic, SFX sfx, Config config, Menu menu) {
 		log.info("GameScreen");
 		this.logic=logic;		
 		this.myMenu = menu;
 		this.sfx = sfx;
 		this.conf = config;
+		this.world=world;
+		
+		for(int i=0;i<s.players;i++){
+			world.addPlayer(conf, "Player "+(i+1),i);
+			System.out.println("player added"+i);
+		}
+		
 		Load();
 	}
 	
 	
 	private int drawMenuNew(Menu menu, int x, int y,SpriteBatch batch) {		
 		batch.begin();
-		batch.draw(titleScreen, 0, 0, screenWidth, screenHeight);
-		cFont.setScale(fontScaleX, fontScaleY);
-		cFontRed.setScale(fontScaleX, fontScaleY);
-		cFontGray.setScale(fontScaleX, fontScaleY);
+		batch.draw(album.titleScreen, 0, 0, screenWidth, screenHeight);
 		
 		char itemLetter = 'A'; //First menu object index letter
 		menu.iterateMode();		
 		while(menu.hasNext()){						
 				if (menu.isCurrent()) {
-					cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menuItemHeight * menu.getCurrentIdx());
+					fonts.cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menuItemHeight * menu.getCurrentIdx());
 				} else {
-					cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * menuItemHeight);					
+					fonts.cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * menuItemHeight);					
 				}
 				itemLetter++;			
 				menu.selectNextItem();
 		}		
 		//Displaying last item from menu
 		if (menu.isCurrent()) {
-			cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menuItemHeight * menu.getCurrentIdx());
+			fonts.cFontRed.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menuItemHeight * menu.getCurrentIdx());
 		} else {
-			cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * menuItemHeight);					
+			fonts.cFont.draw(batch, itemLetter + " " + menu.getItemAsString(), x, y - menu.getCurrentIdx() * menuItemHeight);					
 		}
 		
 		menu.standardMode();		
@@ -125,41 +113,11 @@ public class GameScreen implements IGameScreen{
 	public void Load() {
 		log.trace("Load()");
 		this.gameTime = TimeUtils.nanoTime();
-		titleScreen = new Texture("Images/chart6.png");
+		album.titleScreen = new Texture("Images/chart6.png");
 		menuArrow = new Sprite(new Texture("Images/marker2.png"));
-		font = new BitmapFont();
-		font.setColor(Color.GREEN);
-		redFont = new BitmapFont();
-		redFont.setColor(Color.RED);
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Texas.ttf"));
-		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-		parameter.size = 30;
-		parameter.characters = " -abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:";
-		cFont = generator.generateFont(parameter);
-		cFontRed = generator.generateFont(parameter);
-		cFontGreen = generator.generateFont(parameter);
-		cFontGray = generator.generateFont(parameter);
-		parameter.size = 80;
-		cFontYellow = generator.generateFont(parameter);
-		cFontBlue = generator.generateFont(parameter);
-		generator.dispose();
-		cFont.setColor(Color.BLACK);
-		cFontRed.setColor(Color.RED);
-		cFontGreen.setColor(Color.GREEN);
-		cFontYellow.setColor(Color.YELLOW);
-		cFontBlue.setColor(Color.BLUE);
-		cFontGray.setColor(Color.GRAY);		
 		
-		pumpImg = new Texture("Images/pump.jpg");
-		oilFieldImg = new Texture("Images/oilfield.jpg");
-		wagonImg = new Texture("Images/wagon.jpg");
-		drillImg = new Texture("Images/drill.jpg");
-		trainImg = new Texture("Images/train.jpg");
-		pumpsImg = new Texture("Images/oilPump.png");
-		drillsImg = new Texture("Images/oilDrills.jpg");
-		skipImg = new Texture("Images/skip.jpg");
-		nextImg = new Texture("Images/next.png");
-		sabotImg = new Texture("Images/sabotage.jpg");
+		
+
 		
 	}
 
@@ -184,20 +142,13 @@ public class GameScreen implements IGameScreen{
 	}
 
 	private void displayStatus(SpriteBatch batch, int x, int y) {
-		
-		font.setScale(0.9f*fontScaleX, 0.9f*fontScaleY);
-	//	font.draw(batch, "Player: " + logic.getCurrentPlayer().name + " $" + logic.getCurrentPlayer().cash, x, y);
-	//	logic.w = 
-	//	Player p = logic.getCurrentPlayer();
-		font.draw(batch, "Player: " + logic.getCurrentPlayer().name, x, y);
-		font.draw(batch, "Year: " + logic.getCurrentYear(), x, y - 30);
-		font.draw(batch, "State: " + s.gameState.toString(), x, y - 60);
+		fonts.font.draw(batch, "Player: " + logic.getCurrentPlayer().name, x, y);
+		fonts.font.draw(batch, "Year: " + logic.getCurrentYear(), x, y - 30);
+		fonts.font.draw(batch, "State: " + s.gameState.toString(), x, y - 60);
 	}
 	
 	private void drawImg(SpriteBatch batch) {
-
-
-batch.begin();
+			batch.begin();
 
 			int x = 100;
 			int y = 300;
@@ -205,34 +156,34 @@ batch.begin();
 			int height = 220;
 
 			if (s.selectedAction == 0) {
-				batch.draw(drillImg, x, y, width, height);
+				batch.draw(album.drillImg, x, y, width, height);
 			}
 			if (s.selectedAction == 1) {
-				batch.draw(pumpImg, x, y, width, height);
+				batch.draw(album.pumpImg, x, y, width, height);
 			}
 			if (s.selectedAction == 2) {
-				batch.draw(wagonImg, x, y, width, height);
+				batch.draw(album.wagonImg, x, y, width, height);
 			}
 			if (s.selectedAction == 3) {
-				batch.draw(oilFieldImg, x, y, width, height);
+				batch.draw(album.oilFieldImg, x, y, width, height);
 			}
 			if (s.selectedAction == 4) {
-				batch.draw(drillsImg, x, y, width, height);
+				batch.draw(album.drillsImg, x, y, width, height);
 			}
 			if (s.selectedAction == 5) {
-				batch.draw(pumpsImg, x, y, width, height);
+				batch.draw(album.pumpsImg, x, y, width, height);
 			}
 			if (s.selectedAction == 6) {
-				batch.draw(trainImg, x, y, width, height);
+				batch.draw(album.trainImg, x, y, width, height);
 			}
 			if (s.selectedAction == 8) {
-				batch.draw(skipImg, x, y, width, height);
+				batch.draw(album.skipImg, x, y, width, height);
 			}
 			if (s.selectedAction == 9) {
-				batch.draw(sabotImg, x, y, width, height);
+				batch.draw(album.sabotImg, x, y, width, height);
 			}
 			if (s.selectedAction == 10) {
-				batch.draw(nextImg, x, y, width, height);
+				batch.draw(album.nextImg, x, y, width, height);
 			}
 	batch.end();
 	}

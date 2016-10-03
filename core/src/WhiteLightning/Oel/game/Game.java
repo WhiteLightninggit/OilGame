@@ -165,10 +165,6 @@ public class Game {
 		batch.draw(titleScreen, 0, 0, 800, 600);
 		drawImg();
 
-		cFont.setScale(1f, 1f);
-		cFontRed.setScale(1f, 1f);
-		cFontGray.setScale(1f, 1f);
-
 		char itemLetter = 'A';
 		menu.iterateMode();
 		
@@ -213,7 +209,6 @@ public class Game {
 		
 		batch.draw(nrImages.get(nrImages.size()-1), x+(s.players-1)*offsetX, 300, offsetX, 50);
 		
-		font.setScale(.9f, .9f);
 		font.draw(batch, "Input: " + s.sb,500,200);
 		s.text.setBounds(200, 200, 100, 40);
 		s.text.draw(batch, 1);
@@ -226,7 +221,6 @@ public class Game {
 		int x = 20;
 		int y = 500;
 		batch.begin();
-		font.setScale(.9f, .9f);
 		batch.draw(titleScreen, 0, 0, 800, 600);
 		font.draw(batch, "Factory: " + l.getCurrentFactory().name, x, y);
 		if (l.getCurrentFactory().hasOwner()) {
@@ -241,7 +235,6 @@ public class Game {
 	
 	private void drawGameTitle() {
 		batch.begin();
-		cFontBlue.setScale(1f, 1f);
 		cFontBlue.draw(batch, "Oel - P", 300, 450);
 		batch.end();
 	}
@@ -337,7 +330,6 @@ public class Game {
 
 	private void drawFields(ArrayList<OilField> menuList, int captionOffset, int x, int y) {
 		int deltaY = 25;
-		float scale = .8f;
 		x = x + 150;
 
 		batch.begin();
@@ -345,19 +337,16 @@ public class Game {
 		int idx = 0;
 		char fieldLetter = 'A';
 
-		cFontBlue.setScale(.4f, .4f);
 		cFontBlue.draw(batch, "Oil Field", x, y + deltaY + 10);
 		cFontBlue.draw(batch, "Price ($)", x + 215, y + deltaY + 10);
 		cFontBlue.draw(batch, "Owner", x + 315, y + deltaY + 10);
 
 		for (OilField oilField : menuList) {
 			if (oilField.hasOwner) {
-				cFontGray.setScale(scale, scale);
 				cFontGray.draw(batch, fieldLetter + " " + oilField.name, x, y - idx * deltaY);
 				cFontGray.draw(batch, oilField.owner.name, x + 230, y - idx * deltaY);
 
 			} else {
-				cFont.setScale(scale, scale);
 				cFont.draw(batch, fieldLetter + " " + oilField.name, x, y - idx * deltaY);
 				cFont.draw(batch, String.valueOf(oilField.getPrice()), x + 230, y - idx * deltaY);
 			}
@@ -365,7 +354,6 @@ public class Game {
 			fieldLetter++;
 		}
 
-		cFontRed.setScale(scale, scale);
 		fieldLetter = (char) ('A' + s.selectedField);
 		cFontRed.draw(batch, fieldLetter + " " + menuList.get(s.selectedField).name, x, y - deltaY * s.selectedField);
 		if (menuList.get(s.selectedField).hasOwner) {
@@ -388,7 +376,6 @@ public class Game {
 	}
 
 	private void displayStatus(int x, int y) {
-		font.setScale(.9f, .9f);
 		font.draw(batch, "Player: " + l.getCurrentPlayer().name + " $" + l.getCurrentPlayer().cash, x, y);
 		font.draw(batch, "Year: " + l.getCurrentYear(), x, y - 30);
 		font.draw(batch, "State: " + s.gameState.toString(), x, y - 60);
@@ -398,26 +385,22 @@ public class Game {
 		x = x + 150;
 		// int deltaX = 50;
 		int deltaY = 25;
-		float scale = .8f;
 
 		batch.begin();
 		batch.draw(titleScreen, 0, 0, 800, 600);
 		int idx = 0;
 		char fieldLetter = 'A';
 
-		cFontBlue.setScale(.4f, .4f);
 		// cFontBlue.draw(batch, "Oil Field", x, y + deltaY + 10);
 		// cFontBlue.draw(batch, "Price ($)", x + 215, y + deltaY + 10);
 		// cFontBlue.draw(batch, "Owner", x + 315, y + deltaY + 10);
 
 		for (Factory factory : menuList) {
 			if (factory.hasOwner()) {
-				cFontGray.setScale(scale, scale);
 				cFontGray.draw(batch, fieldLetter + " " + factory.name, x, y - idx * deltaY);
 				cFontGray.draw(batch, factory.owner.name, x + 230, y - idx * deltaY);
 
 			} else {
-				cFont.setScale(scale, scale);
 				cFont.draw(batch, fieldLetter + " " + factory.name, x, y - idx * deltaY);
 				cFont.draw(batch, String.valueOf(factory.getPrice()), x + 230, y - idx * deltaY);
 			}
@@ -425,7 +408,6 @@ public class Game {
 			fieldLetter++;
 		}
 
-		cFontRed.setScale(scale, scale);
 		fieldLetter = (char) ('A' + s.selectedField);
 		cFontRed.draw(batch, fieldLetter + " " + menuList.get(s.selectedField).name, x, y - deltaY * s.selectedField);
 		if (menuList.get(s.selectedField).hasOwner()) {

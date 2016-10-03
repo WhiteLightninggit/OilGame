@@ -30,7 +30,7 @@ public class SFX {
 	}
 	
 	public void PlaySound(Sounds sound){
-		this.playlist.get(sound).play();
+		//this.playlist.get(sound).play();
 	}
 	
 }

@@ -20,6 +20,9 @@ public class Logic {
 	//this.players = w.players;
 	}
 	
+	public boolean actionPerformed(){
+		return actionPerformed;
+	}
 	
 	public boolean buyField(){
 		return buyField(getCurrentPlayer(), w.fieldsList.get(s.selectedField));

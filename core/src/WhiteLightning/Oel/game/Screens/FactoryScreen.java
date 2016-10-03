@@ -10,7 +10,6 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -23,16 +22,14 @@ import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
 import WhiteLightning.Oel.game.Objects.Factory;
+import WhiteLightning.Oel.game.Objects.FontsPack;
 
 
 public class FactoryScreen implements IGameScreen{
 
-	public Texture titleScreen;
-	BitmapFont cFontBlue;
-	BitmapFont cFontGray;
-	BitmapFont cFont;
-	BitmapFont cFontRed;
-	public Sprite menuArrow;
+
+	FontsPack fonts = new FontsPack();
+	public TexturesPack album = new TexturesPack();
 	private State s = State.getInstance();
 	private World world;
 	private SFX sfx;
@@ -53,22 +50,6 @@ public class FactoryScreen implements IGameScreen{
 	
 	@Override
 	public void Load() {
-		titleScreen = new Texture("Images/chart6.png");
-		menuArrow = new Sprite(new Texture("Images/marker2.png"));		
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Texas.ttf"));
-		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-		parameter.size = 30;
-		parameter.characters = " -abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:";
-		cFont = generator.generateFont(parameter);
-		cFontRed = generator.generateFont(parameter);
-		cFontGray = generator.generateFont(parameter);
-		parameter.size = 80;
-		cFontBlue = generator.generateFont(parameter);
-		generator.dispose();
-		cFont.setColor(Color.BLACK);
-		cFontRed.setColor(Color.RED);
-		cFontBlue.setColor(Color.BLUE);
-		cFontGray.setColor(Color.GRAY);		
 		log.trace("loaded");
 	}
 
@@ -76,6 +57,9 @@ public class FactoryScreen implements IGameScreen{
 	public void Draw(SpriteBatch spriteBatch) {
 		log.trace("draw");
 	//	drawFactory(batch, menuList, captionOffset, x, y);
+		
+		
+		
 		switch (s.currFactoryType) {
 		case DRILLS:
 			drawFactory(spriteBatch,world.drillFactory, menuLeftX, menuUpperY);
@@ -92,6 +76,8 @@ public class FactoryScreen implements IGameScreen{
 		default:
 			break;
 		}
+		
+		drawFactoryHUD(spriteBatch);
 	}
 
 	@Override
@@ -102,51 +88,40 @@ public class FactoryScreen implements IGameScreen{
 
 	private void drawFactory(SpriteBatch batch, ArrayList<Factory> menuList, int x, int y) {
 		log.trace("Draw Factory");
-		float scale = .8f;
-
 		batch.begin();
-		batch.draw(titleScreen, 0, 0, 800, 600);
+		batch.draw(album.titleScreen, 0, 0, 800, 600);
 		int idx = 0;
 		char fieldLetter = 'A';
-
-		cFontBlue.setScale(.4f, .4f);
-
-
 		
 		for (Factory factory : menuList) {
 			if (factory.hasOwner()) {
-				cFontGray.setScale(scale, scale);
-				cFontGray.draw(batch, fieldLetter + " " + factory.name, x, y - idx * deltaY);
-				cFontGray.draw(batch, factory.owner.name, x + 230, y - idx * deltaY);
-
+				fonts.cFontGray.draw(batch, fieldLetter + " " + factory.name, x, y - idx * deltaY);
+				fonts.cFontGray.draw(batch, factory.owner.name, x + 230, y - idx * deltaY);
 			} else {
-				cFont.setScale(scale, scale);
-				cFont.draw(batch, fieldLetter + " " + factory.name, x, y - idx * deltaY);
-				cFont.draw(batch, String.valueOf(factory.getPrice()), x + 230, y - idx * deltaY);
+				fonts.cFont.draw(batch, fieldLetter + " " + factory.name, x, y - idx * deltaY);
+				fonts.cFont.draw(batch, String.valueOf(factory.getPrice()), x + 230, y - idx * deltaY);
 			}
 			idx++;
 			fieldLetter++;
 		}
 
-		cFontRed.setScale(scale, scale);
 		fieldLetter = (char) ('A' + s.selectedField);
-		cFontRed.draw(batch, fieldLetter + " " + menuList.get(s.selectedField).name, x, y - deltaY * s.selectedField);
+		fonts.cFontRed.draw(batch, fieldLetter + " " + menuList.get(s.selectedField).name, x, y - deltaY * s.selectedField);
 		if (menuList.get(s.selectedField).hasOwner()) {
-			cFontRed.draw(batch, menuList.get(s.selectedField).owner.name, x + 230, y - deltaY * s.selectedField);
+			fonts.cFontRed.draw(batch, menuList.get(s.selectedField).owner.name, x + 230, y - deltaY * s.selectedField);
 		} else {
 
-			cFontRed.draw(batch, String.valueOf(menuList.get(s.selectedField).getPrice()), x + 230,
+			fonts.cFontRed.draw(batch, String.valueOf(menuList.get(s.selectedField).getPrice()), x + 230,
 					y - deltaY * s.selectedField);
 		}
 
 
-		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - s.selectedField * deltaY, 25, 25);
-		menuArrow.draw(batch);
+		album.menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - s.selectedField * deltaY, 25, 25);
+		album.menuArrow.draw(batch);
 		batch.end();
 	}
 	
 	public gameStates processKeysFactoryScreen() {
-
 		System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
 		int mx = Gdx.input.getX();
 		int my = Gdx.input.getY();
@@ -154,15 +129,13 @@ public class FactoryScreen implements IGameScreen{
 		
 		System.out.println("MY: "+menuUpperY);
 		
-		
 		if(mx>menuLeftX && mx < 590 && my > 200 && my<(200+deltaY*factoriesNr)){
 			if((my-200)/deltaY != s.selectedField){
 					sfx.PlaySound(Sounds.MenuChange);
 					s.selectedField = (my-200)/deltaY;
 					System.out.println("change: "+((my-200) / deltaY));
 			}		
-		}
-		
+		}		
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 			sfx.PlaySound(Sounds.MenuChange);
 
@@ -190,20 +163,27 @@ public class FactoryScreen implements IGameScreen{
 	
 	
 	
-	/*
+	
+	
+	
 	private void drawFactoryHUD(SpriteBatch batch) {
 		int x = 20;
 		int y = 500;
 		batch.begin();
-		font.setScale(.9f, .9f);
-		font.draw(batch, "Factory: " + logic.getCurrentFactory().name, x, y);
+		fonts.cFontRed.draw(batch, "Factory: " + logic.getCurrentFactory().name, x, y);
 		if (logic.getCurrentFactory().hasOwner()) {
-			font.draw(batch, "Owner: " + logic.getCurrentFactory().owner.name, x, y - 30);
+			fonts.cFontRed.draw(batch, "Owner: " + logic.getCurrentFactory().owner.name, x, y - 30);
 		} else {
-			font.draw(batch, "Owner: " + "FREE", x, y - 30);
+			fonts.cFontRed.draw(batch, "Owner: " + "FREE", x, y - 30);
 		}
-		font.draw(batch, "ItemPrice: " + logic.getCurrentFactory().itemPrice, x, y - 60);
+		fonts.cFontRed.draw(batch, "ItemPrice: " + logic.getCurrentFactory().itemPrice, x, y - 60);
+	
+		if(logic.actionPerformed()){
+			batch.draw(album.unchecked, 450, 100, 50, 50);
+			fonts.cFontBlue.draw(batch, "- End turn.", 520, 130);
+		}
+		
 		batch.end();
 	}
-	*/
+	
 }

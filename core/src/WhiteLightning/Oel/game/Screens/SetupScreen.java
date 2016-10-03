@@ -19,11 +19,12 @@ import WhiteLightning.Oel.game.World;
 import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
+import WhiteLightning.Oel.game.Objects.FontsPack;
 
 public class SetupScreen implements IGameScreen{
 
 	private State s = State.getInstance();
-	private Texture titleScreen;
+	public TexturesPack album = new TexturesPack();
 	private Config conf;
 	private gameStates nextState = gameStates.Trend;	
 	private World world;
@@ -31,10 +32,10 @@ public class SetupScreen implements IGameScreen{
 	private int x = 250;
 	private int y = 500;
 	private int offsetX=125;
-	private ArrayList<Texture> nrImages;
+	
 	private int mostLeftMenuX;
 
-	private BitmapFont font;
+	private FontsPack fonts = new FontsPack();
 	
 	
 	public SetupScreen(SFX sfx, Config config, World world) {
@@ -47,17 +48,6 @@ public class SetupScreen implements IGameScreen{
 	
 	@Override
 	public void Load() {
-		nrImages = new ArrayList<>();
-		nrImages.add(new Texture("Images/1.png"));
-		nrImages.add(new Texture("Images/2.png"));
-		nrImages.add(new Texture("Images/3.png"));
-		nrImages.add(new Texture("Images/4.png"));
-		nrImages.add(new Texture("Images/selectedNr.png"));
-		titleScreen = new Texture("Images/chart6.png");
-		
-		font = new BitmapFont();
-		font.setColor(Color.GREEN);
-		
 	}
 
 	@Override
@@ -97,9 +87,7 @@ public class SetupScreen implements IGameScreen{
 				world.addPlayer(conf, "Player "+(i+1),i);
 				System.out.println("player added"+i);
 			}
-			
-			
-			
+						
 			return nextState;
 		}
 				
@@ -108,16 +96,16 @@ public class SetupScreen implements IGameScreen{
 	
 	private void drawSetup(SpriteBatch batch) {						
 			batch.begin();			
-			batch.draw(titleScreen, 0, 0, 800, 600);			
-			font.draw(batch, "Players Number:",100,500);
+			batch.draw(album.titleScreen, 0, 0, 800, 600);			
+			fonts.font.draw(batch, "Players Number:",100,500);
 			
-			for (int i=0; i<nrImages.size()-1;i++) {
-				batch.draw(nrImages.get(i), x+i*offsetX, y-25, 50, 50);				
+			for (int i=0; i<album.nrImages.size()-1;i++) {
+				batch.draw(album.nrImages.get(i), x+i*offsetX, y-25, 50, 50);				
 				if(i<s.players)
-					font.draw(batch, "Player "+(i+1),x+i*offsetX,y-75);				
+					fonts.font.draw(batch, "Player "+(i+1),x+i*offsetX,y-75);				
 			}			
-			batch.draw(nrImages.get(nrImages.size()-1), x+(s.players-1)*offsetX, y-25, 50, 50);
-			font.setScale(.9f, .9f);			
+			batch.draw(album.nrImages.get(album.nrImages.size()-1), x+(s.players-1)*offsetX, y-25, 50, 50);
+		
 			/*
 			s.text.setBounds(200, 200, 100, 40);
 			s.text.draw(batch, 1);

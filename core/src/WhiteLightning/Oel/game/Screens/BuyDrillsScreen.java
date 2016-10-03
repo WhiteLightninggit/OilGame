@@ -19,22 +19,18 @@ import WhiteLightning.Oel.game.World;
 import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
+import WhiteLightning.Oel.game.Objects.FontsPack;
 import WhiteLightning.Oel.game.Objects.OilField;
 
 public class BuyDrillsScreen implements IGameScreen{
-
-	public Texture titleScreen;
-	public Sprite menuArrow;
-	public Texture line;
-	BitmapFont cFontBlue;
-	BitmapFont cFontGray;
-	BitmapFont cFont;
-	BitmapFont cFontRed;
+	
 	private State s = State.getInstance();
 	private World world;
 	private SFX sfx;
 	private Logic logic;
 	private int deltaY = 35;
+	private FontsPack fonts = new FontsPack();
+	public TexturesPack album = new TexturesPack();
 	
 	public BuyDrillsScreen(SFX sfx, World world, Logic logic) {
 		this.world = world;
@@ -45,23 +41,6 @@ public class BuyDrillsScreen implements IGameScreen{
 	
 	@Override
 	public void Load() {
-			titleScreen = new Texture("Images/chart6.png");
-			line = new Texture("Images/line.png");
-			menuArrow = new Sprite(new Texture("Images/marker2.png"));		
-			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Texas.ttf"));
-			FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-			parameter.size = 30;
-			parameter.characters = " -abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:";
-			cFont = generator.generateFont(parameter);
-			cFontRed = generator.generateFont(parameter);
-			cFontGray = generator.generateFont(parameter);
-			parameter.size = 80;
-			cFontBlue = generator.generateFont(parameter);
-			generator.dispose();
-			cFont.setColor(Color.BLACK);
-			cFontRed.setColor(Color.RED);
-			cFontBlue.setColor(Color.BLUE);
-			cFontGray.setColor(Color.GRAY);			
 	}
 
 	@Override
@@ -78,48 +57,44 @@ public class BuyDrillsScreen implements IGameScreen{
 	}
 
 	private void drawFields(SpriteBatch batch, ArrayList<OilField> menuList, int captionOffset, int x, int y) {
-		float scale = .8f;
+
 		int priceColumnOffset = 215;
 		int ownerColumnOffset = 315;
 		
 		batch.begin();
-		batch.draw(titleScreen, 0, 0, 800, 600);
+		batch.draw(album.titleScreen, 0, 0, 800, 600);
 		int idx = 0;
 		char fieldLetter = 'A';
 
-		cFontBlue.setScale(.4f, .4f);
-		cFontBlue.draw(batch, "Oil Field", x, y + deltaY);
-		cFontBlue.draw(batch, "Price ($)", x + priceColumnOffset, y + deltaY);
-		cFontBlue.draw(batch, "Owner", x + ownerColumnOffset, y + deltaY);
+		fonts.cFontBlue.draw(batch, "Oil Field", x, y + deltaY);
+		fonts.cFontBlue.draw(batch, "Price ($)", x + priceColumnOffset, y + deltaY);
+		fonts.cFontBlue.draw(batch, "Owner", x + ownerColumnOffset, y + deltaY);
 
 		for (OilField oilField : menuList) {
 			if (oilField.hasOwner) {
-				cFontGray.setScale(scale, scale);
-				cFontGray.draw(batch, fieldLetter + " " + oilField.name, x, y - idx * deltaY);
-				cFontGray.draw(batch, oilField.owner.name, x + 230, y - idx * deltaY);
-
+				fonts.cFontGray.draw(batch, fieldLetter + " " + oilField.name, x, y - idx * deltaY);
+				fonts.cFontGray.draw(batch, oilField.owner.name, x + 230, y - idx * deltaY);
 			} else {
-				cFont.setScale(scale, scale);
-				cFont.draw(batch, fieldLetter + " " + oilField.name, x, y - idx * deltaY);
-				cFont.draw(batch, String.valueOf(oilField.getPrice()), x + 230, y - idx * deltaY);
+				fonts.cFont.draw(batch, fieldLetter + " " + oilField.name, x, y - idx * deltaY);
+				fonts.cFont.draw(batch, String.valueOf(oilField.getPrice()), x + 230, y - idx * deltaY);
 			}
 			idx++;
 			fieldLetter++;
 		}
 
-		cFontRed.setScale(scale, scale);
+
 		fieldLetter = (char) ('A' + s.selectedField);
-		cFontRed.draw(batch, fieldLetter + " " + menuList.get(s.selectedField).name, x, y - deltaY * s.selectedField);
+		fonts.cFontRed.draw(batch, fieldLetter + " " + menuList.get(s.selectedField).name, x, y - deltaY * s.selectedField);
 		if (menuList.get(s.selectedField).hasOwner) {
-			cFontRed.draw(batch, menuList.get(s.selectedField).owner.name, x + 230, y - deltaY * s.selectedField);
+			fonts.cFontRed.draw(batch, menuList.get(s.selectedField).owner.name, x + 230, y - deltaY * s.selectedField);
 		} else {
 
-			cFontRed.draw(batch, String.valueOf(menuList.get(s.selectedField).getPrice()), x + 230,
+			fonts.cFontRed.draw(batch, String.valueOf(menuList.get(s.selectedField).getPrice()), x + 230,
 					y - deltaY * s.selectedField);
 		}		
 
-		menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - s.selectedField * deltaY, 25, 25);
-		menuArrow.draw(batch);
+		album.menuArrow.setBounds(x - 35 + s.menuAnimX, y - 15 - s.selectedField * deltaY, 25, 25);
+		album.menuArrow.draw(batch);
 
 		batch.end();
 	}	

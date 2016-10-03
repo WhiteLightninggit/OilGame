@@ -133,7 +133,7 @@ public class OelGame extends ApplicationAdapter {
 		gameScreens = new HashMap<>();
 		gameScreens.put(gameStates.Title,new TitleScreen(logic,sfx, mainMenu) );
 		gameScreens.put(gameStates.Setup,new SetupScreen(sfx, config, world) );
-		gameScreens.put(gameStates.Game,new GameScreen(logic,sfx, config, actionMenu) );
+		gameScreens.put(gameStates.Game,new GameScreen(world,logic,sfx, config, actionMenu) );
 		gameScreens.put(gameStates.Trend,new TrendScreen(sfx, config, world) );
 		gameScreens.put(gameStates.OilFields,new OilFieldsScreen(sfx, world, logic) );
 		gameScreens.put(gameStates.Factory,new FactoryScreen(sfx, world, logic) );
