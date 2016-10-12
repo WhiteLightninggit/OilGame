@@ -2,6 +2,7 @@ package junk;
 
 /*
  * Like good practice says we shouldn't have such code in project...
+ * Its just temporary notebook...
  * But in overall its better to have junk here and delete it later:)
  */
 public class Junk {
@@ -58,7 +59,18 @@ Menu line:
 	
 	
 	
+	/*
 	
+	private int menuX = 500;
+	private int menuY = 250;
+	private int menuItemHeight = 40;
+	private int cursorWidth = 25;
+	private int cursorHeight = 25;
+	private int cursorXOffset = 37;
+	private int cursorYOffset = 22;	
+	private int MenuItemUnderMouse = 0;
+	
+	*/
 	
 	
 	

@@ -2,7 +2,8 @@ package WhiteLightning.Oel.game.Control;
 
 import WhiteLightning.Oel.game.Game;
 import WhiteLightning.Oel.game.Logic;
-import WhiteLightning.Oel.game.Menu;
+import WhiteLightning.Oel.game.oldMenu;
+import WhiteLightning.Oel.game.SoundPack;
 import WhiteLightning.Oel.game.State;
 import WhiteLightning.Oel.game.gameStates;
 import WhiteLightning.Oel.game.Objects.Factory;
@@ -20,13 +21,14 @@ public class Control {
 	private State s = State.getInstance();
 	private Logic l;
 	private OrthographicCamera camera;
+	public SoundPack sounds = new SoundPack();
 
 	public Control(Game g, OrthographicCamera camera) {
 		this.g = g;
 		l = g.l;
 	}
 
-	public void processKeys(gameStates gs, Menu menu, Menu actionMenu) {
+	public void processKeys(gameStates gs, oldMenu menu, oldMenu actionMenu) {
 
 	//	processKeysDefault();
 
@@ -74,20 +76,20 @@ public class Control {
 		}
 	}
 
-	public void processKeysTitle(Menu menu) {
+	public void processKeysTitle(oldMenu menu) {
 
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			s.gameState = gameStates.Game;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 
 		
 				menu.setPreviousItem();
 
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 			menu.setNextItem();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
@@ -120,14 +122,14 @@ public class Control {
 			// g.nextInternalState();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 
 			if (s.selectedField > 0)
 				s.selectedField--;
 			s.moveUp = true;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 			if (s.selectedField < g.world.fieldsList.size() - 1)
 				s.selectedField++;
 			s.moveUp = false;
@@ -138,7 +140,7 @@ public class Control {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 		
 			if (!l.buyField()) {
-				g.denySound.play();
+				sounds.denySound.play();
 			}
 		}
 	}
@@ -148,14 +150,14 @@ public class Control {
 			// g.nextInternalState();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 
 			if (s.selectedField > 0)
 				s.selectedField--;
 			s.moveUp = true;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 			if (s.selectedField < factories.size() - 1)
 				s.selectedField++;
 			s.moveUp = false;
@@ -166,7 +168,7 @@ public class Control {
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
 
 			if (!l.buyFactory(s.currFactoryType)) {
-				g.denySound.play();
+				sounds.denySound.play();
 				if (l.getCurrentFactory().hasOwner()) {
 					s.gameState = gameStates.Setup;
 				}
@@ -175,23 +177,23 @@ public class Control {
 		}
 	}
 
-	public void processKeysGame(Menu menu) {
+	public void processKeysGame(oldMenu menu) {
 		if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
 			// g.nextInternalState();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 			menu.selectPreviousItem();
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 			menu.selectNextItem();
 /*			if (s.selectedAction < g.actionsList.size() - 1)
 				s.selectedAction++;
 */			s.moveUp = false;
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 
 			System.out.println("menu: idx "+menu.getCurrentIdx()+" action "+menu.selectCurrentItem().toString() );
 			
@@ -274,19 +276,19 @@ public class Control {
 		}
 
 		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 			if(s.players>1)
 				s.players--;
 			
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 			if(s.players<g.c.playersMax)
 				s.players++;
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			g.menuChangeSound.play();
+			sounds.menuChangeSound.play();
 			s.gameState = gameStates.Title;
 			s.animFlag = false;
 		}

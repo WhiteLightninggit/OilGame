@@ -1,6 +1,6 @@
 package WhiteLightning.Oel.game;
 
-public interface IMenu {
+public interface oldIMenu {
 
 	public Boolean setNextItem();
 	public Boolean setPreviousItem();

@@ -23,6 +23,7 @@ import WhiteLightning.Oel.game.Screens.FactoryScreen;
 import WhiteLightning.Oel.game.Screens.GameScreen;
 import WhiteLightning.Oel.game.Screens.IGameScreen;
 import WhiteLightning.Oel.game.Screens.OilFieldsScreen;
+import WhiteLightning.Oel.game.Screens.OptionsScreen;
 import WhiteLightning.Oel.game.Screens.SetupScreen;
 import WhiteLightning.Oel.game.Screens.TitleScreen;
 import WhiteLightning.Oel.game.Screens.TrendScreen;
@@ -41,6 +42,7 @@ public class OelGame extends ApplicationAdapter {
 	public Logic logic;
 	public SFX sfx;
 	
+	
 	public SpriteBatch spriteBatch;
 	
 	public OrthographicCamera camera;
@@ -49,18 +51,16 @@ public class OelGame extends ApplicationAdapter {
 	
 	Game g;
 	Control control;
-	public Menu mainMenu;
-	public Menu actionMenu;
+	public oldMenu mainMenu;
+	public oldMenu actionMenu;
 	ArrayList<String> menuList = new ArrayList<>();
 	ArrayList<String> actionsList = new ArrayList<>();
 	HashMap<Integer, String> menuMap = new HashMap<>();	
-	HashMap<Integer, String> actionsMap = new HashMap<>();	
+	HashMap<Integer, String> actionsMap = new HashMap<>();
+	public SoundPack sounds = new SoundPack();
 	
 	@Override
-	public void create() {
-	
-		
-		
+	public void create() {	
 		
 		log.info("Create Oel Game");
 		g = new Game();
@@ -68,33 +68,12 @@ public class OelGame extends ApplicationAdapter {
 		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
 		//camera.setToOrtho(true);		
 		control = new Control(g,camera);
-		
-		g.img = new Texture("Images/badlogic.jpg");
-		g.line = new Texture("Images/lineBlue.png");
-		g.titleScreen = new Texture("Images/chart6.png");
-		g.menuArrow = new Sprite(new Texture("Images/marker2.png"));		
-		g.menuArrow.setFlip(true, false);		
-		g.menuSound = Gdx.audio.newMusic(Gdx.files.internal("Sound/menu.mp3"));
-		g.menuChangeSound = Gdx.audio.newSound(Gdx.files.internal("Sound/select.wav"));	
-		g.denySound = Gdx.audio.newSound(Gdx.files.internal("Sound/deny.mp3"));
-		g.denySound.setVolume(0, 0.3f);
-		g.pumpImg = new Texture("Images/pump.jpg");
-		g.oilFieldImg = new Texture("Images/oilfield.jpg");
-		g.wagonImg = new Texture("Images/wagon.jpg");
-		g.drillImg = new Texture("Images/drill.jpg");
-		g.trainImg = new Texture("Images/train.jpg");
-		g.pumpsImg = new Texture("Images/oilPump.png");
-		g.drillsImg = new Texture("Images/oilDrills.jpg");
-		g.skipImg = new Texture("Images/skip.jpg");
-		g.nextImg = new Texture("Images/next.png");
-		g.sabotImg = new Texture("Images/sabotage.jpg");
-		
-		g.nrImages = new ArrayList<>();
-		g.nrImages.add(new Texture("Images/1.png"));
-		g.nrImages.add(new Texture("Images/2.png"));
-		g.nrImages.add(new Texture("Images/3.png"));
-		g.nrImages.add(new Texture("Images/4.png"));
-		g.nrImages.add(new Texture("Images/selectedNr.png"));
+	
+		sounds.menuSound = Gdx.audio.newMusic(Gdx.files.internal("Sound/menu.mp3"));
+		sounds.menuChangeSound = Gdx.audio.newSound(Gdx.files.internal("Sound/select.wav"));	
+		sounds.denySound = Gdx.audio.newSound(Gdx.files.internal("Sound/deny.mp3"));
+		sounds.denySound.setVolume(0, 0.3f);
+
 		
 		menuList.add("Start Game");
 		menuList.add("Options");
@@ -108,7 +87,7 @@ public class OelGame extends ApplicationAdapter {
 		menuMap.put(3,"Credits");
 		menuMap.put(4,"Exit");
 		
-		mainMenu = new Menu(menuMap);
+		mainMenu = new oldMenu(menuMap);
 		
 		actionsMap.put(0,"Drill Factories");
 		actionsMap.put(1,"Pumps Factories");
@@ -122,7 +101,7 @@ public class OelGame extends ApplicationAdapter {
 		actionsMap.put(9,"Sabotage");
 		actionsMap.put(10,"Skip turn");
 		
-		actionMenu = new Menu(actionsMap);
+		actionMenu = new oldMenu(actionsMap);
 		
 		sfx = new SFX();
 		
@@ -133,6 +112,7 @@ public class OelGame extends ApplicationAdapter {
 		gameScreens = new HashMap<>();
 		gameScreens.put(gameStates.Title,new TitleScreen(logic,sfx, mainMenu) );
 		gameScreens.put(gameStates.Setup,new SetupScreen(sfx, config, world) );
+		gameScreens.put(gameStates.Options,new OptionsScreen(sfx, config, world) );
 		gameScreens.put(gameStates.Game,new GameScreen(world,logic,sfx, config, actionMenu) );
 		gameScreens.put(gameStates.Trend,new TrendScreen(sfx, config, world) );
 		gameScreens.put(gameStates.OilFields,new OilFieldsScreen(sfx, world, logic) );
@@ -146,8 +126,9 @@ public class OelGame extends ApplicationAdapter {
 	public void render() {
 		update();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);				
-		 gameScreens.get(lastState).Draw(spriteBatch);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
+		if(lastState != gameStates.End)
+			gameScreens.get(lastState).Draw(spriteBatch);
 	}
 
 	public void update() {

@@ -2,14 +2,14 @@ package WhiteLightning.Oel.game;
 
 import java.util.HashMap;
 
-public class Menu implements IMenu{
+public class oldMenu implements oldIMenu{
 
 	public HashMap<Integer,String> menuData;
 
 	public int currentIdx = -1;
 	private int rememberedIdx = -1;
 	
-	public Menu(HashMap<Integer,String> ll) {
+	public oldMenu(HashMap<Integer,String> ll) {
 		this.menuData= new HashMap<>(ll);		
 		this.currentIdx = 0;
 	}

@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import WhiteLightning.Oel.game.Config;
 import WhiteLightning.Oel.game.Logic;
-import WhiteLightning.Oel.game.Menu;
+import WhiteLightning.Oel.game.oldMenu;
 import WhiteLightning.Oel.game.State;
 import WhiteLightning.Oel.game.World;
 import WhiteLightning.Oel.game.gameStates;
@@ -38,7 +38,7 @@ public class GameScreen implements IGameScreen{
 	private FontsPack fonts = new FontsPack();
 	public TexturesPack album = new TexturesPack();
 	
-	private Menu myMenu;
+	private oldMenu myMenu;
 
 
 	private SFX sfx;
@@ -61,7 +61,7 @@ public class GameScreen implements IGameScreen{
 	
 	private World world;
 	
-	public GameScreen(World world, Logic logic, SFX sfx, Config config, Menu menu) {
+	public GameScreen(World world, Logic logic, SFX sfx, Config config, oldMenu menu) {
 		log.info("GameScreen");
 		this.logic=logic;		
 		this.myMenu = menu;
@@ -78,7 +78,7 @@ public class GameScreen implements IGameScreen{
 	}
 	
 	
-	private int drawMenuNew(Menu menu, int x, int y,SpriteBatch batch) {		
+	private int drawMenuNew(oldMenu menu, int x, int y,SpriteBatch batch) {		
 		batch.begin();
 		batch.draw(album.titleScreen, 0, 0, screenWidth, screenHeight);
 		
@@ -190,7 +190,7 @@ public class GameScreen implements IGameScreen{
 	
 	
 	
-	public gameStates processKeysGame(Menu menu) {
+	public gameStates processKeysGame(oldMenu menu) {
 
 		//System.out.println("Mouse X: "+Gdx.input.getX()+" Y: "+Gdx.input.getY());
 		int mx = Gdx.input.getX();

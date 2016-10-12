@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import WhiteLightning.Oel.game.Config;
 import WhiteLightning.Oel.game.Logic;
-import WhiteLightning.Oel.game.Menu;
+import WhiteLightning.Oel.game.oldMenu;
 import WhiteLightning.Oel.game.State;
 import WhiteLightning.Oel.game.World;
 import WhiteLightning.Oel.game.gameStates;
