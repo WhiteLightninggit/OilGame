@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import WhiteLightning.Oel.game.Control.SFX;
@@ -27,6 +28,8 @@ import WhiteLightning.Oel.game.Screens.OptionsScreen;
 import WhiteLightning.Oel.game.Screens.SetupScreen;
 import WhiteLightning.Oel.game.Screens.TitleScreen;
 import WhiteLightning.Oel.game.Screens.TrendScreen;
+
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -145,16 +148,25 @@ public class OelGame extends ApplicationAdapter {
 	}
 
 	private void updateCamera() {
+
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.combined);
 		camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
+		
+
+		
 	}
 
 	
 	private void processKeysDefault() {
+		
 		if (!g.textEnterFlag) {
 			if (Gdx.input.isKeyPressed(Keys.X)) {
 				camera.rotate(0.8f);
+			}
+			
+			if (Gdx.input.isKeyPressed(Keys.F)) {
+				Gdx.graphics.setDisplayMode(800, 600, !Gdx.graphics.isFullscreen());
 			}
 
 			if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {

@@ -15,6 +15,7 @@ public class TexturesPack {
 	public Texture trainImg;
 	public Texture pumpsImg;
 	public Texture drillsImg;
+	public Texture pumpIco;
 	public Texture skipImg;
 	public Texture nextImg;
 	public Texture sabotImg;
@@ -32,6 +33,7 @@ public class TexturesPack {
 		this.trainImg = new Texture("Images/train.jpg");
 		this.pumpsImg = new Texture("Images/oilPump.png");
 		this.drillsImg = new Texture("Images/oilDrills.jpg");
+		this.pumpIco = new Texture("Images/OilPumpIco.png");
 		this.skipImg = new Texture("Images/skip.jpg");
 		this.nextImg = new Texture("Images/next.png");
 		this.sabotImg = new Texture("Images/sabotage.jpg");

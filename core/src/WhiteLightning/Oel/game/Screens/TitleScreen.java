@@ -34,6 +34,9 @@ public class TitleScreen implements IGameScreen {
 	private int titleX = 300;
 	private int titleY = 450;
 	
+	
+
+	
 	private String title = "OEL - P";
 
 	public TitleScreen(Logic logic, SFX sfx, oldMenu menu) {
@@ -79,8 +82,8 @@ public class TitleScreen implements IGameScreen {
 
 		// System.out.println("Mouse X: "+Gdx.input.getX()+" Y:
 		// "+Gdx.input.getY());
-		int mx = Gdx.input.getX();
-		int my = Gdx.input.getY();
+	//	int mx = Gdx.input.getX();
+	//	int my = Gdx.input.getY();
 
 		menu.processKeys(sfx);
 

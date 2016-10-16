@@ -10,6 +10,7 @@ public interface IMenu {
 	public void setSFX(SFX sfx);
 	public void display();
 //	public void drawMenu();
+	public int getMenuCount();
 	public void setMenuCyclic();
 	public void setMenuNotCyclic();
 	public int getSelectedIdx();
