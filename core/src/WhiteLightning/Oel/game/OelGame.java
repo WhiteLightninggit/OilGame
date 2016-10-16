@@ -11,10 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import WhiteLightning.Oel.game.Control.SFX;
@@ -36,15 +33,14 @@ import org.apache.logging.log4j.Logger;
 public class OelGame extends ApplicationAdapter {
 	
 	final Logger log = LogManager.getLogger(ApplicationAdapter.class);
-	private gameStates lastState=gameStates.Title;
+	private gameStates lastState=gameStates.Game;
 	private HashMap<gameStates, IGameScreen> gameScreens;
 	private long elapsedTime = TimeUtils.nanoTime();
 	
 	public World world;
 	public Config config;
 	public Logic logic;
-	public SFX sfx;
-	
+	public SFX sfx;	
 	
 	public SpriteBatch spriteBatch;
 	
@@ -69,42 +65,12 @@ public class OelGame extends ApplicationAdapter {
 		g = new Game();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-		//camera.setToOrtho(true);		
 		control = new Control(g,camera);
 	
 		sounds.menuSound = Gdx.audio.newMusic(Gdx.files.internal("Sound/menu.mp3"));
 		sounds.menuChangeSound = Gdx.audio.newSound(Gdx.files.internal("Sound/select.wav"));	
 		sounds.denySound = Gdx.audio.newSound(Gdx.files.internal("Sound/deny.mp3"));
 		sounds.denySound.setVolume(0, 0.3f);
-
-		
-		menuList.add("Start Game");
-		menuList.add("Options");
-		menuList.add("Story");
-		menuList.add("Credits");
-		menuList.add("Exit");
-		
-		menuMap.put(0,"Start Game");
-		menuMap.put(1,"Options");
-		menuMap.put(2,"Story");
-		menuMap.put(3,"Credits");
-		menuMap.put(4,"Exit");
-		
-		mainMenu = new oldMenu(menuMap);
-		
-		actionsMap.put(0,"Drill Factories");
-		actionsMap.put(1,"Pumps Factories");
-		actionsMap.put(2,"Wagons factories");
-		actionsMap.put(3,"Oil Fields");
-		actionsMap.put(4,"Buy Drills");
-		actionsMap.put(5,"Buy Pumps");
-		actionsMap.put(6,"Buy Wagons");
-		actionsMap.put(7,"=OTHER POSSIBILITIES");
-		actionsMap.put(8,"Next player");
-		actionsMap.put(9,"Sabotage");
-		actionsMap.put(10,"Skip turn");
-		
-		actionMenu = new oldMenu(actionsMap);
 		
 		sfx = new SFX();
 		
@@ -113,10 +79,10 @@ public class OelGame extends ApplicationAdapter {
 		logic = new Logic(this.world);
 		
 		gameScreens = new HashMap<>();
-		gameScreens.put(gameStates.Title,new TitleScreen(logic,sfx, mainMenu) );
+		gameScreens.put(gameStates.Title,new TitleScreen(logic,sfx) );
 		gameScreens.put(gameStates.Setup,new SetupScreen(sfx, config, world) );
 		gameScreens.put(gameStates.Options,new OptionsScreen(sfx, config, world) );
-		gameScreens.put(gameStates.Game,new GameScreen(world,logic,sfx, config, actionMenu) );
+		gameScreens.put(gameStates.Game,new GameScreen(world,logic,sfx, config) );
 		gameScreens.put(gameStates.Trend,new TrendScreen(sfx, config, world) );
 		gameScreens.put(gameStates.OilFields,new OilFieldsScreen(sfx, world, logic) );
 		gameScreens.put(gameStates.Factory,new FactoryScreen(sfx, world, logic) );
@@ -130,31 +96,26 @@ public class OelGame extends ApplicationAdapter {
 		update();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
-		if(lastState != gameStates.End)
+		if(lastState != gameStates.End){
 			gameScreens.get(lastState).Draw(spriteBatch);
+		}
 	}
 
 	public void update() {
 		updateCamera();
-		 lastState=gameScreens.get(lastState).Update(elapsedTime);
-		 
+		lastState=gameScreens.get(lastState).Update(elapsedTime);		 
 		// System.out.println("state: "+lastState);
-		 
-			if (lastState == gameStates.End)
-	        {
-				Gdx.app.exit();
-	        }
+		
+		if (lastState == gameStates.End){
+			Gdx.app.exit();
+	    }
 		processKeysDefault();
 	}
 
 	private void updateCamera() {
-
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.combined);
-		camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
-		
-
-		
+		camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);		
 	}
 
 	

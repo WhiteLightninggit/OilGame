@@ -1,16 +1,10 @@
 package WhiteLightning.Oel.game.desktop;
 
-
-
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import WhiteLightning.Oel.game.OelGame;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-
-
-
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {		

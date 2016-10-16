@@ -5,72 +5,48 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
 import WhiteLightning.Oel.game.Objects.FontsPack;
 
 public class Menu implements IMenu {
-
-	//Remove ShapeRenderer later
 	
 	public HashMap<Integer, String> menuMap = new HashMap<>();
 	public FontsPack fonts = new FontsPack();
     public int idx=0;
     boolean cyclic=true;
     public TexturesPack album = new TexturesPack();
-	private int x = 500;
-	private int width=200;
-	private int y = 250; 
-	private int menuOffsetY = 10; 
-	private int menuItemHeight = 40; 
 	
-    private ShapeRenderer shapeRenderer;
-    
+    public int x = 500;    
+	public int y = 250; 
+	public int menuCaptionWidth = 180;
+	
+	private int menuOffsetY = 10; 
+	private int menuOffsetX = 10;	
+	private int menuItemHeight = 40; 
+	private int menuIconWidth=40;
+	private int lineSize=2;
+	    	
 	@Override
-	public void setData() {
-		 shapeRenderer = new ShapeRenderer();
-				 
-		menuMap.put(1, "Start Game");
-		menuMap.put(2, "Options");
-		menuMap.put(3, "Story");
-		menuMap.put(4, "Credits");
-		menuMap.put(5, "Exit");
+	public void setData(Integer key, String value) {
+       this.menuMap.put(key, value);	 		 
 	}
  
 	@Override
 	public void display() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void drawMenu(SpriteBatch batch) {		
-		
-		 if(false){		      
-		       shapeRenderer.begin(ShapeType.Filled);
-		       shapeRenderer.setColor(Color.RED);
-		       shapeRenderer.rect(50, 50, 10, 10);
-		       shapeRenderer.rect(100, 100, 10, 10);
-		       shapeRenderer.rect(200, 200, 10, 10);
-		       shapeRenderer.rect(300, 300, 10, 10);
-		       shapeRenderer.rect(400, 400, 10, 10);		       
-		       shapeRenderer.end();
-		 }
-		       
+ 
 		batch.begin();
 		
-		batch.draw(album.pumpIco, x-50, y-30-(idx*menuItemHeight), 40, 40);
-		batch.draw(album.pumpIco, x+180, y-30-(idx*menuItemHeight), 40, 40);		
-		batch.draw(album.pumpIco, x, menuOffsetY+y-40-(idx*menuItemHeight), 170, 2);
-		batch.draw(album.pumpIco, x, menuOffsetY+y-(idx*menuItemHeight), 170, 2);
+		batch.draw(album.pumpIco, x-menuIconWidth-menuOffsetX, y-menuIconWidth+menuOffsetX-(idx*menuItemHeight), menuIconWidth, menuItemHeight);
+		batch.draw(album.pumpIco, x+menuCaptionWidth, y-menuIconWidth+menuOffsetX-(idx*menuItemHeight), menuIconWidth, menuItemHeight);		
+		batch.draw(album.pumpIco, x, menuOffsetY+y-menuItemHeight-(idx*menuItemHeight), menuCaptionWidth-menuOffsetX, lineSize);
+		batch.draw(album.pumpIco, x, menuOffsetY+y-(idx*menuItemHeight), menuCaptionWidth-menuOffsetX, lineSize);
 
 		AtomicInteger i = new AtomicInteger(0);
 		menuMap.forEach((k, v) -> {
@@ -120,12 +96,11 @@ public class Menu implements IMenu {
 
 	@Override
 	public void processKeys(SFX sfx) {
-
 		int mx = Gdx.input.getX();
 		int my = Gdx.graphics.getHeight() - Gdx.input.getY();
 	//	System.out.println("Mouse X: "+mx+" Y: "+my);
 
-		if(mx>x && mx<x+width && my >= (y-menuItemHeight*getMenuCount()) && my <= y  ){
+		if(mx>x && mx<x+menuCaptionWidth+menuOffsetX && my >= (y-menuItemHeight*getMenuCount()) && my <= y  ){
 			int menuItemUnderCursor = (int)((menuOffsetY+y-my )/menuItemHeight);
 			
 			if(menuItemUnderCursor != idx && menuItemUnderCursor < this.getMenuCount()){

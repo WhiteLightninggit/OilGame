@@ -6,7 +6,7 @@ import WhiteLightning.Oel.game.Control.SFX;
 
 public interface IMenu {
 
-	public void setData();	
+	public void setData(Integer key, String value);	
 	public void setSFX(SFX sfx);
 	public void display();
 //	public void drawMenu();
@@ -17,9 +17,6 @@ public interface IMenu {
 	public void selectNext();
 	public void selectPrevious();
 	void drawMenu(SpriteBatch batch);
-	public void processKeys(SFX sfx);
-	
-	
-	
+	public void processKeys(SFX sfx);	
 	
 }
