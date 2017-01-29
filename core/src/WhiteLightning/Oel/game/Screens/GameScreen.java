@@ -3,6 +3,7 @@ package WhiteLightning.Oel.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
@@ -15,6 +16,9 @@ import WhiteLightning.Oel.game.Control.SFX;
 import WhiteLightning.Oel.game.Control.Sounds;
 import WhiteLightning.Oel.game.Objects.Factory.FactoryType;
 import WhiteLightning.Oel.game.Objects.FontsPack;
+
+import java.util.ArrayList;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,28 +32,24 @@ public class GameScreen implements IGameScreen{
 	public TexturesPack album = new TexturesPack();	
 	
 	private Menu menu = new Menu();
-
 	private SFX sfx;
 
 	private int screenWidth = 800;
 	private int screenHeight = 600;	
-
 	
 	public GameScreen(World world, Logic logic, SFX sfx, Config config) {
 		log.info("GameScreen");
 		this.logic=logic;		
-
 		this.sfx = sfx;
 		this.conf = config;
-		
+
 		for(int i=0;i<s.players;i++){
 			world.addPlayer(conf, "Player "+(i+1),i);
 			System.out.println("player added"+i);
 		}
 		
 		Load();
-	}
-	
+	}	
 	
 	@Override
 	public void Load() {
@@ -67,13 +67,13 @@ public class GameScreen implements IGameScreen{
 		menu.setData(8,"Sabotage");
 		menu.setData(9,"Skip turn");
 		menu.setData(10,"Exit");
-		
+	
 		menu.setSFX(sfx);
 
 		menu.y=500;
 		menu.x=450;
-		menu.menuCaptionWidth = 300;
-		
+		menu.menuCaptionWidth = 300;		
+		menu.zzz();
 	}
 
 	@Override
@@ -81,18 +81,15 @@ public class GameScreen implements IGameScreen{
 		drawBackground(spriteBatch);
 		menu.drawMenu(spriteBatch);
 		drawImg(spriteBatch);
-		displayStatus(spriteBatch, 100, 200);
-		
+		displayStatus(spriteBatch, 100, 200);		
 	}
 
 	@Override
-	public gameStates Update(long gameTime) {		
-		
+	public gameStates Update(long gameTime) {			
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			sfx.PlaySound(Sounds.MenuChange);
 			return gameStates.End;
-		}
-		
+		}		
 		return processKeysGame();
 	}
 
@@ -112,51 +109,18 @@ public class GameScreen implements IGameScreen{
 	}
 	
 	private void drawImg(SpriteBatch batch) {
-			batch.begin();
-
-			int x = 100;
-			int y = 300;
-			int width = 220;
-			int height = 220;
-
-			if (menu.getSelectedIdx() == 0) {
-				batch.draw(album.drillImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 1) {
-				batch.draw(album.pumpImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 2) {
-				batch.draw(album.wagonImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 3) {
-				batch.draw(album.oilFieldImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 4) {
-				batch.draw(album.drillsImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 5) {
-				batch.draw(album.pumpsImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 6) {
-				batch.draw(album.trainImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 7) {
-				batch.draw(album.skipImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 8) {
-				batch.draw(album.sabotImg, x, y, width, height);
-			}
-			if (menu.getSelectedIdx() == 9) {
-				batch.draw(album.nextImg, x, y, width, height);
-			}
-	batch.end();
-	}
-	
-	
-	
-	public gameStates processKeysGame() {
-
+		int x = 100;
+		int y = 300;
+		int width = 220;
+		int height = 220;
+		ArrayList<Texture> picsList = album.getMenuPicsList();
 		
+		batch.begin();
+			batch.draw(picsList.get(menu.getSelectedIdx()), x, y, width, height);
+		batch.end();
+	}
+		
+	public gameStates processKeysGame() {
 		menu.processKeys(sfx);
 		
 		if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isButtonPressed(Buttons.LEFT) && Gdx.input.justTouched())) {
@@ -206,7 +170,5 @@ public class GameScreen implements IGameScreen{
 		
 		return gameStates.Game;
 		
-	}
-	
-	
+	}	
 }

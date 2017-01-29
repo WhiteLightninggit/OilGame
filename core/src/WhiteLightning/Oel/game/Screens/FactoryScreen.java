@@ -39,6 +39,7 @@ public class FactoryScreen implements IGameScreen{
 	private int deltaY = 25;
 	private int menuLeftX = 450;
 	private int menuUpperY = Gdx.graphics.getHeight() - 200;
+	private Menu menu = new Menu();
 	
 	public FactoryScreen(SFX sfx, World world, Logic logic) {
 		this.world = world;
@@ -51,8 +52,21 @@ public class FactoryScreen implements IGameScreen{
 	@Override
 	public void Load() {
 		log.trace("loaded");
+		
+		menu.y=500;
+		menu.x=400;
+		menu.menuCaptionWidth = 300;
+		
+		for(int i=0; i<world.drillFactory.size(); i++ ){
+			menu.setData(i,world.drillFactory.get(i).name+"  "+world.drillFactory.get(i).getPrice() );
+		}
+
+		
+		
+		
 	}
 
+	
 	@Override
 	public void Draw(SpriteBatch spriteBatch) {
 		log.trace("draw");
@@ -86,6 +100,14 @@ public class FactoryScreen implements IGameScreen{
 		return processKeysFactoryScreen();
 	}
 
+	private void drawFactoryk(SpriteBatch batch, ArrayList<Factory> menuList, int x, int y) {
+		batch.begin();
+		batch.draw(album.titleScreen, 0, 0, 800, 600);
+		batch.end();
+		
+		menu.drawMenu(batch);
+	}
+	
 	private void drawFactory(SpriteBatch batch, ArrayList<Factory> menuList, int x, int y) {
 		log.trace("Draw Factory");
 		batch.begin();

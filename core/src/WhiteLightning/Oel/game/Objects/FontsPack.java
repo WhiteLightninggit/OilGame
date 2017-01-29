@@ -32,8 +32,8 @@ public class FontsPack {
 		cFontGreen = generator.generateFont(parameter);
 		cFontGray = generator.generateFont(parameter);
 		cFontBlue = generator.generateFont(parameter);
-		parameter.size = 80;
 		cFontYellow = generator.generateFont(parameter);
+		parameter.size = 80;		
 		bigFontBlue = generator.generateFont(parameter);
 		generator.dispose();
 		cFont.setColor(Color.BLACK);

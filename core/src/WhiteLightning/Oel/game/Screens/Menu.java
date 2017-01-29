@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import WhiteLightning.Oel.game.Control.SFX;
@@ -14,6 +15,8 @@ import WhiteLightning.Oel.game.Objects.FontsPack;
 public class Menu implements IMenu {
 	
 	public HashMap<Integer, String> menuMap = new HashMap<>();
+	public HashMap<Integer,BitmapFont> fontMap = new HashMap<>();
+	
 	public FontsPack fonts = new FontsPack();
     public int idx=0;
     boolean cyclic=true;
@@ -28,7 +31,19 @@ public class Menu implements IMenu {
 	private int menuItemHeight = 40; 
 	private int menuIconWidth=40;
 	private int lineSize=2;
-	    	
+	    
+	public void zzz(){
+		this.fontMap.put(2, fonts.cFontGray);
+		this.fontMap.put(3, fonts.cFontBlue);
+		this.fontMap.put(6, fonts.cFontYellow);
+		
+		System.out.println("zzz: "+this.fontMap.get(2));
+		
+		if(this.fontMap.containsKey(2))
+		System.out.println("zzgz: "+this.fontMap.get(2));
+		
+	}
+	
 	@Override
 	public void setData(Integer key, String value) {
        this.menuMap.put(key, value);	 		 
@@ -50,10 +65,14 @@ public class Menu implements IMenu {
 
 		AtomicInteger i = new AtomicInteger(0);
 		menuMap.forEach((k, v) -> {
+			if(this.fontMap.containsKey(i.get())){
+				this.fontMap.get(i.get()).draw(batch, k.toString() + " " + v.toString(), x, (y - menuItemHeight * i.get()));
+			} else {
 				fonts.cFont.draw(batch, k.toString() + " " + v.toString(), x, (y - menuItemHeight * i.get()));
-				if (idx == i.get()) {
-					fonts.cFontRed.draw(batch, k.toString() + " " + v.toString(), x, (y - menuItemHeight * i.get()));
-				}
+			}
+			if (idx == i.get()) {
+						fonts.cFontRed.draw(batch, k.toString() + " " + v.toString(), x, (y - menuItemHeight * i.get()));
+			}
 				i.getAndIncrement();			
 			}
 		);

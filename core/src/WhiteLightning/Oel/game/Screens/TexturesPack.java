@@ -23,8 +23,25 @@ public class TexturesPack {
 	public Sprite menuArrow;
 	public Texture checked;
 	public Texture unchecked;
+	public Texture exit;
 	public ArrayList<Texture> nrImages;
 
+	public ArrayList<Texture> getMenuPicsList(){
+		ArrayList<Texture> picsList = new ArrayList<>(10);
+		picsList.add(drillImg);
+		picsList.add(pumpImg);
+		picsList.add(wagonImg);
+		picsList.add(oilFieldImg);
+		picsList.add(drillsImg);
+		picsList.add(pumpImg);
+		picsList.add(trainImg);
+		picsList.add(skipImg);
+		picsList.add(sabotImg);
+		picsList.add(nextImg);		
+		picsList.add(exit);	
+		return picsList;
+	}
+	
 	public TexturesPack() {
 		this.pumpImg = new Texture("Images/pump.jpg");
 		this.oilFieldImg = new Texture("Images/oilfield.jpg");
@@ -43,6 +60,7 @@ public class TexturesPack {
 		this.unchecked = new Texture("Images/unchecked.png");
 		this.titleScreen = new Texture("Images/chart6.png");
 		this.menuArrow = new Sprite(new Texture("Images/marker2.png"));	
+		this.exit = new Texture("Images/Exit.jpg");	
 		
 		this.nrImages = new ArrayList<>();
 		this.nrImages.add(new Texture("Images/1.png"));

@@ -15,11 +15,6 @@ public class SFX {
 	}
 	
 	private void LoadSounds(){
-	/*
-		addToPlaylist("menuChange", "Sound/select.wav");
-		addToPlaylist("menuSound", "Sound/menu.mp3");
-		addToPlaylist("denySound", "Sound/deny.mp3");
-	*/
 		addToPlaylist(Sounds.MenuChange, "Sound/select.wav");
 		addToPlaylist(Sounds.MenuSound, "Sound/menu.mp3");
 		addToPlaylist(Sounds.DenySound, "Sound/deny.mp3");		
@@ -30,7 +25,7 @@ public class SFX {
 	}
 	
 	public void PlaySound(Sounds sound){
-		this.playlist.get(sound).play();
+	//	this.playlist.get(sound).play();
 	}
 	
 }
