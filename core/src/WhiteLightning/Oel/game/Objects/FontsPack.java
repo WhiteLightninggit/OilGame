@@ -17,6 +17,13 @@ public class FontsPack {
 	public BitmapFont cFontYellow;
 	public BitmapFont bigFontBlue;
 	
+	public BitmapFont getDefaultFont(){
+		return cFont;
+	}
+	
+	public BitmapFont getSelectionFont(){
+		return cFontRed;
+	}
 
 	public FontsPack() {
 		font = new BitmapFont();

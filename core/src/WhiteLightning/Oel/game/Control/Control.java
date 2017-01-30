@@ -42,13 +42,13 @@ public class Control {
 		case Factory:
 			switch (s.currFactoryType) {
 			case DRILLS:
-				processKeysFactory(g.world.drillFactory);
+			//	processKeysFactory(g.world.drillFactory);
 				break;
 			case PUMP:
-				processKeysFactory(g.world.pumpsFactory);
+		//		processKeysFactory(g.world.pumpsFactory);
 				break;
 			case WAGONS:
-				processKeysFactory(g.world.wagonFactory);
+			//	processKeysFactory(g.world.wagonFactory);
 				break;
 			default:
 				break;
@@ -145,37 +145,7 @@ public class Control {
 		}
 	}
 
-	public void processKeysFactory(ArrayList<Factory> factories) {
-		if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
-			// g.nextInternalState();
-		}
-		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-			sounds.menuChangeSound.play();
 
-			if (s.selectedField > 0)
-				s.selectedField--;
-			s.moveUp = true;
-		}
-		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-			sounds.menuChangeSound.play();
-			if (s.selectedField < factories.size() - 1)
-				s.selectedField++;
-			s.moveUp = false;
-		}
-		if (Gdx.input.isKeyJustPressed(Keys.Q)) {
-			s.gameState = gameStates.Game;
-		}
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-
-			if (!l.buyFactory(s.currFactoryType)) {
-				sounds.denySound.play();
-				if (l.getCurrentFactory().hasOwner()) {
-					s.gameState = gameStates.Setup;
-				}
-			}
-			System.out.println(factories.get(s.selectedField).name);
-		}
-	}
 
 	public void processKeysGame(oldMenu menu) {
 		if (Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {

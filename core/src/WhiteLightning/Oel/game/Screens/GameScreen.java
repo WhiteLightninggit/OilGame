@@ -67,6 +67,7 @@ public class GameScreen implements IGameScreen{
 		menu.setData(8,"Sabotage");
 		menu.setData(9,"Skip turn");
 		menu.setData(10,"Exit");
+		menu.setData(5,"Buy Pumps");
 	
 		menu.setSFX(sfx);
 

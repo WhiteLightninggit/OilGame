@@ -52,6 +52,20 @@ public class Logic {
 		}		
 	}
 	
+	public boolean buyFactory(FactoryType type, int idx){
+		
+		switch (type) {
+		case DRILLS:
+			return buyRealEstate(getCurrentPlayer(), w.drillFactory.get(idx));
+		case PUMP:
+			return buyRealEstate(getCurrentPlayer(), w.pumpsFactory.get(idx));
+		case WAGONS:
+			return buyRealEstate(getCurrentPlayer(), w.wagonFactory.get(idx));
+		default:
+			return false;			
+		}		
+	}
+	
 	private boolean buyRealEstate(Player p, RealEstateI estate ){
 		if(p.cash > estate.getPrice() && !estate.hasOwner() && !actionPerformed){
 			estate.setOwner(p);
@@ -71,14 +85,14 @@ public class Logic {
 		return (Player) w.getPlayer((int) s.currentPlayerIdx);
 	}
 	
-	public Factory getCurrentFactory(){		
+	public Factory getCurrentFactory(int idx){		
 		switch (s.currFactoryType) {
 		case PUMP:
-			return w.pumpsFactory.get(s.selectedField);
+			return w.pumpsFactory.get(idx);
 		case WAGONS:
-			return w.wagonFactory.get(s.selectedField);
+			return w.wagonFactory.get(idx);
 		case DRILLS:
-			return w.drillFactory.get(s.selectedField);
+			return w.drillFactory.get(idx);
 			
 		default:
 			return null;

@@ -14,7 +14,7 @@ import WhiteLightning.Oel.game.Objects.FontsPack;
 
 public class Menu implements IMenu {
 	
-	public HashMap<Integer, String> menuMap = new HashMap<>();
+	public HashMap<Integer, MenuItem> menuMap = new HashMap<>();
 	public HashMap<Integer,BitmapFont> fontMap = new HashMap<>();
 	
 	public FontsPack fonts = new FontsPack();
@@ -44,11 +44,40 @@ public class Menu implements IMenu {
 		
 	}
 	
+	public void changeFontForCurrentItem(BitmapFont font){
+		this.getItem().font = font;
+	}
+	
+	public void changeTextForCurrentItem(String text){
+		this.getItem().text = text;
+	}
+	
+	@Override
+	public MenuItem getItem(){
+		return menuMap.get(this.getSelectedIdx());
+	}
+	
+	@Override
+	public void setData(Integer key, String value, String price) {
+       this.menuMap.put(key, new MenuItem(value,price, fonts.getDefaultFont(), fonts.getSelectionFont()));	 		 
+	}
+	
 	@Override
 	public void setData(Integer key, String value) {
-       this.menuMap.put(key, value);	 		 
+       this.menuMap.put(key, new MenuItem(value, fonts.getDefaultFont(), fonts.getSelectionFont()));	 		 
+	}
+		
+	@Override
+	public void setData(Integer key, String value, BitmapFont font) {
+       this.menuMap.put(key, new MenuItem(value, font, fonts.getSelectionFont()));	 		 
 	}
  
+	@Override
+	public void setData(Integer key, String value, BitmapFont font, BitmapFont selectionFont) {
+       this.menuMap.put(key, new MenuItem(value, font, selectionFont));	 		 
+	}
+	
+	
 	@Override
 	public void display() {
 	}
@@ -64,14 +93,10 @@ public class Menu implements IMenu {
 		batch.draw(album.pumpIco, x, menuOffsetY+y-(idx*menuItemHeight), menuCaptionWidth-menuOffsetX, lineSize);
 
 		AtomicInteger i = new AtomicInteger(0);
-		menuMap.forEach((k, v) -> {
-			if(this.fontMap.containsKey(i.get())){
-				this.fontMap.get(i.get()).draw(batch, k.toString() + " " + v.toString(), x, (y - menuItemHeight * i.get()));
-			} else {
-				fonts.cFont.draw(batch, k.toString() + " " + v.toString(), x, (y - menuItemHeight * i.get()));
-			}
+		menuMap.forEach((k, v) -> {			
+			v.font.draw(batch, k.toString() + " " + v.text, x, (y - menuItemHeight * i.get()));
 			if (idx == i.get()) {
-						fonts.cFontRed.draw(batch, k.toString() + " " + v.toString(), x, (y - menuItemHeight * i.get()));
+				fonts.cFontRed.draw(batch, k.toString() + " " + v.text, x, (y - menuItemHeight * i.get()));
 			}
 				i.getAndIncrement();			
 			}

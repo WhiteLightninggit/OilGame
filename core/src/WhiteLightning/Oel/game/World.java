@@ -74,10 +74,10 @@ public class World {
 	
 	private void createWagonFactories(){
 		wagonFactory = new ArrayList<Factory>(wagonFactoriesNr);		
-		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Pesa", 30));
-		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Newag", 42));
-		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Bombardier", 33));
-		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Konstal", 39));		
+		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Pesa", 30,1111));
+		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Newag", 42,2222));
+		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Bombardier", 33,3333));
+		wagonFactory.add(FactoriesFactory.getFactory(FactoryType.WAGONS, "Konstal", 39,4444));		
 	}
 
 	private void createDrillFactories(){

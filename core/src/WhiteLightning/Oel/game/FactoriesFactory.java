@@ -8,6 +8,7 @@ public class FactoriesFactory {
 	static int wagonPrice=5000;
 	static int pumpPrice=6000;
 	static int drillPrice=1250;
+	private static int defaultFactoryPrice=4444;
 	
 	static byte maxWagonsOrderSize = 6;
 	static byte maxPumpsOrderSize = 12;
@@ -29,6 +30,14 @@ public class FactoriesFactory {
 		f.availableItems = availableItems;
 		return f;		
 	}
+	
+	public static Factory getFactory(FactoryType type,String name, int availableItems, int factoryPrice) {
+		Factory f = createFactory(type);
+		f.name = name;
+		f.availableItems = availableItems;
+		f.setPrice(factoryPrice);
+		return f;		
+	}
 		
 	private static Factory createFactory(FactoryType type){
 		
@@ -38,19 +47,19 @@ public class FactoriesFactory {
 			f.type = type;
 			f.itemPrice = wagonPrice;
 			f.maxOrderSize = maxWagonsOrderSize;
-			f.setPrice(111111);
+			f.setPrice(defaultFactoryPrice);
 			break;
 		case PUMP:
 			f.type = type;
 			f.itemPrice = pumpPrice;
 			f.maxOrderSize = maxPumpsOrderSize;
-			f.setPrice(221212);
+			f.setPrice(defaultFactoryPrice);
 			break;
 		case DRILLS:
 			f.type = type;
 			f.itemPrice = drillPrice;
 			f.maxOrderSize = maxDrillsOrderSize;
-			f.setPrice(249999);
+			f.setPrice(defaultFactoryPrice);
 			break;
 
 		default:
